@@ -6,13 +6,15 @@
 #include <thread>
 #include <mutex>
 #include <Windows.h>
+#include <sstream>
 
 #include "_CACodeLab.h"
 #include "_CAMD5.h"
 #include "BTParser.h"
 #include "_CABTChecker.h"
 #include "_CABTParser.h"
-
+#include "SHA1.h"
+#include "_CAFileStream.h"
 
 _CATestSpace::_CATestSpace()
 {
@@ -233,9 +235,66 @@ void _CATestSpace::TestBTParser()
 {
 	std::cout << "In TestBTParser Testing..." << std::endl;
 	_CABTParser BTParser;
-	int filelength;
-	_CACodeLab::GetFileLength(filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
-	std::cout << "File size is " << filelength << std::endl;
+	//int filelength;
+	//_CACodeLab::GetFileLength(filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
+	//std::cout << "File size is " << filelength << std::endl;
 	BTParser.Open(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	BTParser.Check();
+}
+
+
+// Test GetFileLength
+void _CATestSpace::TestGetFileLength()
+{
+	INT64 filelength;
+	std::cout << sizeof(filelength) << std::endl;
+	std::cout << sizeof(DWORD) << std::endl;
+	std::cout << sizeof(LPDWORD) << std::endl;
+	std::cout << sizeof(long) << std::endl;
+	std::cout << sizeof(long long) << std::endl;
+	//_CACodeLab::GetFileLength(filelength, L"d:\\cn_windows_server_2012_r2_with_update_x64_dvd_6052725.iso");
+	_CACodeLab::GetFileLength(filelength, L"d:\\cn_windows_server_2012_r2_with_update_x64_dvd_6052725.iso");
+	std::cout << filelength << std::endl;
+}
+
+
+// Test ReadFileWithMemMapping
+void _CATestSpace::TestReadFileWithMemMapping()
+{
+	INT64 filelength;
+	CSHA1 sha1;
+	_CACodeLab::GetFileLength(filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
+	/* ----- ReadFileWithMemMapping -----
+	   -----       Version 2.0      -----
+	   ---------------------------------- */
+	BYTE * fileStream;
+	std::wstring strOut;
+	fileStream = new BYTE[filelength];
+	_CACodeLab::ReadFileWithMemMapping(fileStream, filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
+	sha1.Update(fileStream, filelength);
+	sha1.Final();
+	sha1.ReportHashStl(strOut, CSHA1::REPORT_HEX_SHORT);
+	std::wcout << strOut << L" ";
+	delete[] fileStream;
+	/* ----- ReadFileWithMemMapping -----
+	   -----    Version 2.1(beta)   -----
+	   -------------ERROR---------------- */
+	sha1.Reset();
+	_CAFileStream filestream;
+	//std::string filestream;
+	_CACodeLab::ReadFileWithMemMapping(filestream, filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
+	sha1.Update((unsigned char *)filestream._Current, filelength);
+	sha1.Final();
+	sha1.ReportHashStl(strOut, CSHA1::REPORT_HEX_SHORT);
+	std::wcout << strOut << std::endl;
+}
+
+
+// Test FileStream and DataBlock
+void _CATestSpace::TestFileStream()
+{
+	_CAFileStream fileStream;
+	fileStream.GetData("Hello World!", 13);
+	fileStream++;
+	fileStream += 2;
 }

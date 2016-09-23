@@ -48,7 +48,7 @@ void _CACodeLab::ReadFileWithBuffer()
 	while (!fin.eof())
 	{
 		fin.get(buffer, 1 * 1024 * 1024 + 1);
-		length += strlen(buffer);
+		length += (int)strlen(buffer);
 		std::cout << "cached 1MB. length of buffer is " << length << std::endl;
 	}
 	delete[] buffer;
@@ -56,15 +56,9 @@ void _CACodeLab::ReadFileWithBuffer()
 }
 
 
-bool _CACodeLab::GetFileLength(int & filelength, const std::wstring & filename)
+bool _CACodeLab::GetFileLength(INT64 & filelength, const std::wstring & filename)
 {
-	//#include <sys/stat.h>
-	//Ver.1
-	//struct _stat info;
-	//_stat("d:\\test.txt", &info);
-	//int size = info.st_size;
-	//std::cout << size << std::endl;
-	//Ver.2
+	LARGE_INTEGER fileSize;
 	HANDLE handle = CreateFile(filename.c_str(),
 		FILE_READ_EA,
 		FILE_SHARE_READ,
@@ -74,11 +68,13 @@ bool _CACodeLab::GetFileLength(int & filelength, const std::wstring & filename)
 		0);
 	if (handle != INVALID_HANDLE_VALUE)
 	{
-		filelength = GetFileSize(handle, NULL);
-		//std::cout << size << "B" << std::endl;
-		//std::cout << size / 1024 << "KB" << std::endl;
-		//std::cout << size / 1024 / 1024 << "MB" << std::endl;
-		//std::cout << size / 1024 / 1024 / 1024 << "GB" << std::endl;
+		//filelength = GetFileSize(handle, NULL);
+		if (!GetFileSizeEx(handle, &fileSize))
+		{
+			CloseHandle(handle);
+			return false;
+		}
+		filelength = fileSize.QuadPart;
 		CloseHandle(handle);
 		return true;
 	}
@@ -99,11 +95,11 @@ void _CACodeLab::CountTime()
 bool _CACodeLab::ReadFileWithMemMapping(std::vector<BYTE> & filestream, const std::wstring & filename)
 {
 	int filelength;
-	if (!GetFileLength(filelength, filename))
+	/*if (!GetFileLength(filelength, filename))
 	{
 		std::cout << "Can not get file length." << std::endl;
 		return false;
-	}
+	}*/
 	HANDLE fileH = CreateFile(filename.c_str(),
 		GENERIC_READ | GENERIC_WRITE,
 		FILE_SHARE_READ,
@@ -146,12 +142,163 @@ bool _CACodeLab::ReadFileWithMemMapping(std::vector<BYTE> & filestream, const st
 	//	*pbuffer++ = buff[i];
 	//}
 	//*pbuffer = '\0';
-	filestream.resize(filelength);
+	//filestream.resize(filelength);
 	int filepos = 0;
 	for (std::vector<BYTE>::iterator i = filestream.begin();i != filestream.end(); i++)
 	{
 		*i = (BYTE)buff[filepos++];
 	}
+	UnmapViewOfFile(mapH);
+	CloseHandle(mapfileH);
+	CloseHandle(fileH);
+	return true;
+}
+
+bool _CACodeLab::ReadFileWithMemMapping(BYTE * filestream, const INT64 & fileLength, const std::wstring & filename)
+{
+	INT64 _fileLength;
+	if (!GetFileLength(_fileLength, filename)||(_fileLength < fileLength))
+	{
+		return false;
+	}
+	HANDLE fileH = CreateFile(filename.c_str(),
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	if (fileH == INVALID_HANDLE_VALUE)
+	{
+		std::cout << "error in CreateFile" << std::endl;
+		return false;
+	}
+	HANDLE mapfileH = CreateFileMapping(fileH,
+		NULL,
+		PAGE_READWRITE,
+		0,
+		0,
+		L"Resource ");
+	if (mapfileH == NULL)
+	{
+		std::cout << "Error in CreateFileMapping" << std::endl;
+		return false;
+	}
+	char * mapH = (char *)MapViewOfFile(mapfileH,
+		FILE_MAP_ALL_ACCESS,
+		0,
+		0,
+		0);
+	if (mapH == NULL)
+	{
+		std::cout << "Error in MapViewOfFile" << std::endl;
+		return false;
+	}
+	BYTE * buff = (BYTE *)mapH;
+	BYTE * pbuffer = filestream;
+	for (INT64 i = 0; i < fileLength; i++)
+	{
+		*pbuffer++ = buff[i];
+	}
+	UnmapViewOfFile(mapH);
+	CloseHandle(mapfileH);
+	CloseHandle(fileH);
+	return true;
+}
+
+bool _CACodeLab::ReadFileWithMemMapping(std::string & filestream, const INT64 & fileLength, const std::wstring & filename)
+{
+	INT64 _fileLength;
+	if (!GetFileLength(_fileLength, filename) || (_fileLength < fileLength))
+	{
+		return false;
+	}
+	HANDLE fileH = CreateFile(filename.c_str(),
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	if (fileH == INVALID_HANDLE_VALUE)
+	{
+		std::cout << "error in CreateFile" << std::endl;
+		return false;
+	}
+	HANDLE mapfileH = CreateFileMapping(fileH,
+		NULL,
+		PAGE_READWRITE,
+		0,
+		0,
+		L"Resource ");
+	if (mapfileH == NULL)
+	{
+		std::cout << "Error in CreateFileMapping" << std::endl;
+		return false;
+	}
+	char * mapH = (char *)MapViewOfFile(mapfileH,
+		FILE_MAP_ALL_ACCESS,
+		0,
+		0,
+		0);
+	if (mapH == NULL)
+	{
+		std::cout << "Error in MapViewOfFile" << std::endl;
+		return false;
+	}
+	BYTE * buff = (BYTE *)mapH;
+	//BYTE * pbuffer = filestream;
+	for (INT64 i = 0; i < fileLength; i++)
+	{
+		filestream.append((char *)buff++);
+	}
+	UnmapViewOfFile(mapH);
+	CloseHandle(mapfileH);
+	CloseHandle(fileH);
+	return true;
+}
+
+bool _CACodeLab::ReadFileWithMemMapping(_CAFileStream & filestream, const INT64 & fileLength, const std::wstring & filename)
+{
+	INT64 _fileLength;
+	if (!GetFileLength(_fileLength, filename) || (_fileLength < fileLength))
+	{
+		return false;
+	}
+	HANDLE fileH = CreateFile(filename.c_str(),
+		GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);
+	if (fileH == INVALID_HANDLE_VALUE)
+	{
+		std::cout << "error in CreateFile" << std::endl;
+		return false;
+	}
+	HANDLE mapfileH = CreateFileMapping(fileH,
+		NULL,
+		PAGE_READWRITE,
+		0,
+		0,
+		L"Resource ");
+	if (mapfileH == NULL)
+	{
+		std::cout << "Error in CreateFileMapping" << std::endl;
+		return false;
+	}
+	char * mapH = (char *)MapViewOfFile(mapfileH,
+		FILE_MAP_ALL_ACCESS,
+		0,
+		0,
+		0);
+	if (mapH == NULL)
+	{
+		std::cout << "Error in MapViewOfFile" << std::endl;
+		return false;
+	}
+	filestream.GetData(mapH, fileLength);
 	UnmapViewOfFile(mapH);
 	CloseHandle(mapfileH);
 	CloseHandle(fileH);
@@ -237,7 +384,7 @@ void _CACodeLab::GetDirList()
 	std::string path("D:\\");
 	//GetFiles(path, filelist);
 	//#include <Windows.h>
-	DWORD hFile = NULL;
+	DWORDLONG hFile = NULL;
 	//#include <io.h>
 	struct _finddata_t fileinfo;
 	std::string p;

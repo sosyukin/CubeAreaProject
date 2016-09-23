@@ -4,7 +4,6 @@ class _CABTParser
 {
 private:
 	typedef unsigned char BYTE;
-	typedef long long INT64;
 	std::vector<BYTE> _BTstream;
 
 public:

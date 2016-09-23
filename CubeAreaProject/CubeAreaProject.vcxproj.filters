@@ -81,6 +81,18 @@
     <ClInclude Include="_CABTParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="_CADataBlock.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CAFileStream.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CABencode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CABencodeInteger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -144,6 +156,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="_CABTParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CADataBlock.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CAFileStream.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencodeInteger.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -18,7 +18,10 @@ int main()
 {
 	//_CAFolder folder(L"E:\\CubeArea");
 	//_CATestSpace::TestBTChecker();
-	_CATestSpace::TestBTParser();
+	//_CATestSpace::TestGetFileLength();
+	//_CATestSpace::TestFileStream();
+	_CATestSpace::TestReadFileWithMemMapping();
+	//_CATestSpace::TestBTParser();
 	return 0;
 }
 

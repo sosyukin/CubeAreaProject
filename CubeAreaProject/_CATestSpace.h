@@ -2,6 +2,7 @@
 #include <string>
 #include <mutex>
 #include "_CAMD5.h"
+#include "_CASHA1.h"
 class _CATestSpace
 {
 public:
@@ -26,5 +27,11 @@ public:
 	// Test _CABTChecker
 	static void TestBTChecker();
 	static void TestBTParser();
+	// Test GetFileLength
+	static void TestGetFileLength();
+	// Test ReadFileWithMemMapping
+	static void TestReadFileWithMemMapping();
+	// Test FileStream and DataBlock
+	static void TestFileStream();
 };
 
