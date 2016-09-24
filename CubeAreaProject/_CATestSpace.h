@@ -33,5 +33,9 @@ public:
 	static void TestReadFileWithMemMapping();
 	// Test FileStream and DataBlock
 	static void TestFileStream();
+	static void TestBencodeInteger();
+	static void TestBencodeString();
+	static void TestBencodeList();
+	static void TestBencodeDictionaries();
 };
 

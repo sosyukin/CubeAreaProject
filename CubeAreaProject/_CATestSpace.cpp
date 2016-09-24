@@ -15,6 +15,9 @@
 #include "_CABTParser.h"
 #include "SHA1.h"
 #include "_CAFileStream.h"
+#include "_CABencodeInteger.h"
+#include "_CABencodeString.h"
+#include "_CABencodeList.h"
 
 _CATestSpace::_CATestSpace()
 {
@@ -297,4 +300,47 @@ void _CATestSpace::TestFileStream()
 	fileStream.GetData("Hello World!", 13);
 	fileStream++;
 	fileStream += 2;
+}
+
+
+void _CATestSpace::TestBencodeInteger()
+{
+	_CABencodeInteger bencodeInteger;
+	_CAFileStream fileStream;
+	fileStream.GetData("i35214142326e", 14);
+	bencodeInteger.Parse(fileStream);
+}
+
+
+void _CATestSpace::TestBencodeString()
+{
+	_CABencodeString bencodeString;
+	_CAFileStream fileStream;
+	fileStream.GetData("10:HelloWorld", 14);
+	bencodeString.Parse(fileStream);
+	std::cout << bencodeString._string << std::endl;
+}
+
+
+void _CATestSpace::TestBencodeList()
+{
+	_CABencodeList bencodeList;
+	_CAFileStream fileStream;
+	fileStream.GetData("li3425e3:abce", 14);
+	bencodeList.Parse(fileStream);
+}
+
+
+void _CATestSpace::TestBencodeDictionaries()
+{
+	_CABencodeDictionaries bencodeDictionaries;
+	_CAFileStream fileStream;
+	INT64 fileLength;
+	std::wstring fileName(L"D:\\BT\\[SumiSora][aokana][BDRip][Vol.6].torrent");
+	std::wstring fileName1(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
+	_CACodeLab::GetFileLength(fileLength, fileName);
+	_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
+	//fileStream.GetData("d1:ai123ee", 11);
+	bencodeDictionaries.Parse(fileStream);
+	bencodeDictionaries.Output(0);
 }

@@ -17,10 +17,23 @@
 int main()
 {
 	//_CAFolder folder(L"E:\\CubeArea");
-	//_CATestSpace::TestBTChecker();
-	//_CATestSpace::TestGetFileLength();
-	//_CATestSpace::TestFileStream();
-	_CATestSpace::TestReadFileWithMemMapping();
+	try
+	{
+		//_CATestSpace::TestBTChecker();
+		//_CATestSpace::TestGetFileLength();
+		//_CATestSpace::TestFileStream();
+		//_CATestSpace::TestReadFileWithMemMapping();
+		//_CATestSpace::TestBencodeInteger();
+		//_CATestSpace::TestBencodeString();
+		//_CATestSpace::TestBencodeList();
+		_CATestSpace::TestBencodeDictionaries();
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+	
+
 	//_CATestSpace::TestBTParser();
 	return 0;
 }

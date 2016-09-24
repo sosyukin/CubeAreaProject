@@ -16,7 +16,7 @@ _CAFileStream::~_CAFileStream()
 // Current Pointer ++
 _CAFileStream & _CAFileStream::operator++(int)
 {
-	if (_Offset + 1 >= _CADataBlock::_blockSize)
+	if (_Offset + 1 > _CADataBlock::_blockSize)
 		throw std::exception("FileStream++ overflow.");
 	_Current++;
 	_Offset++;
@@ -36,7 +36,7 @@ bool _CAFileStream::GetData(const char * stringData, long long DataSize)
 
 _CAFileStream & _CAFileStream::operator+=(long long Offset)
 {
-	if (_Offset + Offset >= _CADataBlock::_blockSize)
+	if (_Offset + Offset > _CADataBlock::_blockSize)
 		throw std::exception("FileStream++ overflow.");
 	_Current += Offset;
 	_Offset += Offset;
@@ -44,7 +44,7 @@ _CAFileStream & _CAFileStream::operator+=(long long Offset)
 }
 
 
-bool _CAFileStream::CurrentByteIsNumber()
+bool _CAFileStream::CurrentByteIsNumber() const
 {
 	return (*_Current >= '0') && (*_Current <='9');
 }

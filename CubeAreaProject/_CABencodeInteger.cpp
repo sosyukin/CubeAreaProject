@@ -37,3 +37,9 @@ _CABencode::BencodeType _CABencodeInteger::Parse(_CAFileStream & fileStream)
 		throw std::exception("Parse a non-number or e in IntegerParse.");
 	return BencodeType::BenInteger;
 }
+
+void _CABencodeInteger::Output(const int & layer)
+{
+	_CABencode::Output(layer);
+	std::cout << "<Integer> " << _value << std::endl;
+}

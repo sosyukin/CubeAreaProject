@@ -93,6 +93,18 @@
     <ClInclude Include="_CABencodeInteger.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="_CABencodeString.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CABencodeList.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CABencodeParser.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CABencodeDictionaries.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -168,6 +180,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="_CABencodeInteger.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencodeString.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencodeList.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencodeParser.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencodeDictionaries.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

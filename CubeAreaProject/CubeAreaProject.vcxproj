@@ -177,7 +177,11 @@
     <ClInclude Include="_CAAnimeAreaManager.h" />
     <ClInclude Include="_CAAreaManager.h" />
     <ClInclude Include="_CABencode.h" />
+    <ClInclude Include="_CABencodeDictionaries.h" />
     <ClInclude Include="_CABencodeInteger.h" />
+    <ClInclude Include="_CABencodeList.h" />
+    <ClInclude Include="_CABencodeParser.h" />
+    <ClInclude Include="_CABencodeString.h" />
     <ClInclude Include="_CABTChecker.h" />
     <ClInclude Include="_CABTParser.h" />
     <ClInclude Include="_CACodeLab.h" />
@@ -204,7 +208,11 @@
     <ClCompile Include="_CAAnimeAreaManager.cpp" />
     <ClCompile Include="_CAAreaManager.cpp" />
     <ClCompile Include="_CABencode.cpp" />
+    <ClCompile Include="_CABencodeDictionaries.cpp" />
     <ClCompile Include="_CABencodeInteger.cpp" />
+    <ClCompile Include="_CABencodeList.cpp" />
+    <ClCompile Include="_CABencodeParser.cpp" />
+    <ClCompile Include="_CABencodeString.cpp" />
     <ClCompile Include="_CABTChecker.cpp" />
     <ClCompile Include="_CABTParser.cpp" />
     <ClCompile Include="_CACodeLab.cpp" />

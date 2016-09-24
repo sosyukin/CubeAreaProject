@@ -15,6 +15,6 @@ public:
 	_CAFileStream & operator++(int);
 	bool GetData(const char * stringData, long long DataSize);
 	_CAFileStream & operator+=(long long Offset);
-	bool CurrentByteIsNumber();
+	bool CurrentByteIsNumber() const;
 };
 

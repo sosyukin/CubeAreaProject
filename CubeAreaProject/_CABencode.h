@@ -12,9 +12,10 @@ public:
 		BenDictionaries
 	};
 	_CABencode();
-	~_CABencode();
+	virtual ~_CABencode();
 	// Check type of Bencode
 	virtual BencodeType Parse(_CAFileStream & fileStream);
 	virtual BencodeType GetType() { return BenNull; }
+	virtual void Output(const int & layer);
 };
 
