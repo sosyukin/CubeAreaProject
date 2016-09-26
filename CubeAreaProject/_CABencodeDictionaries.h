@@ -18,5 +18,6 @@ public:
 	virtual _CABencode::BencodeType GetType();
 	virtual _CABencode::BencodeType Parse(_CAFileStream & fileStream);
 	virtual void Output(const int & layer);
+	bool Find(const std::string & dict);
 };
 

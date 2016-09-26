@@ -34,11 +34,11 @@ _CABencode::BencodeType _CABencodeString::Parse(_CAFileStream & fileStream)
 	_string.assign(fileStream._Current, stringLength);
 	fileStream += stringLength;
 	return BencodeType::BenString;
-	// TODO: 在此处插入 return 语句
 }
 
 void _CABencodeString::Output(const int & layer)
 {
 	_CABencode::Output(layer);
+	//std::wstring a = _CACodeLab::UTF82WChar(_string);
 	std::cout << "<string> " << _string << std::endl;
 }

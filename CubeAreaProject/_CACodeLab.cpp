@@ -479,6 +479,11 @@ std::wstring _CACodeLab::Ansi2WChar(LPCSTR pszSrc, int nLen)
 	return wcharString;
 }
 
+std::wstring _CACodeLab::Str2WStr(const std::string & src)
+{
+	return Ansi2WChar(src.c_str(), src.length());
+}
+
 
 std::string _CACodeLab::WStringToMBytes(const wchar_t* lpwcszWString)
 {
@@ -518,4 +523,19 @@ void _CACodeLab::FileOut(std::wstring str, std::wstring filename)
 		fout.put(*i);
 	}
 	fout.close();
+}
+
+
+std::wstring _CACodeLab::UTF82WChar(std::string utf8Str)
+{
+	if (utf8Str.empty())
+	{
+		return std::wstring();
+	}
+	long long dwUnicodeLen = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, NULL, 0);
+	//size_t num = dwUnicodeLen * sizeof(wchar_t);
+	wchar_t * pwText = new wchar_t[dwUnicodeLen];
+	memset(pwText, 0, dwUnicodeLen);
+	MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, pwText, dwUnicodeLen);
+	return std::wstring(pwText, dwUnicodeLen - 1);
 }

@@ -43,6 +43,7 @@ public:
 	static std::string WChar2Ansi(LPCWSTR pwszSrc);
 	//Converting a Ansi string to WChar string 
 	static std::wstring Ansi2WChar(LPCSTR pszSrc, int nLen);
+	static std::wstring Str2WStr(const std::string & src);
 	static std::string WStringToMBytes(const wchar_t * lpwcszWString);
 	// Output info to file.
 	static void FileOut(std::wstring str, std::wstring filename);
@@ -51,5 +52,6 @@ public:
 	static std::mutex threadNumMutex;
 	static std::mutex fileMutex;
 	static std::vector<std::thread> ThreadList;
+	static std::wstring UTF82WChar(std::string utf8Str);
 };
 

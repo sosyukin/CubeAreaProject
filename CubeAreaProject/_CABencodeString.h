@@ -1,6 +1,7 @@
 #pragma once
 #include <sstream>
 #include <string>
+#include "_CACodeLab.h"
 #include "_CABencode.h"
 
 class _CABencodeString :

@@ -26,7 +26,8 @@ int main()
 		//_CATestSpace::TestBencodeInteger();
 		//_CATestSpace::TestBencodeString();
 		//_CATestSpace::TestBencodeList();
-		_CATestSpace::TestBencodeDictionaries();
+		//_CATestSpace::TestBencodeDictionaries();
+		_CATestSpace::TestTorrent();
 	}
 	catch (const std::exception& e)
 	{

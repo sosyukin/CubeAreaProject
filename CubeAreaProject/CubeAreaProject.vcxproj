@@ -195,6 +195,7 @@
     <ClInclude Include="_CAObject.h" />
     <ClInclude Include="_CASHA1.h" />
     <ClInclude Include="_CATestSpace.h" />
+    <ClInclude Include="_CATorrent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BTParser.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="_CAObject.cpp" />
     <ClCompile Include="_CASHA1.cpp" />
     <ClCompile Include="_CATestSpace.cpp" />
+    <ClCompile Include="_CATorrent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

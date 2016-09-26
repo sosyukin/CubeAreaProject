@@ -105,6 +105,9 @@
     <ClInclude Include="_CABencodeDictionaries.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="_CATorrent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -192,6 +195,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="_CABencodeDictionaries.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CATorrent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

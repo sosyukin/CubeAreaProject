@@ -37,5 +37,6 @@ public:
 	static void TestBencodeString();
 	static void TestBencodeList();
 	static void TestBencodeDictionaries();
+	static void TestTorrent();
 };
 

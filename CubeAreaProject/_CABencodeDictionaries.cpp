@@ -50,3 +50,8 @@ void _CABencodeDictionaries::Output(const int & layer)
 		i->second->Output(layer + 1);
 	}
 }
+
+bool _CABencodeDictionaries::Find(const std::string & dict)
+{
+	return _dictionaries.find(dict) != _dictionaries.end();
+}
