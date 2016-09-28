@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "_CABencodeInteger.h"
-#include <sstream>
 
 
 _CABencodeInteger::_CABencodeInteger()
@@ -25,10 +25,10 @@ _CABencode::BencodeType _CABencodeInteger::Parse(_CAFileStream & fileStream)
 	fileStream++;
 	while (fileStream.CurrentByteIsNumber())
 	{
-		stringstream << *fileStream._Current;
+		stringstream << *fileStream._current;
 		fileStream++;
 	}
-	if (*fileStream._Current == 'e')
+	if (*fileStream._current == 'e')
 	{
 		stringstream >> _value;
 		fileStream++;

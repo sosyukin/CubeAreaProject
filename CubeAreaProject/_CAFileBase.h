@@ -1,11 +1,5 @@
 #pragma once
-#include <stdio.h>
-#include <string>
-#include <Windows.h>
-#include <vector>
-#include <io.h>
-#include "_CACodeLab.h"
-
+#include "stdafx.h"
 class _CAFileBase
 {
 public:

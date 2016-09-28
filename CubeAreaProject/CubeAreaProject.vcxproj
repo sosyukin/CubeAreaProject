@@ -110,13 +110,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <BrowseInformation>true</BrowseInformation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BTParser.h" />
-    <ClInclude Include="MD5.h" />
     <ClInclude Include="SHA1.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -193,16 +192,18 @@
     <ClInclude Include="_CAFolder.h" />
     <ClInclude Include="_CAMD5.h" />
     <ClInclude Include="_CAObject.h" />
-    <ClInclude Include="_CASHA1.h" />
     <ClInclude Include="_CATestSpace.h" />
     <ClInclude Include="_CATorrent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BTParser.cpp" />
     <ClCompile Include="CubeAreaProject.cpp" />
-    <ClCompile Include="MD5.cpp" />
-    <ClCompile Include="SHA1.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="SHA1.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="_CAAnalyzer.cpp" />
     <ClCompile Include="_CAAnime.cpp" />
     <ClCompile Include="_CAAnimeArea.cpp" />
@@ -225,7 +226,6 @@
     <ClCompile Include="_CAFolder.cpp" />
     <ClCompile Include="_CAMD5.cpp" />
     <ClCompile Include="_CAObject.cpp" />
-    <ClCompile Include="_CASHA1.cpp" />
     <ClCompile Include="_CATestSpace.cpp" />
     <ClCompile Include="_CATorrent.cpp" />
   </ItemGroup>

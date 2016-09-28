@@ -1,7 +1,5 @@
 #pragma once
-#include <list>
-#include "_CABencode.h"
-#include "_CABencodeParser.h"
+#include "stdafx.h"
 class _CABencodeList :
 	public _CABencode
 {

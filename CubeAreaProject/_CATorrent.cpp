@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CATorrent.h"
 
 
@@ -151,8 +152,7 @@ bool _CATorrent::GetPieces(_CABencodeString & bencode)
 	long long piecesNum = bencode._string.length() / 20;
 	if (piecesNum * 20 != bencode._string.length())
 		return false;
-	int j = 0;
-	for (long long i = 0; i < bencode._string.length(); i+=20)
+	for (unsigned long long i = 0; i < bencode._string.length(); i+=20)
 		_pieceList.push_back(bencode._string.substr(i, i + 20));
 	return true;
 }

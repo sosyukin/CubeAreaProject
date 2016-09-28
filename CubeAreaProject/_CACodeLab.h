@@ -1,23 +1,6 @@
 #pragma once
-#include <direct.h>
-#include <iostream>
-#include <thread>
-#include <mutex>
-#include <fstream>
-#include <string>
-#include <sys/stat.h>
-#include <ctime>
-#include <Windows.h>
-#include <sstream>
+#include "stdafx.h"
 
-
-#include <vector>
-#include <io.h>
-#include "_CADataBlock.h"
-#include "_CAFileStream.h"
-
-//#include "_CAFile.h"
-//#include "_CAFolder.h"
 class _CACodeLab
 {
 	typedef unsigned char BYTE;
@@ -33,7 +16,7 @@ public:
 	static bool ReadFileWithMemMapping(std::vector<BYTE>& filestream, const std::wstring & filename);
 	static bool ReadFileWithMemMapping(BYTE * filestream, const INT64 & fileLength, const std::wstring & filename);
 	static bool ReadFileWithMemMapping(std::string & filestream, const INT64 & fileLength, const std::wstring & filename);
-	static bool ReadFileWithMemMapping(_CAFileStream & filestream, const INT64 & fileLength, const std::wstring & filename);
+	//static bool ReadFileWithMemMapping(_CAFileStream filestream, const INT64 & fileLength, const std::wstring & filename);
 	// Get file size.
 	static __int64 CLGetFileSize(std::wstring filePath);
 	void GetDirList();

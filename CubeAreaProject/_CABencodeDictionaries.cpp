@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CABencodeDictionaries.h"
 
 
@@ -25,7 +26,7 @@ _CABencode::BencodeType _CABencodeDictionaries::GetType()
 _CABencode::BencodeType _CABencodeDictionaries::Parse(_CAFileStream & fileStream)
 {
 	fileStream++;
-	while (*fileStream._Current != 'e')
+	while (*fileStream._current != 'e')
 	{
 		if (_CABencodeParser::ParseType(fileStream) != _CABencode::BencodeType::BenString)
 			throw std::exception("Not found dict string in Directionaries.");

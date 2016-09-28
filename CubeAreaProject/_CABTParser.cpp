@@ -1,6 +1,5 @@
-#include <basetsd.h>
+#include "stdafx.h"
 #include "_CABTParser.h"
-#include "_CACodeLab.h"
 #define SHA1_LEN 20
 #define DIR_SEPARATOR '\\'
 _CABTParser::_CABTParser()

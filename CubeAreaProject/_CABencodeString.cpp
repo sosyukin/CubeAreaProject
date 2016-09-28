@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CABencodeString.h"
 
 
@@ -23,15 +24,15 @@ _CABencode::BencodeType _CABencodeString::Parse(_CAFileStream & fileStream)
 	std::stringstream stringstream;
 	while (fileStream.CurrentByteIsNumber())
 	{
-		stringstream << *fileStream._Current;
+		stringstream << *fileStream._current;
 		fileStream++;
 	}
 	int stringLength;
 	stringstream >> stringLength;
-	if (*fileStream._Current != ':')
+	if (*fileStream._current != ':')
 		throw std::exception("Can not parse : in StringParse.");
 	fileStream++;
-	_string.assign(fileStream._Current, stringLength);
+	_string.assign(fileStream._current, stringLength);
 	fileStream += stringLength;
 	return BencodeType::BenString;
 }

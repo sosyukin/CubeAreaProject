@@ -1,12 +1,5 @@
 #pragma once
-#include <string>
-#include <map>
-
-#include "_CABencode.h"
-#include "_CABencodeParser.h"
-#include "_CABencodeString.h"
-#include "_CABencodeInteger.h"
-#include "_CABencodeList.h"
+#include "stdafx.h"
 
 class _CABencodeDictionaries :
 	public _CABencode

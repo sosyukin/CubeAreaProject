@@ -1,11 +1,5 @@
 #pragma once
-#include "_CAFileStream.h"
-#include "_CABencode.h"
-#include "_CABencodeInteger.h"
-#include "_CABencodeString.h"
-#include "_CABencodeList.h"
-#include "_CABencodeDictionaries.h"
-
+#include "stdafx.h"
 class _CABencodeParser
 {
 public:

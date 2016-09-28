@@ -1,8 +1,7 @@
 #pragma once
-#include <string>
-#include <mutex>
-#include "_CAMD5.h"
-#include "_CASHA1.h"
+#include "stdafx.h"
+
+
 class _CATestSpace
 {
 public:
@@ -38,5 +37,11 @@ public:
 	static void TestBencodeList();
 	static void TestBencodeDictionaries();
 	static void TestTorrent();
+	static void TestDataBlock();
+	static void TestFile();
+	static void TestFullPermutation();
+	static std::vector<int> DeleteElem(std::vector<int> sub, int subi);
+	static void SubPermutation(std::vector<int> sub, std::stack<int> stack);
+	static void StackOutput(std::stack<int> stack);
 };
 

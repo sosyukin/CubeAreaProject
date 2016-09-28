@@ -1,6 +1,5 @@
 #pragma once
-
-#include <stdio.h>
+#include "stdafx.h"
 typedef unsigned char BYTE;
 typedef long long INT64;
 #define SHA1_LEN 20

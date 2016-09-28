@@ -1,5 +1,5 @@
 #pragma once
-#include "_CAObject.h"
+#include "stdafx.h"
 class _CAAreaManager
 {
 public:

@@ -1,5 +1,5 @@
 #pragma once
-#include "_CABencode.h"
+#include "stdafx.h"
 class _CABencodeInteger :
 	public _CABencode
 {

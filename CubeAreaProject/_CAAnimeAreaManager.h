@@ -1,9 +1,6 @@
 #pragma once
-#include <iostream>
+#include "stdafx.h"
 #include "_CAAreaManager.h"
-#include "_CAObject.h"
-#include "_CAAnime.h"
-#include "_CAFile.h"
 
 class _CAAnimeAreaManager :
 	public _CAAreaManager

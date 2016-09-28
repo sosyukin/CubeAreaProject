@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "_CAFileBase.h"
-
 
 
 _CAFileBase::_CAFileBase()
@@ -13,7 +13,6 @@ _CAFileBase::_CAFileBase(std::wstring filePath)
 	, _name(filePath.substr(filePath.find_last_of('\\') + 1))
 {
 	IsExist();
-	
 }
 
 

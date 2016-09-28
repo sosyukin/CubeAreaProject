@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "stdafx.h"
 class _CABTParser
 {
 private:

@@ -1,7 +1,5 @@
+#include "stdafx.h"
 #include "_CABTChecker.h"
-#include <stdio.h>
-#include <iostream>
-#include "SHA1.h"
 
 typedef unsigned char BYTE;
 typedef long long INT64;
@@ -77,12 +75,12 @@ _CABTChecker::_CABTChecker()
 	}
 	sha.Reset();
 	if ((sizeof(INT64) != 8) || (sizeof(UINT4) != 4)) {
-		printf("Wrong word length UINT4=%i INT64=%i - this build is faulty!\n", sizeof(UINT4), sizeof(INT64));
+		//printf("Wrong word length UINT4=%i INT64=%i - this build is faulty!\n", sizeof(UINT4), sizeof(INT64));
 	}
 	torrentFile = "D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent";
 	std::cout << torrentFile << std::endl;
 	contentPath = "D:\\BT"; 
-	contentPathLen = strlen(contentPath);
+	contentPathLen = (int)strlen(contentPath);
 	std::cout << contentPath << std::endl << contentPathLen << std::endl;
 	filePath = new char[filePathMax];
 	if (0 == fopen_s(&fp, torrentFile, "rb"))
@@ -144,7 +142,7 @@ _CABTChecker::_CABTChecker()
 		}
 		fileRecordList = new fileRecord[numFiles];
 		if (torrent == NULL) {
-			printf("Unable to malloc %i bytes for file record list\n", numFiles * sizeof(fileRecord));
+			//printf("Unable to malloc %i bytes for file record list\n", numFiles * sizeof(fileRecord));
 			return;
 		}
 		thisFileOffset = torrentFiles;
@@ -198,7 +196,7 @@ _CABTChecker::_CABTChecker()
 			//Action! Memory overflow
 			fileRecordList[currentFile].filePath = new char[strlen(filePath) + 1];
 			if (fileRecordList[currentFile].filePath == NULL) {
-				printf("Unable to malloc %i bytes for file path\n", strlen(filePath) + 1);
+				//printf("Unable to malloc %i bytes for file path\n", strlen(filePath) + 1);
 				return;
 			}
 			strcpy_s(fileRecordList[currentFile].filePath, strlen(filePath), filePath);
@@ -287,7 +285,7 @@ _CABTChecker::_CABTChecker()
 	if (contentPath != NULL) {
 		pieceBuf = new BYTE[pieceLen];
 		if (pieceBuf == NULL) {
-			printf("Unable to malloc %i bytes for piece buffer\n", pieceLen);
+			//printf("Unable to malloc %i bytes for piece buffer\n", pieceLen);
 			return;
 		}
 	}
@@ -359,12 +357,12 @@ _CABTChecker::_CABTChecker()
 			fileBytesRead = 0;
 			while (fileBytesRead < fileBytesExpected) {
 				if (fileBytesExpected - fileBytesRead < pieceLen - bytesRead) {
-					bytesToRead = fileBytesExpected - fileBytesRead;
+					bytesToRead = (int)(fileBytesExpected - fileBytesRead);
 				}
 				else {
-					bytesToRead = pieceLen - bytesRead;
+					bytesToRead = (int)(pieceLen - bytesRead);
 				}
-				if (fp != NULL) readLen = fread(pieceBuf + bytesRead, 1, bytesToRead, fp);
+				if (fp != NULL) readLen = (int)fread(pieceBuf + bytesRead, 1, bytesToRead, fp);
 				else readLen = 0;
 				bytesRead += bytesToRead; fileBytesRead += bytesToRead;
 				if ((fp != NULL) && (readLen != bytesToRead)) {
@@ -378,7 +376,7 @@ _CABTChecker::_CABTChecker()
 
 					if ((fp != NULL) && (readLen == bytesToRead)) {
 						sha.Reset();
-						sha.Update(pieceBuf, bytesRead);
+						sha.Update(pieceBuf, (int)bytesRead);
 						sha.Final();
 						sha.GetHash(sha1hash);
 						/*SHAInit(&sha1ctx);
@@ -438,7 +436,7 @@ _CABTChecker::_CABTChecker()
 					if (showProgressCount) {
 						backspaceProgressLine(&showProgressChars);
 						sprintf_s(progressBuf, "%3i %s %i/%i (%i%%) ", currentFile + 1, ((errorsFound == 0) ? "ok" : "BAD"), piecesDone, numPieces, 100 * piecesDone / numPieces);
-						showProgressChars = strlen(progressBuf);
+						showProgressChars = (int)strlen(progressBuf);
 						fwrite(progressBuf, showProgressChars, 1, stdout);
 						fflush(stdout);
 					}
@@ -468,9 +466,9 @@ _CABTChecker::_CABTChecker()
 		/////////////////////////////////////////////////////////////////////////////////////
 	}
 	else if (contentPath != NULL) { // single file torrent
-		int contentPathLength = strlen(contentPath);
+		int contentPathLength = (int)strlen(contentPath);
 		strcpy_s(filePath, contentPathLength, contentPath);
-		filePathOfs = strlen(filePath);
+		filePathOfs = (int)strlen(filePath);
 		if ((filePathOfs > 0) && (filePath[filePathOfs - 1] != DIR_SEPARATOR)) {
 			filePath[filePathOfs] = DIR_SEPARATOR;
 			filePathOfs++;
@@ -503,10 +501,10 @@ _CABTChecker::_CABTChecker()
 			//SHAInit(&sha1ctx);
 			//SHAUpdate(&sha1ctx, pieceBuf, bytesRead);
 			//SHAFinal(sha1hash, &sha1ctx);
-			sha.Reset();
-			sha.Update(pieceBuf, bytesRead);
-			sha.Final();
-			sha.GetHash(sha1hash);
+			//sha.Reset();
+			//sha.Update(pieceBuf, bytesRead);
+			//sha.Final();
+			//sha.GetHash(sha1hash);
 			totalBytesDone += bytesRead;
 			i = piecesDone * SHA1_LEN;
 
@@ -537,7 +535,7 @@ _CABTChecker::_CABTChecker()
 			if (showProgressCount) {
 				backspaceProgressLine(&showProgressChars);
 				sprintf_s(progressBuf, "%s %i/%i (%i%%) ", ((errorsFound == 0) ? "ok" : "BAD"), piecesDone, numPieces, 100 * piecesDone / numPieces);
-				showProgressChars = strlen(progressBuf);
+				showProgressChars = (int)strlen(progressBuf);
 				fwrite(progressBuf, showProgressChars, 1, stdout);
 				fflush(stdout);
 			}
@@ -630,7 +628,6 @@ int _CABTChecker::beParseString(BYTE * benstr, int benstrLen, int benstrOffset, 
 {
 	int i;
 	BYTE b;
-	BYTE* foundString;
 	int foundLen = 0;
 	for (i = benstrOffset;i<benstrLen;i++) {
 		b = benstr[i];
@@ -666,7 +663,7 @@ int _CABTChecker::beFindInDict(BYTE * benstr, int benstrLen, int benstrOffset, B
 		return (-1);
 	if (benstr[benstrOffset] != 'd')
 		return (-1);
-	dictKeyLen = strlen((char *)dictKey);
+	dictKeyLen = (int)strlen((char *)dictKey);
 	benstrOffset++;
 	while ((benstrOffset >= 0) && (benstrOffset < benstrLen))
 	{
@@ -728,7 +725,7 @@ char* _CABTChecker::print64(INT64 val, char* buf, char useCommaDot) {
 		val = 0 - val;
 	}
 	while (divisor > 0) {
-		digit = val / divisor;
+		digit = int(val / divisor);
 		if (digit != 0) nonzero = 1;
 		if (nonzero) {
 			*bp = '0' + digit; bp++;

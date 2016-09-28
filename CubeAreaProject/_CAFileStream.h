@@ -1,20 +1,25 @@
 #pragma once
-#include <iostream>
-#include "_CADataBlock.h"
+#include "stdafx.h"
+
 class _CAFileStream :
 	public _CADataBlock
 {
 public:
-	_CAFileStream();
+	_CAFileStream(const long long & blockSize);
 	~_CAFileStream();
-	// Current Pointer.
-	char *_Current;
 	// Current Pointer offset.
-	long long _Offset;
+	std::list<_CAFile> _fileList;
+	std::list<_CAFile>::iterator _currentFile;
+	long long _pageNum;
+	long long _dataLength;
+	long long _currentPage;
+	long long _currentFileOffset;
 	// Current Pointer ++
 	_CAFileStream & operator++(int);
-	bool GetData(const char * stringData, long long DataSize);
 	_CAFileStream & operator+=(long long Offset);
-	bool CurrentByteIsNumber() const;
+	void AddFile(const std::wstring & filePath);
+	void Append();
+	bool GetData(const char * stringData, long long DataSize);
+	
 };
 

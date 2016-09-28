@@ -1,7 +1,5 @@
 #pragma once
-#include <vector>
-#include "_CAFileBase.h"
-#include "_CAFile.h"
+#include "stdafx.h"
 class _CAFolder :
 	public _CAFileBase
 {

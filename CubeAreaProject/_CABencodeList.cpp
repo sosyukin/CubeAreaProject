@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CABencodeList.h"
 
 
@@ -23,7 +24,7 @@ _CABencode::BencodeType _CABencodeList::GetType()
 _CABencode::BencodeType _CABencodeList::Parse(_CAFileStream & fileStream)
 {
 	fileStream++;
-	while (*fileStream._Current != 'e')
+	while (*fileStream._current != 'e')
 	{
 		_CABencode * pBencode = _CABencodeParser::Parse(fileStream);
 		if (!pBencode)

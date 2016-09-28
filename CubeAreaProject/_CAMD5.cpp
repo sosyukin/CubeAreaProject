@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CAMD5.h"
 
 using namespace std;

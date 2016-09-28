@@ -1,12 +1,10 @@
 #pragma once
-#include "_CAFile.h"
-#include "_CABencodeDictionaries.h"
+#include "stdafx.h"
 class _CATorrent
 {
 	struct ExpectFile
 	{
 		long long length;
-		//std::wstring name;
 		std::wstring path;
 	};
 public:

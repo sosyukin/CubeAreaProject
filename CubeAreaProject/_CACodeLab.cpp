@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CACodeLab.h"
 
 
@@ -94,12 +95,6 @@ void _CACodeLab::CountTime()
 
 bool _CACodeLab::ReadFileWithMemMapping(std::vector<BYTE> & filestream, const std::wstring & filename)
 {
-	int filelength;
-	/*if (!GetFileLength(filelength, filename))
-	{
-		std::cout << "Can not get file length." << std::endl;
-		return false;
-	}*/
 	HANDLE fileH = CreateFile(filename.c_str(),
 		GENERIC_READ | GENERIC_WRITE,
 		FILE_SHARE_READ,
@@ -258,52 +253,52 @@ bool _CACodeLab::ReadFileWithMemMapping(std::string & filestream, const INT64 & 
 	return true;
 }
 
-bool _CACodeLab::ReadFileWithMemMapping(_CAFileStream & filestream, const INT64 & fileLength, const std::wstring & filename)
-{
-	INT64 _fileLength;
-	if (!GetFileLength(_fileLength, filename) || (_fileLength < fileLength))
-	{
-		return false;
-	}
-	HANDLE fileH = CreateFile(filename.c_str(),
-		GENERIC_READ | GENERIC_WRITE,
-		FILE_SHARE_READ,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);
-	if (fileH == INVALID_HANDLE_VALUE)
-	{
-		std::cout << "error in CreateFile" << std::endl;
-		return false;
-	}
-	HANDLE mapfileH = CreateFileMapping(fileH,
-		NULL,
-		PAGE_READWRITE,
-		0,
-		0,
-		L"Resource ");
-	if (mapfileH == NULL)
-	{
-		std::cout << "Error in CreateFileMapping" << std::endl;
-		return false;
-	}
-	char * mapH = (char *)MapViewOfFile(mapfileH,
-		FILE_MAP_ALL_ACCESS,
-		0,
-		0,
-		0);
-	if (mapH == NULL)
-	{
-		std::cout << "Error in MapViewOfFile" << std::endl;
-		return false;
-	}
-	filestream.GetData(mapH, fileLength);
-	UnmapViewOfFile(mapH);
-	CloseHandle(mapfileH);
-	CloseHandle(fileH);
-	return true;
-}
+//bool _CACodeLab::ReadFileWithMemMapping(_CAFileStream & filestream, const INT64 & fileLength, const std::wstring & filename)
+//{
+//	INT64 _fileLength;
+//	if (!GetFileLength(_fileLength, filename) || (_fileLength < fileLength))
+//	{
+//		return false;
+//	}
+//	HANDLE fileH = CreateFile(filename.c_str(),
+//		GENERIC_READ | GENERIC_WRITE,
+//		FILE_SHARE_READ,
+//		NULL,
+//		OPEN_EXISTING,
+//		FILE_ATTRIBUTE_NORMAL,
+//		NULL);
+//	if (fileH == INVALID_HANDLE_VALUE)
+//	{
+//		std::cout << "error in CreateFile" << std::endl;
+//		return false;
+//	}
+//	HANDLE mapfileH = CreateFileMapping(fileH,
+//		NULL,
+//		PAGE_READWRITE,
+//		0,
+//		0,
+//		L"Resource ");
+//	if (mapfileH == NULL)
+//	{
+//		std::cout << "Error in CreateFileMapping" << std::endl;
+//		return false;
+//	}
+//	char * mapH = (char *)MapViewOfFile(mapfileH,
+//		FILE_MAP_ALL_ACCESS,
+//		0,
+//		0,
+//		0);
+//	if (mapH == NULL)
+//	{
+//		std::cout << "Error in MapViewOfFile" << std::endl;
+//		return false;
+//	}
+//	filestream.GetData(mapH, fileLength);
+//	UnmapViewOfFile(mapH);
+//	CloseHandle(mapfileH);
+//	CloseHandle(fileH);
+//	return true;
+//}
 
 
 void _CACodeLab::WriteFileWithMemMapping()
@@ -481,7 +476,12 @@ std::wstring _CACodeLab::Ansi2WChar(LPCSTR pszSrc, int nLen)
 
 std::wstring _CACodeLab::Str2WStr(const std::string & src)
 {
-	return Ansi2WChar(src.c_str(), src.length());
+	if (src.length() >(std::numeric_limits<int>::max)())
+	{
+		std::cout << "String(utf8) too long." << std::endl;
+		return std::wstring();
+	}
+	return Ansi2WChar(src.c_str(), (int)src.length());
 }
 
 
@@ -532,8 +532,12 @@ std::wstring _CACodeLab::UTF82WChar(std::string utf8Str)
 	{
 		return std::wstring();
 	}
-	long long dwUnicodeLen = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, NULL, 0);
-	//size_t num = dwUnicodeLen * sizeof(wchar_t);
+	if (utf8Str.length() > (std::numeric_limits<int>::max)())
+	{
+		std::cout << "String(utf8) too long." << std::endl;
+		return std::wstring();
+	}
+	int dwUnicodeLen = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, NULL, 0);
 	wchar_t * pwText = new wchar_t[dwUnicodeLen];
 	memset(pwText, 0, dwUnicodeLen);
 	MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, pwText, dwUnicodeLen);

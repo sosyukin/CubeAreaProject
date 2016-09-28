@@ -1,5 +1,6 @@
 #pragma once
-#include "_CACubeArea.h"
+#include "stdafx.h"
+
 class _CAAnimeArea :
 	public _CACubeArea
 {

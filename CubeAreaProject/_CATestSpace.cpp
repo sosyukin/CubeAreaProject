@@ -1,24 +1,6 @@
+#include "stdafx.h"
 #include "_CATestSpace.h"
-#include <iostream>
-#include <fstream>
-#include <string>
 
-#include <thread>
-#include <mutex>
-#include <Windows.h>
-#include <sstream>
-
-#include "_CACodeLab.h"
-#include "_CAMD5.h"
-#include "BTParser.h"
-#include "_CABTChecker.h"
-#include "_CABTParser.h"
-#include "SHA1.h"
-#include "_CAFileStream.h"
-#include "_CABencodeInteger.h"
-#include "_CABencodeString.h"
-#include "_CABencodeList.h"
-#include "_CATorrent.h"
 
 _CATestSpace::_CATestSpace()
 {
@@ -275,39 +257,40 @@ void _CATestSpace::TestReadFileWithMemMapping()
 	std::wstring strOut;
 	fileStream = new BYTE[filelength];
 	_CACodeLab::ReadFileWithMemMapping(fileStream, filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
-	sha1.Update(fileStream, filelength);
-	sha1.Final();
-	sha1.ReportHashStl(strOut, CSHA1::REPORT_HEX_SHORT);
+	//sha1.Update(fileStream, filelength);
+	//sha1.Final();
+	//sha1.ReportHashStl(strOut, CSHA1::REPORT_HEX_SHORT);
 	std::wcout << strOut << L" ";
 	delete[] fileStream;
 	/* ----- ReadFileWithMemMapping -----
 	   -----    Version 2.1(beta)   -----
 	   -------------ERROR---------------- */
 	sha1.Reset();
-	_CAFileStream filestream;
+	_CAFileStream filestream(DATABLOCK_MAX);
 	//std::string filestream;
-	_CACodeLab::ReadFileWithMemMapping(filestream, filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
-	sha1.Update((unsigned char *)filestream._Current, filelength);
-	sha1.Final();
-	sha1.ReportHashStl(strOut, CSHA1::REPORT_HEX_SHORT);
-	std::wcout << strOut << std::endl;
+	//_CACodeLab::ReadFileWithMemMapping(filestream, filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
+	//sha1.Update((unsigned char *)filestream._current, filelength);
+	//sha1.Final();
+	//sha1.ReportHashStl(strOut, CSHA1::REPORT_HEX_SHORT);
+	//std::wcout << strOut << std::endl;
 }
 
 
 // Test FileStream and DataBlock
 void _CATestSpace::TestFileStream()
 {
-	_CAFileStream fileStream;
-	fileStream.GetData("Hello World!", 13);
-	fileStream++;
-	fileStream += 2;
+	_CAFileStream fileStream(1024*1024*1024);
+	fileStream.AddFile(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
+	//fileStream.GetData("Hello World!", 13);
+	//fileStream++;
+	//fileStream += 2;
 }
 
 
 void _CATestSpace::TestBencodeInteger()
 {
 	_CABencodeInteger bencodeInteger;
-	_CAFileStream fileStream;
+	_CAFileStream fileStream(DATABLOCK_MAX);
 	fileStream.GetData("i35214142326e", 14);
 	bencodeInteger.Parse(fileStream);
 }
@@ -316,7 +299,7 @@ void _CATestSpace::TestBencodeInteger()
 void _CATestSpace::TestBencodeString()
 {
 	_CABencodeString bencodeString;
-	_CAFileStream fileStream;
+	_CAFileStream fileStream(DATABLOCK_MAX);
 	fileStream.GetData("10:HelloWorld", 14);
 	bencodeString.Parse(fileStream);
 	std::cout << bencodeString._string << std::endl;
@@ -326,7 +309,7 @@ void _CATestSpace::TestBencodeString()
 void _CATestSpace::TestBencodeList()
 {
 	_CABencodeList bencodeList;
-	_CAFileStream fileStream;
+	_CAFileStream fileStream(DATABLOCK_MAX);
 	fileStream.GetData("li3425e3:abce", 14);
 	bencodeList.Parse(fileStream);
 }
@@ -335,12 +318,12 @@ void _CATestSpace::TestBencodeList()
 void _CATestSpace::TestBencodeDictionaries()
 {
 	_CABencodeDictionaries bencodeDictionaries;
-	_CAFileStream fileStream;
+	_CAFileStream fileStream(DATABLOCK_MAX);
 	INT64 fileLength;
 	std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
 	std::wstring fileName1(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	_CACodeLab::GetFileLength(fileLength, fileName);
-	_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
+	//_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
 	//fileStream.GetData("d1:ai123ee", 11);
 	bencodeDictionaries.Parse(fileStream);
 	bencodeDictionaries.Output(0);
@@ -350,14 +333,86 @@ void _CATestSpace::TestBencodeDictionaries()
 void _CATestSpace::TestTorrent()
 {
 	_CABencodeDictionaries bencodeDictionaries;
-	_CAFileStream fileStream;
+	_CAFileStream fileStream(DATABLOCK_MAX);
 	INT64 fileLength;
 	std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
 	//std::wstring fileName(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	_CACodeLab::GetFileLength(fileLength, fileName);
-	_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
+	//_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
 	bencodeDictionaries.Parse(fileStream);
 	//bencodeDictionaries.Output(0);
 	_CATorrent torrent(bencodeDictionaries);
 	//bencodeDictionaries.Output(0);
+}
+
+void _CATestSpace::TestDataBlock()
+{
+	_CADataBlock dataBlock(1);
+	//long long size = 4294967296*4;
+	//dataBlock.CreateBlock(size);
+}
+
+void _CATestSpace::TestFile()
+{
+	_CAFile file;
+	_CAFile file1(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
+	//_CAFile file1(L"D:\\BT\\test.txt");
+	//std::string buffer;
+	//file1.Read(buffer, 0, file1.Size());
+}
+
+void _CATestSpace::TestFullPermutation()
+{
+	std::stack<int> stack;
+	std::vector<int> i;
+	i.push_back(1);
+	i.push_back(2);
+	i.push_back(3);
+	i.push_back(4);
+	SubPermutation(i, stack);
+
+}
+
+std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)
+{
+	std::vector<int> tmp;
+	for (int i = 0; i < sub.size(); i++)
+	{
+		if (i != subi)
+		{
+			tmp.push_back(sub.at(i));
+		}
+	}
+	return tmp;
+}
+
+void _CATestSpace::SubPermutation(std::vector<int> sub, std::stack<int> stack)
+{
+	std::stack<int> stack1;
+	if (sub.size() == 1)
+	{
+		stack1 = stack;
+		stack.push(sub.at(0));
+		StackOutput(stack);
+		return;
+	}
+	for (int i = 0;i < sub.size(); i++)
+	{
+		stack1 = stack;
+		stack1.push(sub[i]);
+		std::vector<int> t = DeleteElem(sub, i);
+		SubPermutation(t, stack1);
+	}
+
+}
+
+
+void _CATestSpace::StackOutput(std::stack<int> stack)
+{
+	while (!stack.empty())
+	{
+		std::cout << stack.top() << " ";
+		stack.pop();
+	}
+	std::cout << std::endl;
 }

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "_CABencodeParser.h"
 
 
@@ -14,7 +15,7 @@ _CABencodeParser::~_CABencodeParser()
 
 _CABencode * _CABencodeParser::Parse(const _CAFileStream & fileStream)
 {
-	switch (*fileStream._Current)
+	switch (*fileStream._current)
 	{
 	case 'i':
 		return new _CABencodeInteger();
@@ -32,7 +33,7 @@ _CABencode * _CABencodeParser::Parse(const _CAFileStream & fileStream)
 
 _CABencode::BencodeType _CABencodeParser::ParseType(const _CAFileStream & fileStream)
 {
-	switch (*fileStream._Current)
+	switch (*fileStream._current)
 	{
 	case 'i':
 		return _CABencode::BencodeType::BenInteger;

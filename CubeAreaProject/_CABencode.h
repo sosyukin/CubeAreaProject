@@ -1,5 +1,5 @@
 #pragma once
-#include "_CAFileStream.h"
+#include "stdafx.h"
 class _CABencode
 {
 public:

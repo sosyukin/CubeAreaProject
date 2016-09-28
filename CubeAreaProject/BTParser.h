@@ -1,7 +1,7 @@
 // BTParser.h: interface for the CBTParser class.
 //
 //////////////////////////////////////////////////////////////////////
-
+#include "stdafx.h"
 #if !defined(AFX_BTPARSER_H__D05551B8_1985_4B0C_BCD7_1C499FAB8ECD__INCLUDED_)
 #define AFX_BTPARSER_H__D05551B8_1985_4B0C_BCD7_1C499FAB8ECD__INCLUDED_
 

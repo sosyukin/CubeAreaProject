@@ -1,7 +1,5 @@
 #pragma once
-#include <string>
-#include <fstream>
-
+#include "stdafx.h"
 /* Type define */
 typedef unsigned char byte;
 typedef unsigned int uint32;

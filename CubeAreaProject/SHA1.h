@@ -1,3 +1,4 @@
+#include "stdafx.h"
 /*
   100% free public domain implementation of the SHA-1 algorithm
   by Dominik Reichl <dominik.reichl@t-online.de>
