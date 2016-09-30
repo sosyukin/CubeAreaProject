@@ -160,10 +160,27 @@ bool _CATorrent::GetPieces(_CABencodeString & bencode)
 bool _CATorrent::Check(const std::wstring & filePath)
 {
 	_CAFileStream fileStream(_totalLength);
-	for (auto i : _expectFileList)
+	if (_isMultiFiles)
 	{
-		_CAFile file();
+		//MultiFiles
+		for (auto i : _expectFileList)
+		{
+			//_CAFile file(i.path);
+		}
 	}
+	else
+	{
+		//SingleFile
+		std::wstring fullPath(filePath);
+		if (fullPath[filePath.length] != L'\\')
+		{
+			fullPath.append(L"\\");
+		}
+		//_CAFile file(fullPath.append(_name));
+		fileStream.AddFile(fullPath.append(_name));
+	}
+	
+	
 	return false;
 }
 
