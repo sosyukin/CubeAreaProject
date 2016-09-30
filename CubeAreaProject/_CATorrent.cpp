@@ -157,6 +157,16 @@ bool _CATorrent::GetPieces(_CABencodeString & bencode)
 	return true;
 }
 
+bool _CATorrent::Check(const std::wstring & filePath)
+{
+	_CAFileStream fileStream(_totalLength);
+	for (auto i : _expectFileList)
+	{
+		_CAFile file();
+	}
+	return false;
+}
+
 std::wstring _CATorrent::GetPath(_CABencodeList & bencode)
 {
 	std::wstring path;

@@ -18,6 +18,7 @@ _CAFileStream::~_CAFileStream()
 // Current Pointer ++
 _CAFileStream & _CAFileStream::operator++(int)
 {
+	_CADataBlock::operator++(1);
 	return *this;
 }
 
@@ -34,6 +35,7 @@ bool _CAFileStream::GetData(const char * stringData, long long DataSize)
 
 _CAFileStream & _CAFileStream::operator+=(long long Offset)
 {
+	_CADataBlock::operator+=(Offset);
 	return *this;
 }
 
@@ -55,7 +57,7 @@ void _CAFileStream::Append()
 	while (_dataSizeInBlock < _blockSize && _currentFile != _fileList.end())
 	{
 		__int64 offset = _currentFile->Read(_current, _currentFileOffset, _blockSize - _dataSizeInBlock);
-		this->operator+=(offset);
+		//this->operator+=(offset);
 		_dataSizeInBlock += offset;
 		if (_currentFileOffset + offset < _currentFile->Size())
 		{

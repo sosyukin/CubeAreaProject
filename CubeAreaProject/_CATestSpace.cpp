@@ -333,12 +333,13 @@ void _CATestSpace::TestBencodeDictionaries()
 void _CATestSpace::TestTorrent()
 {
 	_CABencodeDictionaries bencodeDictionaries;
-	_CAFileStream fileStream(DATABLOCK_MAX);
 	INT64 fileLength;
 	std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
-	//std::wstring fileName(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	_CACodeLab::GetFileLength(fileLength, fileName);
+	_CAFileStream fileStream(fileLength);
+	//std::wstring fileName(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	//_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
+	fileStream.AddFile(fileName);
 	bencodeDictionaries.Parse(fileStream);
 	//bencodeDictionaries.Output(0);
 	_CATorrent torrent(bencodeDictionaries);

@@ -16,6 +16,7 @@ public:
 	bool GetSingleFileInfo(_CABencodeDictionaries & bencode);
 	bool GetMutliFilesInfo(_CABencodeList & bencode);
 	bool GetPieces(_CABencodeString & bencode);
+	bool Check(const std::wstring & filePath);
 	std::wstring GetPath(_CABencodeList & bencode);
 private:
 	std::list<std::wstring> _announceList;
