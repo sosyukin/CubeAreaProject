@@ -22,7 +22,7 @@ public:
 	// Data block size.
 	long long _blockSize;
 	long long _offset;
-	long long _dataSizeInBlock;
+	long long _dataSize;
 
 };
 

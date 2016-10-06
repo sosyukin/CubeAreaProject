@@ -201,38 +201,11 @@ void _CATestSpace::f2(int& n)
 	}
 }
 
-// Test CBTParser
-void _CATestSpace::TestCBTParser()
-{
-	CBTParser parser;
-	parser.parse("D:\\A596797E49B21B47883AB7016C33820327AE4F1E.torrent", "D:\\a.xml");
-}
-
-
-// Test _CABTChecker
-void _CATestSpace::TestBTChecker()
-{
-	std::cout << "In BTChecker Testing..." << std::endl;
-	_CABTChecker BTChecker;
-}
-
-
-void _CATestSpace::TestBTParser()
-{
-	std::cout << "In TestBTParser Testing..." << std::endl;
-	_CABTParser BTParser;
-	//int filelength;
-	//_CACodeLab::GetFileLength(filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
-	//std::cout << "File size is " << filelength << std::endl;
-	BTParser.Open(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
-	BTParser.Check();
-}
-
 
 // Test GetFileLength
 void _CATestSpace::TestGetFileLength()
 {
-	INT64 filelength;
+	size_t filelength;
 	std::cout << sizeof(filelength) << std::endl;
 	std::cout << sizeof(DWORD) << std::endl;
 	std::cout << sizeof(LPDWORD) << std::endl;
@@ -247,7 +220,7 @@ void _CATestSpace::TestGetFileLength()
 // Test ReadFileWithMemMapping
 void _CATestSpace::TestReadFileWithMemMapping()
 {
-	INT64 filelength;
+	size_t filelength;
 	CSHA1 sha1;
 	_CACodeLab::GetFileLength(filelength, L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4");
 	/* ----- ReadFileWithMemMapping -----
@@ -319,7 +292,7 @@ void _CATestSpace::TestBencodeDictionaries()
 {
 	_CABencodeDictionaries bencodeDictionaries;
 	_CAFileStream fileStream(DATABLOCK_MAX);
-	INT64 fileLength;
+	size_t fileLength;
 	std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
 	std::wstring fileName1(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	_CACodeLab::GetFileLength(fileLength, fileName);
@@ -333,17 +306,18 @@ void _CATestSpace::TestBencodeDictionaries()
 void _CATestSpace::TestTorrent()
 {
 	_CABencodeDictionaries bencodeDictionaries;
-	INT64 fileLength;
-	std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
+	size_t fileLength;
+	//std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
+	//std::wstring fileName(L"D:\\BT\\90DC6881E4013DC90E32BB5278450D2DFD3C4F63.torrent");
+	std::wstring fileName(L"D:\\BT\\17612A846B70A6D37978E3D85A3CF94EFD9682E0.torrent");
 	_CACodeLab::GetFileLength(fileLength, fileName);
 	_CAFileStream fileStream(fileLength);
 	//std::wstring fileName(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	//_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
 	fileStream.AddFile(fileName);
 	bencodeDictionaries.Parse(fileStream);
-	//bencodeDictionaries.Output(0);
 	_CATorrent torrent(bencodeDictionaries);
-	//bencodeDictionaries.Output(0);
+	torrent.Check(L"D:\\BT\\");
 }
 
 void _CATestSpace::TestDataBlock()
@@ -372,6 +346,64 @@ void _CATestSpace::TestFullPermutation()
 	i.push_back(4);
 	SubPermutation(i, stack);
 
+}
+
+void _CATestSpace::TestSQLServerConnection()
+{
+	// Init Point
+
+	CoInitialize(NULL);
+	_ConnectionPtr pMyConnect = NULL;
+	HRESULT hr = pMyConnect.CreateInstance(__uuidof(Connection));
+	if (FAILED(hr))
+	{
+		return;
+	}
+	// Init parament DESKTOP-EBP9289
+	//_bstr_t strConnect = "Provider=SQLOLEDB;Server=DESKTOP-EBP9289\\CUBEAREADB;Database=test;UID=sa;PWD=123456";
+	_bstr_t strConnect = "Provider=SQLOLEDB;Server=DESKTOP-EBP9289\\CUBEAREADB;Database=test";
+	try
+	{
+		pMyConnect->Open(strConnect, "sa", "123456", adModeUnknown);
+	}
+	catch (_com_error &e)
+	{
+		std::cout << e.Description() << std::endl;
+	}
+	_RecordsetPtr m_pRecordset;
+	if (FAILED(m_pRecordset.CreateInstance(__uuidof(Recordset))))
+	{
+		return;
+	}
+	try
+	{
+		m_pRecordset->Open("select * from AreaMap", (IDispatch *)pMyConnect, adOpenDynamic, adLockOptimistic, adCmdText);
+	}
+	catch (_com_error &e)
+	{
+		std::cout << e.Description() << std::endl;
+	}
+	try
+	{
+		m_pRecordset->MoveFirst();
+		while (!m_pRecordset->adoEOF)
+		{
+			string AreaName = (char*)(_bstr_t)(m_pRecordset->Fields->GetItem(_variant_t("AreaName"))->Value);
+			string AreaPath = (char*)(_bstr_t)(m_pRecordset->Fields->GetItem(_variant_t("AreaPath"))->Value);
+			std::cout << AreaName << "\t" << AreaPath << std::endl;
+			m_pRecordset->MoveNext();
+		}
+	}
+	catch (_com_error &e)
+	{
+		std::cout << e.Description() << std::endl;
+	}
+}
+
+void _CATestSpace::TestDB()
+{
+	_CADB db;
+	db.Execute("select * from AreaMap where id = 1");
 }
 
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)

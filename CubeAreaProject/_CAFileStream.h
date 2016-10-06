@@ -13,13 +13,14 @@ public:
 	long long _pageNum;
 	long long _dataLength;
 	long long _currentPage;
-	long long _currentFileOffset;
+	__int64 _endOffset;
 	// Current Pointer ++
 	_CAFileStream & operator++(int);
 	_CAFileStream & operator+=(long long Offset);
 	void AddFile(const std::wstring & filePath);
 	void Append();
+	void Update();
+	std::string Fetch(__int64 ExpectedLength);
 	bool GetData(const char * stringData, long long DataSize);
-	
 };
 

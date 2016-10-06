@@ -6,6 +6,9 @@
 _CAFileStream::_CAFileStream(const long long & blockSize)
 	: _CADataBlock(blockSize)
 	, _currentFile(_fileList.end())
+	, _dataLength(0)
+	, _currentPage(0)
+	, _endOffset(0)
 {
 }
 
@@ -32,6 +35,22 @@ bool _CAFileStream::GetData(const char * stringData, long long DataSize)
 	return true;
 }
 
+std::string _CAFileStream::Fetch(__int64 ExpectedLength)
+{
+	std::string buffer;
+	__int64 fetchedLength = 0;
+	__int64 actualFetchLength = min(ExpectedLength, _dataLength - _currentPage * _blockSize - _offset);
+	while (fetchedLength < actualFetchLength)
+	{
+		Update();
+		__int64 readLength = min(actualFetchLength - fetchedLength, _dataSize - _offset);
+		buffer.append(_current, readLength);
+		(*this) += readLength;
+		fetchedLength += readLength;
+	}
+	return buffer;
+}
+
 
 _CAFileStream & _CAFileStream::operator+=(long long Offset)
 {
@@ -43,7 +62,7 @@ void _CAFileStream::AddFile(const std::wstring & filePath)
 {
 	_CAFile file(filePath);
 	_dataLength += file.Size();
-	_pageNum = ceil((double)_dataLength / _blockSize);
+	_pageNum = (__int64)ceil((double)_dataLength / _blockSize);
 	_fileList.push_back(file);
 	if (_currentFile == _fileList.end())
 	{
@@ -54,15 +73,28 @@ void _CAFileStream::AddFile(const std::wstring & filePath)
 
 void _CAFileStream::Append()
 {
-	while (_dataSizeInBlock < _blockSize && _currentFile != _fileList.end())
+	while (_dataSize < _blockSize && _currentFile != _fileList.end())
 	{
-		__int64 offset = _currentFile->Read(_current, _currentFileOffset, _blockSize - _dataSizeInBlock);
-		//this->operator+=(offset);
-		_dataSizeInBlock += offset;
-		if (_currentFileOffset + offset < _currentFile->Size())
+		size_t readOffset = _currentFile->Read(_pBlock + _endOffset, _currentFile->Offset(), _blockSize - _dataSize);
+		_dataSize += readOffset;
+		_endOffset += readOffset;
+
+		if (_currentFile->Eof())
 		{
-			break;
+			_currentFile++;
 		}
-		_currentFile++;
+	}
+}
+
+void _CAFileStream::Update()
+{
+	if (_offset >= _blockSize)
+	{
+		_currentPage++;
+		_offset = 0;
+		_dataSize = 0;
+		_endOffset = 0;
+		_current = _pBlock;
+		Append();
 	}
 }

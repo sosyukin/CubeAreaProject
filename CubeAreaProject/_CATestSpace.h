@@ -20,12 +20,6 @@ public:
 	static void f2(int & n);
 	static int publicvar;
 	static int tickets;
-	//static std::mutex mymutex;
-	// Test CBTParser
-	static void TestCBTParser();
-	// Test _CABTChecker
-	static void TestBTChecker();
-	static void TestBTParser();
 	// Test GetFileLength
 	static void TestGetFileLength();
 	// Test ReadFileWithMemMapping
@@ -40,8 +34,11 @@ public:
 	static void TestDataBlock();
 	static void TestFile();
 	static void TestFullPermutation();
+	static void TestSQLServerConnection();
+	static void TestDB();
 	static std::vector<int> DeleteElem(std::vector<int> sub, int subi);
 	static void SubPermutation(std::vector<int> sub, std::stack<int> stack);
 	static void StackOutput(std::stack<int> stack);
+
 };
 

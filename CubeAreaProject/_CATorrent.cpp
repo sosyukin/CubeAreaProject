@@ -10,25 +10,6 @@ _CATorrent::_CATorrent(_CABencodeDictionaries & bencode)
 	GetAnnounce(bencode);
 	GetEncoding(bencode);
 	GetFileInfo(bencode);
-	//std::map<std::string, _CABencode *>::iterator i = bencode._dictionaries.
-	/*std::map<std::string, _CABencode *>::iterator i = bencode._dictionaries.find("announcea");
-	_CABencode * tben = bencode._dictionaries["announcea"];
-	if (i == bencode._dictionaries.end())
-	{
-		std::cout << "no i" << std::endl;
-	}
-	else
-		std::cout << i->first << std::endl;*/
-	//_announceList.push_back(((_CABencodeString *)bencode._dictionaries["announce"])->_string);
-	//for ((bencode._dictionaries["announce-list"] i = 0; i < length; i++)
-	//{
-
-	//}
-	//if (bencode._dictionaries["announce"]->GetType() == _CABencode::BencodeType::BenString)
-	//{
-	//	std::cout << "Checked" << std::endl;
-	//}
-	
 }
 
 _CATorrent::~_CATorrent()
@@ -87,7 +68,11 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionaries & bencode)
 			return false;
 		std::string tstring = ((_CABencodeString *)pFileInfo->_dictionaries["name"])->_string;
 		if (pFileInfo->Find("name.utf-8"))
+		{
+			_name = _CACodeLab::Str2WStr(tstring);
 			_nameUTF8 = ((_CABencodeString *)pFileInfo->_dictionaries["name.utf-8"])->_string;
+		}
+			
 		else if (_encoding.compare(L"UTF-8") == 0)
 		{
 			_nameUTF8 = tstring;
@@ -160,27 +145,48 @@ bool _CATorrent::GetPieces(_CABencodeString & bencode)
 bool _CATorrent::Check(const std::wstring & filePath)
 {
 	_CAFileStream fileStream(_totalLength);
+	std::wstring fullPath(filePath);
+	if (fullPath[filePath.length() - 1] != L'\\')
+	{
+		fullPath.append(L"\\");
+	}
 	if (_isMultiFiles)
 	{
 		//MultiFiles
+		fullPath.append(_name);
 		for (auto i : _expectFileList)
 		{
-			//_CAFile file(i.path);
+			fileStream.AddFile(std::wstring(fullPath).append(i.path));
 		}
 	}
 	else
 	{
 		//SingleFile
-		std::wstring fullPath(filePath);
-		if (fullPath[filePath.length] != L'\\')
-		{
-			fullPath.append(L"\\");
-		}
-		//_CAFile file(fullPath.append(_name));
 		fileStream.AddFile(fullPath.append(_name));
 	}
+	/// TODO : SHA1check
 	
-	
+	CSHA1 sha1;
+	size_t pieceNumber = 0;
+	unsigned char shastr[21];
+	shastr[20] = '\0';
+	for (auto expectedPieceSHA1 : _pieceList)
+	{
+		if (pieceNumber == 200)
+		{
+			std::cout << "now" << std::endl;
+		}
+		pieceNumber++;
+		std::string piece = fileStream.Fetch(_pieceLength);
+		sha1.Reset();
+		sha1.Update((unsigned char *)piece.c_str(), (unsigned int)piece.size());
+		sha1.Final();
+		sha1.GetHash(shastr);
+		if (strncmp(expectedPieceSHA1.c_str(), (char *)shastr, 20) != 0)
+		{
+			std::cout << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
+		}
+	}
 	return false;
 }
 

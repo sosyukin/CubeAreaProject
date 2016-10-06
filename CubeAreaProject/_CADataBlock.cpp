@@ -8,7 +8,7 @@ _CADataBlock::_CADataBlock(const long long & blockSize)
 	, _pBlock(NULL)
 	, _current(NULL)
 	, _offset(0)
-	, _dataSizeInBlock(0)
+	, _dataSize(0)
 {
 	CreateBlock(blockSize);
 }
@@ -75,7 +75,7 @@ void _CADataBlock::RemoveBlock()
 	_pBlock = NULL;
 	_current = NULL;
 	_offset = 0;
-	_dataSizeInBlock = 0;
+	_dataSize = 0;
 }
 
 

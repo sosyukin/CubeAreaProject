@@ -10,12 +10,12 @@ public:
 	void GetCurrentWorkDirectory();
 	void WriteFileOnLength();
 	void ReadFileWithBuffer();
-	static bool GetFileLength(INT64 & filelength, const std::wstring & filename);
+	static bool GetFileLength(size_t & filelength, const std::wstring & filename);
 	void WriteFileWithMemMapping();
 	void CountTime();
 	static bool ReadFileWithMemMapping(std::vector<BYTE>& filestream, const std::wstring & filename);
-	static bool ReadFileWithMemMapping(BYTE * filestream, const INT64 & fileLength, const std::wstring & filename);
-	static bool ReadFileWithMemMapping(std::string & filestream, const INT64 & fileLength, const std::wstring & filename);
+	static bool ReadFileWithMemMapping(BYTE * filestream, const size_t & fileLength, const std::wstring & filename);
+	static bool ReadFileWithMemMapping(std::string & filestream, const size_t & fileLength, const std::wstring & filename);
 	//static bool ReadFileWithMemMapping(_CAFileStream filestream, const INT64 & fileLength, const std::wstring & filename);
 	// Get file size.
 	static __int64 CLGetFileSize(std::wstring filePath);

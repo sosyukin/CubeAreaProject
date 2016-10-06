@@ -27,6 +27,9 @@
 #include <map>
 #include <stack>
 #include <new>
+#include <icrsint.h>
+#include<iomanip>
+
 
 #include "_CAObject.h"
 #include "_CAAreaManager.h"
@@ -37,6 +40,7 @@
 #include "SHA1.h"
 #include "_CAFileBase.h"
 #include "_CAFile.h"
+#include "_CAFolder.h"
 #include "_CADataBlock.h"
 #include "_CAFileStream.h"
 #include "_CABencode.h"
@@ -46,11 +50,9 @@
 #include "_CABencodeList.h"
 #include "_CABencodeDictionaries.h"
 #include "_CATorrent.h"
-#include "BTParser.h"
-#include "_CABTChecker.h"
-#include "_CABTParser.h"
 #include "_CATestSpace.h"
+#include "_CADB.h"
 
-#define DATABLOCK_MAX 12884901888 //12GB
-
-// TODO:  在此处引用程序需要的其他头文件
+//#define DATABLOCK_MAX 12884901888 //12GB
+#define DATABLOCK_MAX 1073741824 //1GB
+//#define DATABLOCK_MAX 209715200 //200MB

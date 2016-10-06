@@ -11,6 +11,7 @@ _CAFile::_CAFile()
 _CAFile::_CAFile(std::wstring filePath)
 	: _CAFileBase(filePath)
 	, _suffix(std::wstring())
+	, _offset(0)
 {
 	if (_CAFileBase::IsFolder())
 		throw std::exception("This is a folder.");
@@ -30,20 +31,23 @@ bool _CAFile::IsFolder()
 	return false;
 }
 
-size_t _CAFile::Read(char * buffer, const size_t & offsetBegin, const size_t & readLength)
+bool _CAFile::Eof()
 {
-	std::ifstream file(_path, std::ios::binary);
-	file.seekg(offsetBegin);
-	size_t offset = 0;
-	char t;
-	while (file.peek() != EOF && offset < readLength)
+	return _size == _offset;
+}
+
+size_t _CAFile::Read(char * buffer, const size_t & offsetBegin, const size_t & expectedReadLength)
+{
+	__int64 actualReadLength = min(_size - _offset, expectedReadLength);
+	if (actualReadLength)
 	{
-		file.read(&t, 1);
-		*(buffer + offset) = t;
-		offset++;
+		std::ifstream file(_path, std::ios::binary);
+		file.seekg(offsetBegin);
+		file.read(buffer, actualReadLength);
+		file.close();
 	}
-	file.close();
-	return offset;
+	_offset += actualReadLength;
+	return actualReadLength;
 }
 
 

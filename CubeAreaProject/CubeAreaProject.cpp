@@ -4,10 +4,13 @@
 
 int main()
 {
+	//bool state = CreateDirectory(L"D:\\myfolder", NULL);
+	//_CAFolder folder(L"D:\\myfolder");
+	//_CATestSpace::TestSQLServerConnection();
+	_CATestSpace::TestDB();
 	//_CATestSpace::TestFile();
 	//_CAFolder folder(L"E:\\CubeArea");
 	//_CATestSpace::TestBTParser();
-	_CATestSpace::TestTorrent();
 	try
 	{
 		//_CATestSpace::TestBTChecker();
@@ -20,13 +23,12 @@ int main()
 		//_CATestSpace::TestBencodeDictionaries();
 		//_CATestSpace::TestFullPermutation();
 		//_CATestSpace::TestDataBlock();
-		
+		//_CATestSpace::TestTorrent();
 	}
 	catch (const std::exception& e)
 	{
 		std::cout << e.what() << std::endl;
 	}
-
 	return 0;
 }
 

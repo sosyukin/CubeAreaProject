@@ -57,7 +57,7 @@ void _CACodeLab::ReadFileWithBuffer()
 }
 
 
-bool _CACodeLab::GetFileLength(INT64 & filelength, const std::wstring & filename)
+bool _CACodeLab::GetFileLength(size_t & filelength, const std::wstring & filename)
 {
 	LARGE_INTEGER fileSize;
 	HANDLE handle = CreateFile(filename.c_str(),
@@ -75,7 +75,7 @@ bool _CACodeLab::GetFileLength(INT64 & filelength, const std::wstring & filename
 			CloseHandle(handle);
 			return false;
 		}
-		filelength = fileSize.QuadPart;
+		filelength = (size_t)fileSize.QuadPart;
 		CloseHandle(handle);
 		return true;
 	}
@@ -149,9 +149,9 @@ bool _CACodeLab::ReadFileWithMemMapping(std::vector<BYTE> & filestream, const st
 	return true;
 }
 
-bool _CACodeLab::ReadFileWithMemMapping(BYTE * filestream, const INT64 & fileLength, const std::wstring & filename)
+bool _CACodeLab::ReadFileWithMemMapping(BYTE * filestream, const size_t & fileLength, const std::wstring & filename)
 {
-	INT64 _fileLength;
+	size_t _fileLength;
 	if (!GetFileLength(_fileLength, filename)||(_fileLength < fileLength))
 	{
 		return false;
@@ -191,7 +191,7 @@ bool _CACodeLab::ReadFileWithMemMapping(BYTE * filestream, const INT64 & fileLen
 	}
 	BYTE * buff = (BYTE *)mapH;
 	BYTE * pbuffer = filestream;
-	for (INT64 i = 0; i < fileLength; i++)
+	for (size_t i = 0; i < fileLength; i++)
 	{
 		*pbuffer++ = buff[i];
 	}
@@ -201,9 +201,9 @@ bool _CACodeLab::ReadFileWithMemMapping(BYTE * filestream, const INT64 & fileLen
 	return true;
 }
 
-bool _CACodeLab::ReadFileWithMemMapping(std::string & filestream, const INT64 & fileLength, const std::wstring & filename)
+bool _CACodeLab::ReadFileWithMemMapping(std::string & filestream, const size_t & fileLength, const std::wstring & filename)
 {
-	INT64 _fileLength;
+	size_t _fileLength;
 	if (!GetFileLength(_fileLength, filename) || (_fileLength < fileLength))
 	{
 		return false;
@@ -243,7 +243,7 @@ bool _CACodeLab::ReadFileWithMemMapping(std::string & filestream, const INT64 & 
 	}
 	BYTE * buff = (BYTE *)mapH;
 	//BYTE * pbuffer = filestream;
-	for (INT64 i = 0; i < fileLength; i++)
+	for (size_t i = 0; i < fileLength; i++)
 	{
 		filestream.append((char *)buff++);
 	}

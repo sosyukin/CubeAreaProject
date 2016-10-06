@@ -63,16 +63,7 @@
     <ClInclude Include="SHA1.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="BTParser.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="_CABTChecker.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="_CATestSpace.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="_CABTParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="_CADataBlock.h">
@@ -100,6 +91,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="_CATorrent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CADB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CADBTable.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CADBRecord.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,16 +152,7 @@
     <ClCompile Include="SHA1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="BTParser.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="_CABTChecker.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="_CATestSpace.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="_CABTParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="_CADataBlock.cpp">
@@ -188,5 +182,19 @@
     <ClCompile Include="_CATorrent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="_CADB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CADBTable.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CADBRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CubeAreaProject.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
