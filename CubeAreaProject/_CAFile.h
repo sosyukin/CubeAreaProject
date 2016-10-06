@@ -5,7 +5,7 @@ class _CAFile :
 {
 public:
 	_CAFile();
-	_CAFile(std::wstring filePath);
+	_CAFile(const std::wstring & filePath);
 	~_CAFile();
 
 	std::wstring Suffix() { return _suffix; }

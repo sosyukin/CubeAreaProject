@@ -28,7 +28,8 @@
 #include <stack>
 #include <new>
 #include <icrsint.h>
-#include<iomanip>
+#include <iomanip>
+#include <regex>
 
 
 #include "_CAObject.h"

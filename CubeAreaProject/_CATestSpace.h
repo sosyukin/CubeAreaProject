@@ -18,13 +18,13 @@ public:
 	static void myThreadB();
 	static void f1(int n);
 	static void f2(int & n);
+	static std::vector<int> DeleteElem(std::vector<int> sub, int subi);
+	static void SubPermutation(std::vector<int> sub, std::stack<int> stack);
+	static void StackOutput(std::stack<int> stack);
 	static int publicvar;
 	static int tickets;
-	// Test GetFileLength
 	static void TestGetFileLength();
-	// Test ReadFileWithMemMapping
 	static void TestReadFileWithMemMapping();
-	// Test FileStream and DataBlock
 	static void TestFileStream();
 	static void TestBencodeInteger();
 	static void TestBencodeString();
@@ -36,9 +36,7 @@ public:
 	static void TestFullPermutation();
 	static void TestSQLServerConnection();
 	static void TestDB();
-	static std::vector<int> DeleteElem(std::vector<int> sub, int subi);
-	static void SubPermutation(std::vector<int> sub, std::stack<int> stack);
-	static void StackOutput(std::stack<int> stack);
+	static void TestRegex();
 
 };
 

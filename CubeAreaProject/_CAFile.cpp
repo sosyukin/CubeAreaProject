@@ -8,7 +8,7 @@ _CAFile::_CAFile()
 }
 
 
-_CAFile::_CAFile(std::wstring filePath)
+_CAFile::_CAFile(const std::wstring & filePath)
 	: _CAFileBase(filePath)
 	, _suffix(std::wstring())
 	, _offset(0)

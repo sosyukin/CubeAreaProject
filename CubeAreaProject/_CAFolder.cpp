@@ -1,20 +1,19 @@
 #include "stdafx.h"
 #include "_CAFolder.h"
-
-
-
 _CAFolder::_CAFolder()
 	: _CAFileBase()
 {
 }
 
-_CAFolder::_CAFolder(std::wstring filePath)
+_CAFolder::_CAFolder(const std::wstring & filePath)
 	: _CAFileBase(filePath)
 {
 	if (!_CAFileBase::IsFolder())
 	{
-		//return;
-		throw std::exception("This is not a folder");
+		if (!CreateDirectory(filePath.c_str(), NULL))
+		{
+			throw std::exception("Can not create this folder.");
+		}
 	}
 	Scan();
 }

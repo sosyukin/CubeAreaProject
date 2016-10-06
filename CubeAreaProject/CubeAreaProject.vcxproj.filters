@@ -105,6 +105,9 @@
     <ClInclude Include="_CADBRecord.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="_CAAreaBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -189,6 +192,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="_CADBRecord.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CAAreaBase.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

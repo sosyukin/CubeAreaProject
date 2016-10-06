@@ -1,11 +1,11 @@
 #pragma once
-#include "stdafx.h"
+#include "_CAFileBase.h"
 class _CAFolder :
 	public _CAFileBase
 {
 public:
 	_CAFolder();
-	_CAFolder(std::wstring filePath);
+	_CAFolder(const std::wstring & filePath);
 	~_CAFolder();
 private:
 	// Files in folder.

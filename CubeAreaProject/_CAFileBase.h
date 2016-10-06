@@ -4,7 +4,7 @@ class _CAFileBase
 {
 public:
 	_CAFileBase();
-	_CAFileBase(std::wstring filePath);
+	_CAFileBase(const std::wstring & filePath);
 	~_CAFileBase();
 	// For debug
 	// Get file name.

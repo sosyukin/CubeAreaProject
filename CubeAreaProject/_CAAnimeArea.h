@@ -1,11 +1,12 @@
 #pragma once
-#include "stdafx.h"
+#include "_CAAreaBase.h"
 
 class _CAAnimeArea :
-	public _CACubeArea
+	public _CAAreaBase
 {
 public:
 	_CAAnimeArea();
+	_CAAnimeArea(const std::wstring & filePath);
 	~_CAAnimeArea();
 };
 

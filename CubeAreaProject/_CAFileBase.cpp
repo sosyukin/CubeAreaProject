@@ -8,8 +8,8 @@ _CAFileBase::_CAFileBase()
 {
 }
 
-_CAFileBase::_CAFileBase(std::wstring filePath)
-	: _path(std::wstring(filePath))
+_CAFileBase::_CAFileBase(const std::wstring & filePath)
+	: _path(filePath)
 	, _name(filePath.substr(filePath.find_last_of('\\') + 1))
 {
 	IsExist();
