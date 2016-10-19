@@ -6,10 +6,13 @@ class _CADB
 {
 private:
 	_ConnectionPtr pConnect;
-	_RecordsetPtr pRecordset;
 public:
+	_RecordsetPtr pRecordset;
+
 	_CADB();
 	~_CADB();
 	bool Execute(const _bstr_t & sql);
+	bool EmptySet(const _bstr_t & sql);
+	
 };
 

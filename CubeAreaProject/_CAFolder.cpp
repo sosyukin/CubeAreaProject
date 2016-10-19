@@ -44,7 +44,7 @@ void _CAFolder::Scan()
 		{
 			if (wcscmp(ffd.cFileName, L".") != 0 && wcscmp(ffd.cFileName, L"..") != 0)
 			{
-				_CACodeLab::FileOut(std::wstring(L"(folder)\t").append(ffd.cFileName).append(L"\n"), L"D:\\FolderScan.txt");
+				//_CACodeLab::FileOut(std::wstring(L"(folder)\t").append(ffd.cFileName).append(L"\n"), L"C:\\Users\\SOS_Y\\FolderScan.txt");
 				_files.push_back(_CAFileBase(_CAFolder(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
 			}
 		}
@@ -52,7 +52,7 @@ void _CAFolder::Scan()
 		{
 			filesize.LowPart = ffd.nFileSizeLow;
 			filesize.HighPart = ffd.nFileSizeHigh;
-			_CACodeLab::FileOut(std::wstring(L"(file)\t\t").append(ffd.cFileName).append(L"\n"), L"D:\\FolderScan.txt");
+			//_CACodeLab::FileOut(std::wstring(L"(file)\t\t").append(ffd.cFileName).append(L"\n"), L"C:\\Users\\SOS_Y\\FolderScan.txt");
 			//_CAFile file(std::wstring(_path).append(L"\\").append(ffd.cFileName));
 			//_files.push_back(_CAFileBase(file));
 			_files.push_back(_CAFileBase(_CAFile(std::wstring(_path).append(L"\\").append(ffd.cFileName))));

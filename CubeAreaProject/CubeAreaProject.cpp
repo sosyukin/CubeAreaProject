@@ -4,6 +4,11 @@
 
 int main()
 {
+	//_CATestSpace::EscapeSequence();
+	//std::wstring DownloadFolder(L"Z:\\shared_x9\\921010321(3949256)\\TDDOWNLOAD");
+	std::wstring CubeAreaFolder(L"D:\\CubeArea");
+	_CAFolder folder(CubeAreaFolder);
+	
 	//bool state = CreateDirectory(L"D:\\myfolder", NULL);
 	//_CAFolder folder(L"D:\\myfolder");
 	//_CATestSpace::TestSQLServerConnection();
@@ -22,7 +27,7 @@ int main()
 	//_CATestSpace::TestFullPermutation();
 	//_CATestSpace::TestDataBlock();
 	//_CATestSpace::TestTorrent();
-	_CATestSpace::TestRegex();
+	//_CATestSpace::TestRegex();
 	/*
 	try
 	{

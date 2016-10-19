@@ -443,6 +443,21 @@ void _CATestSpace::TestRegex()
 	std::cout << std::endl;
 }
 
+void _CATestSpace::EscapeSequence()
+{
+	std::wstring str(L"hello'w'or'ld!'");
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		size_t find = str.find(L"'", i);
+		if (find == (std::numeric_limits<size_t>::max)())
+			break;
+		i = find;
+		str.insert(i, 1, L'\'');
+		i++;
+		//std::cout << i << std::endl;
+	}
+}
+
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)
 {
 	std::vector<int> tmp;

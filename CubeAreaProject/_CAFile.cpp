@@ -18,6 +18,28 @@ _CAFile::_CAFile(const std::wstring & filePath)
 	_suffix = _name.substr(_name.find_last_of('.') + 1);
 	//_size = _CACodeLab::CLGetFileSize(_path);
 	_CACodeLab::GetFileLength(_size, _path);
+	sha1();
+	_CADB db;
+	_bstr_t	Find(L"Select * from FileIndex where SHA1='");
+	Find += _bstr_t(_sha1Report.c_str());
+	Find += _bstr_t(L"\'");
+	//_bstr_t FileNum(L"Select COUNT(*) from FileIndex");
+	if (db.EmptySet(Find))
+	{
+		//_variant_t result = db.pRecordset->GetCollect(db.pRecordset->Fields->GetItem(_variant_t((long)0))->Name);
+		_bstr_t Insert(L"INSERT INTO fileIndex (Path,SHA1) VALUES('");
+		std::wstring pathSQL(_path);
+		_CACodeLab::EscapeSequence(pathSQL);
+		Insert += _bstr_t(pathSQL.c_str());
+		Insert += _bstr_t(L"','");
+		Insert += _bstr_t(_sha1Report.c_str());
+		Insert += _bstr_t(L"');");
+		db.Execute(Insert);
+	}
+	else
+	{
+		_CACodeLab::FileOut(std::wstring(_path).append(L" ").append(_sha1Report.c_str()).append(L"\n"), L"D:\\sha1.txt");
+	}
 }
 
 _CAFile::~_CAFile()
@@ -66,8 +88,7 @@ bool _CAFile::sha1()
 	CSHA1 sha1;
 	sha1.HashFile(_path.c_str());
 	sha1.Final();
-	std::wstring strReport;
-	sha1.ReportHashStl(strReport, CSHA1::REPORT_HEX_SHORT);
-	_CACodeLab::FileOut(std::wstring(_path).append(L" ").append(strReport.c_str()).append(L"\n"), L"D:\\sha1.txt");
+	sha1.ReportHashStl(_sha1Report, CSHA1::REPORT_HEX_SHORT);
+	//_CACodeLab::FileOut(std::wstring(_path).append(L" ").append(strReport.c_str()).append(L"\n"), L"D:\\sha1.txt");
 	return false;
 }

@@ -543,3 +543,18 @@ std::wstring _CACodeLab::UTF82WChar(std::string utf8Str)
 	MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, pwText, dwUnicodeLen);
 	return std::wstring(pwText, dwUnicodeLen - 1);
 }
+
+bool _CACodeLab::EscapeSequence(std::wstring & str)
+{
+	for (size_t i = 0; i < str.size(); i++)
+	{
+		size_t find = str.find(L"'", i);
+		if (find == (std::numeric_limits<size_t>::max)())
+			break;
+		i = find;
+		str.insert(i, 1, L'\'');
+		i++;
+		//std::cout << i << std::endl;
+	}
+	return true;
+}

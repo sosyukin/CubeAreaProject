@@ -13,10 +13,10 @@ _CADB::_CADB()
 		std::cout << "Can not create connect instance." << std::endl;
 		return;
 	}
-	_bstr_t strConnect = "Provider=SQLOLEDB;Server=DESKTOP-EBP9289\\CUBEAREADB;Database=test";
+	_bstr_t strConnect = "Provider=SQLOLEDB;Server=DESKTOP-ID3QIEK\\CUBEAREADB;Database=ACGNDatabase";
 	try
 	{
-		pConnect->Open(strConnect, "sa", "123456", adModeUnknown);
+		pConnect->Open(strConnect, "sa", "SOSYUKIN", adModeUnknown);
 	}
 	catch (_com_error &e)
 	{
@@ -40,8 +40,8 @@ _CADB::~_CADB()
 	try
 	{
 		pRecordset->Close();
-		pConnect->Close();
 		pRecordset.Release();
+		pConnect->Close();
 		pConnect.Release();
 	}
 	catch (_com_error &e)
@@ -60,15 +60,7 @@ bool _CADB::Execute(const _bstr_t & sql)
 	{
 		pRecordset = pConnect->Execute(sql, NULL, adCmdText);
 		//pRecordset->Open(sql, (IDispatch *)pConnect, adOpenDynamic, adLockOptimistic, adCmdText);
-		if (!pRecordset->BOF)
-		{
-			pRecordset->MoveFirst();
-		}
-		else
-		{
-			std::cout << "Data is empty!" << std::endl;
-			return false;
-		}
+		/*
 		std::vector<_bstr_t> column_name;
 		for (size_t i = 0; i < pRecordset->Fields->GetCount(); i++)
 		{
@@ -91,7 +83,7 @@ bool _CADB::Execute(const _bstr_t & sql)
 			}
 			pRecordset->MoveNext();
 			std::cout << std::endl;
-		}
+		}*/
 	}
 	catch (_com_error &e)
 	{
@@ -101,4 +93,21 @@ bool _CADB::Execute(const _bstr_t & sql)
 		return false;
 	}
 	return true;
+}
+
+bool _CADB::EmptySet(const _bstr_t & sql)
+{
+	if (Execute(sql))
+	{
+		if (!pRecordset->BOF)
+		{
+			pRecordset->MoveFirst();
+		}
+		else
+		{
+			std::cout << "Data is empty!" << std::endl;
+			return true;
+		}
+	}
+	return false;
 }

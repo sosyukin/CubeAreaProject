@@ -36,5 +36,6 @@ public:
 	static std::mutex fileMutex;
 	static std::vector<std::thread> ThreadList;
 	static std::wstring UTF82WChar(std::string utf8Str);
+	static bool EscapeSequence(std::wstring & str);
 };
 

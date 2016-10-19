@@ -37,6 +37,7 @@ public:
 	static void TestSQLServerConnection();
 	static void TestDB();
 	static void TestRegex();
+	static void EscapeSequence();
 
 };
 

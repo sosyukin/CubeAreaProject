@@ -19,6 +19,7 @@ public:
 	bool sha1();
 private:
 	std::wstring _suffix;
+	std::wstring _sha1Report;
 	size_t _size;
 	size_t _offset;
 };
