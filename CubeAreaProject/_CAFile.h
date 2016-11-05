@@ -13,6 +13,7 @@ public:
 	__int64 Offset() { return _offset; }
 	virtual bool IsFolder();
 	bool Eof();
+	bool Diff();
 	size_t Read(char * buffer, const size_t & offsetBegin, const size_t & expectedReadLength);
 	// beta
 	bool md5();

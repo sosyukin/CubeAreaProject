@@ -305,6 +305,7 @@ void _CATestSpace::TestBencodeDictionaries()
 
 void _CATestSpace::TestTorrent()
 {
+	/*
 	_CABencodeDictionaries bencodeDictionaries;
 	size_t fileLength;
 	//std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
@@ -318,6 +319,44 @@ void _CATestSpace::TestTorrent()
 	bencodeDictionaries.Parse(fileStream);
 	_CATorrent torrent(bencodeDictionaries);
 	torrent.Check(L"D:\\BT\\");
+	*/
+	std::wstring torrentPath(L"D:\\BTTest\\Torrent");
+	std::wstring downloadPath(L"D:\\BTTest\\Download");
+	_CAFolder torrentFolder(torrentPath);
+	_CAFolder downloadFolder(downloadPath);
+	std::vector<_CAFile *> torrentFileList;
+	for (auto i = torrentFolder._files.begin(); i != torrentFolder._files.end(); i++)
+	{
+		_CAFile * pfile = dynamic_cast<_CAFile *>(*i);
+		if (pfile)
+		{
+			if (pfile->Suffix() == std::wstring(L"torrent"))
+			{
+				_CACodeLab::FileOut(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
+				torrentFileList.push_back(pfile);
+			}
+		}
+	}
+	for (auto i = torrentFileList.begin(); i != torrentFileList.end(); i++)
+	{
+		try
+		{
+			_CAFileStream fileStream((*i)->Size());
+			fileStream.AddFile((*i)->Path());
+			_CABencodeDictionaries bencodeDictionaries;
+			bencodeDictionaries.Parse(fileStream);
+			bencodeDictionaries.Output(0);
+			_CATorrent torrent(bencodeDictionaries);
+			torrent.Check(downloadPath);
+			_CACodeLab::FileOut(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
+		}
+		catch (const std::exception& e)
+		{
+			_CACodeLab::FileOut(_CACharConversion::ansi2unicode(e.what()), L"D:\\BTTest\\Log\\TorrentError.txt");
+			std::cerr << e.what() << std::endl;
+		}
+
+	}
 }
 
 void _CATestSpace::TestDataBlock()
@@ -403,7 +442,13 @@ void _CATestSpace::TestSQLServerConnection()
 void _CATestSpace::TestDB()
 {
 	_CADB db;
-	db.Execute("select * from AreaMap where id = 1");
+	//db.Execute("select * from AreaMap where id = 1");
+	//std::wstring strlist[] = { L"A", L"B", L"C" };
+	//size_t strCount = sizeof(strlist) / sizeof(std::wstring);
+	//std::vector<std::wstring> v1(strlist, strlist + strCount);
+	_variant_t columnList[2] = { L"column1", L"column2" };
+	_variant_t valueList[2] = { L"A", 1 };
+	db.Insert(L"TestTable", std::vector<_variant_t>(columnList, columnList + 2), std::vector<_variant_t>(valueList, valueList + 2));
 }
 
 void _CATestSpace::TestRegex()
@@ -456,6 +501,25 @@ void _CATestSpace::EscapeSequence()
 		i++;
 		//std::cout << i << std::endl;
 	}
+}
+
+void _CATestSpace::TestLog()
+{
+	_CALog::SetLogFile(L"D:\\TestLog.log");
+
+}
+
+void _CATestSpace::TestCharConversion()
+{
+	std::string utf8("Hello World!");
+	std::wstring unicode(_CACharConversion::utf82unicode(utf8));
+	std::wstring unicode1(L"³¤ÃÅÓÐÏ£");
+	std::string utf81(_CACharConversion::unicode2utf8(unicode1));
+	std::wstring unicode2(_CACharConversion::utf82unicode(utf81));
+	std::wstring unicode3(_CACharConversion::ansi2unicode(utf8));
+	std::string ansi(_CACharConversion::unicode2ansi(unicode1));
+	std::cout << ansi << std::endl;
+
 }
 
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)

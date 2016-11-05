@@ -23,11 +23,11 @@ public:
 	// Test virtual function.
 	void TestVirtualFunction();
 	//Converting a WChar string to a Ansi string
-	static std::string WChar2Ansi(LPCWSTR pwszSrc);
+	//static std::string WChar2Ansi(LPCWSTR pwszSrc);
 	//Converting a Ansi string to WChar string 
-	static std::wstring Ansi2WChar(LPCSTR pszSrc, int nLen);
-	static std::wstring Str2WStr(const std::string & src);
-	static std::string WStringToMBytes(const wchar_t * lpwcszWString);
+	//static std::wstring Ansi2WChar(LPCSTR pszSrc, int nLen);
+	//static std::wstring Str2WStr(const std::string & src);
+	//static std::string WStringToMBytes(const wchar_t * lpwcszWString);
 	// Output info to file.
 	static void FileOut(std::wstring str, std::wstring filename);
 	static int THREAD_MAX_NUM;
@@ -35,7 +35,7 @@ public:
 	static std::mutex threadNumMutex;
 	static std::mutex fileMutex;
 	static std::vector<std::thread> ThreadList;
-	static std::wstring UTF82WChar(std::string utf8Str);
+	//static std::wstring UTF82WChar(std::string utf8Str);
 	static bool EscapeSequence(std::wstring & str);
 };
 

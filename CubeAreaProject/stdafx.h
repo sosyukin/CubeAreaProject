@@ -31,7 +31,8 @@
 #include <iomanip>
 #include <regex>
 
-
+#include "_CALog.h"
+#include "_CACharConversion.h"
 #include "_CAObject.h"
 #include "_CAAreaManager.h"
 #include "_CACubeArea.h"
@@ -54,6 +55,6 @@
 #include "_CATestSpace.h"
 #include "_CADB.h"
 
-//#define DATABLOCK_MAX 12884901888 //12GB
-#define DATABLOCK_MAX 1073741824 //1GB
+#define DATABLOCK_MAX 12884901888 //12GB
+//#define DATABLOCK_MAX 1073741824 //1GB
 //#define DATABLOCK_MAX 209715200 //200MB

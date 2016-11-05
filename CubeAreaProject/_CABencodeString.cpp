@@ -40,6 +40,6 @@ _CABencode::BencodeType _CABencodeString::Parse(_CAFileStream & fileStream)
 void _CABencodeString::Output(const int & layer)
 {
 	_CABencode::Output(layer);
-	//std::wstring a = _CACodeLab::UTF82WChar(_string);
+	//std::wstring a = _CACharConversion::utf82unicode(_string);
 	std::cout << "<string> " << _string << std::endl;
 }

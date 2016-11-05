@@ -52,8 +52,9 @@ bool _CAFileBase::IsExist()
 	HANDLE hFind = FindFirstFile(_path.c_str(), &FindFileData);
 	if (hFind == INVALID_HANDLE_VALUE)
 	{
-		return false;
 		//throw std::exception(_CACodeLab::WChar2Ansi(_path.append(L" not found.").c_str()).c_str());
+		throw std::exception(_CACharConversion::unicode2ansi(_path.append(L" not found.").c_str()).c_str());
+		return false;
 	}
 	FindClose(hFind);
 	return true;

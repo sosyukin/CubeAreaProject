@@ -182,6 +182,7 @@
     <ClInclude Include="_CABencodeList.h" />
     <ClInclude Include="_CABencodeParser.h" />
     <ClInclude Include="_CABencodeString.h" />
+    <ClInclude Include="_CACharConversion.h" />
     <ClInclude Include="_CACodeLab.h" />
     <ClInclude Include="_CACubeArea.h" />
     <ClInclude Include="_CADataBlock.h" />
@@ -192,6 +193,7 @@
     <ClInclude Include="_CAFileBase.h" />
     <ClInclude Include="_CAFileStream.h" />
     <ClInclude Include="_CAFolder.h" />
+    <ClInclude Include="_CALog.h" />
     <ClInclude Include="_CAMD5.h" />
     <ClInclude Include="_CAObject.h" />
     <ClInclude Include="_CATestSpace.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="_CABencodeList.cpp" />
     <ClCompile Include="_CABencodeParser.cpp" />
     <ClCompile Include="_CABencodeString.cpp" />
+    <ClCompile Include="_CACharConversion.cpp" />
     <ClCompile Include="_CACodeLab.cpp" />
     <ClCompile Include="_CACubeArea.cpp" />
     <ClCompile Include="_CADataBlock.cpp" />
@@ -227,6 +230,7 @@
     <ClCompile Include="_CAFileBase.cpp" />
     <ClCompile Include="_CAFileStream.cpp" />
     <ClCompile Include="_CAFolder.cpp" />
+    <ClCompile Include="_CALog.cpp" />
     <ClCompile Include="_CAMD5.cpp" />
     <ClCompile Include="_CAObject.cpp" />
     <ClCompile Include="_CATestSpace.cpp" />

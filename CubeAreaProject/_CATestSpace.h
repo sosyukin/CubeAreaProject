@@ -38,6 +38,7 @@ public:
 	static void TestDB();
 	static void TestRegex();
 	static void EscapeSequence();
-
+	static void TestLog();
+	static void TestCharConversion();
 };
 

@@ -7,9 +7,10 @@ public:
 	_CAFolder();
 	_CAFolder(const std::wstring & filePath);
 	~_CAFolder();
+	std::vector<_CAFileBase *> _files;
 private:
 	// Files in folder.
-	std::vector<_CAFileBase> _files;
+
 public:
 	// Return true if file is folder.
 	virtual bool IsFolder();

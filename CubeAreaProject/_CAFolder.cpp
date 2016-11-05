@@ -21,6 +21,8 @@ _CAFolder::_CAFolder(const std::wstring & filePath)
 
 _CAFolder::~_CAFolder()
 {
+	for (auto i : this->_files)
+		delete i;
 }
 
 
@@ -45,7 +47,8 @@ void _CAFolder::Scan()
 			if (wcscmp(ffd.cFileName, L".") != 0 && wcscmp(ffd.cFileName, L"..") != 0)
 			{
 				//_CACodeLab::FileOut(std::wstring(L"(folder)\t").append(ffd.cFileName).append(L"\n"), L"C:\\Users\\SOS_Y\\FolderScan.txt");
-				_files.push_back(_CAFileBase(_CAFolder(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
+				//_files.push_back(_CAFileBase(_CAFolder(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
+				_files.push_back(new _CAFolder(std::wstring(_path).append(L"\\").append(ffd.cFileName)));
 			}
 		}
 		else
@@ -55,7 +58,8 @@ void _CAFolder::Scan()
 			//_CACodeLab::FileOut(std::wstring(L"(file)\t\t").append(ffd.cFileName).append(L"\n"), L"C:\\Users\\SOS_Y\\FolderScan.txt");
 			//_CAFile file(std::wstring(_path).append(L"\\").append(ffd.cFileName));
 			//_files.push_back(_CAFileBase(file));
-			_files.push_back(_CAFileBase(_CAFile(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
+			//_files.push_back(_CAFileBase(_CAFile(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
+			_files.push_back(new _CAFile(std::wstring(_path).append(L"\\").append(ffd.cFileName)));
 		}
 	} while (FindNextFile(hFind, &ffd) != 0);
 	FindClose(hFind);

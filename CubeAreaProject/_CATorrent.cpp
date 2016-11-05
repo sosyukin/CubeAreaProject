@@ -21,7 +21,7 @@ bool _CATorrent::GetAnnounce(_CABencodeDictionaries & bencode)
 {
 	if (bencode.Find("announce"))
 	{
-		_announceList.push_back(_CACodeLab::Str2WStr(((_CABencodeString *)bencode._dictionaries["announce"])->_string));
+		_announceList.push_back(_CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionaries["announce"])->_string));
 	}
 	if (bencode.Find("announce-list"))
 	{
@@ -31,7 +31,7 @@ bool _CATorrent::GetAnnounce(_CABencodeDictionaries & bencode)
 			_CABencodeList * pBencodeSubList = (_CABencodeList *)*i;
 			for (std::list<_CABencode *>::iterator j = pBencodeSubList->_bencodeList.begin(); j != pBencodeSubList->_bencodeList.end(); j++)
 			{
-				_announceList.push_back(_CACodeLab::Str2WStr(((_CABencodeString *)*j)->_string));
+				_announceList.push_back(_CACharConversion::ansi2unicode(((_CABencodeString *)*j)->_string));
 			}
 		}
 	}
@@ -42,7 +42,7 @@ bool _CATorrent::GetEncoding(_CABencodeDictionaries & bencode)
 {
 	if (bencode.Find("encoding"))
 	{
-		_encoding = _CACodeLab::Str2WStr(((_CABencodeString *)bencode._dictionaries["encoding"])->_string);
+		_encoding = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionaries["encoding"])->_string);
 		return true;
 	}
 	return false;
@@ -69,17 +69,17 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionaries & bencode)
 		std::string tstring = ((_CABencodeString *)pFileInfo->_dictionaries["name"])->_string;
 		if (pFileInfo->Find("name.utf-8"))
 		{
-			_name = _CACodeLab::Str2WStr(tstring);
+			_name = _CACharConversion::ansi2unicode(tstring);
 			_nameUTF8 = ((_CABencodeString *)pFileInfo->_dictionaries["name.utf-8"])->_string;
 		}
 			
 		else if (_encoding.compare(L"UTF-8") == 0)
 		{
 			_nameUTF8 = tstring;
-			_name = _CACodeLab::UTF82WChar(tstring);
+			_name = _CACharConversion::utf82unicode(tstring);
 		}
 		else
-			_name = _CACodeLab::Str2WStr(tstring);
+			_name = _CACharConversion::ansi2unicode(tstring);
 		if (!pFileInfo->Find("piece length"))
 			return false;
 		_pieceLength = ((_CABencodeInteger *)pFileInfo->_dictionaries["piece length"])->_value;
@@ -101,7 +101,7 @@ bool _CATorrent::GetSingleFileInfo(_CABencodeDictionaries & bencode)
 
 	//if (!bencode.Find("name"))
 	//	return false;
-	//expectFile.path = _CACodeLab::Str2WStr(((_CABencodeString *)bencode._dictionaries["name"])->_string);
+	//expectFile.path = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionaries["name"])->_string);
 	//expectFile.path = expectFile.name;
 
 
@@ -172,10 +172,6 @@ bool _CATorrent::Check(const std::wstring & filePath)
 	shastr[20] = '\0';
 	for (auto expectedPieceSHA1 : _pieceList)
 	{
-		if (pieceNumber == 200)
-		{
-			std::cout << "now" << std::endl;
-		}
 		pieceNumber++;
 		std::string piece = fileStream.Fetch(_pieceLength);
 		sha1.Reset();
@@ -184,7 +180,23 @@ bool _CATorrent::Check(const std::wstring & filePath)
 		sha1.GetHash(shastr);
 		if (strncmp(expectedPieceSHA1.c_str(), (char *)shastr, 20) != 0)
 		{
-			std::cout << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
+			std::wstringstream ss;
+			std::wstring pieceInfo;
+			ss << pieceNumber;
+			std::wstring sst;
+			ss >> sst;
+			pieceInfo.append(L"( ").append(sst).append(L" / ");
+			ss.clear();
+			sst.clear();
+			ss << _pieceList.size();
+			ss >> sst;
+			pieceInfo.append(sst).append(L" ) has Error.\n");
+			_CACodeLab::FileOut(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
+			std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
+		}
+		else
+		{
+			std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) is ok." << std::endl;
 		}
 	}
 	return false;
@@ -195,6 +207,18 @@ std::wstring _CATorrent::GetPath(_CABencodeList & bencode)
 	std::wstring path;
 	for (std::list<_CABencode *>::iterator i = bencode._bencodeList.begin(); i != bencode._bencodeList.end(); i++)
 		if ((*i)->GetType() == _CABencode::BencodeType::BenString)
-			path.append(L"\\").append(_CACodeLab::Str2WStr(((_CABencodeString *)(*i))->_string));
+		{
+			std::string orgPath(((_CABencodeString *)(*i))->_string);
+			if (_encoding.compare(L"UTF-8") == 0)
+			{
+				path.append(L"\\").append(_CACharConversion::utf82unicode(orgPath));
+			}
+			else
+			{
+				path.append(L"\\").append(_CACharConversion::ansi2unicode(orgPath));
+			}
+			
+		}
+			
 	return path;
 }

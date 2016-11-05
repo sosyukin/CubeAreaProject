@@ -444,72 +444,72 @@ void _CACodeLab::TestVirtualFunction()
 }
 
 
-std::string _CACodeLab::WChar2Ansi(LPCWSTR pwszSrc)
-{
-	int nLen = WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, NULL, 0, NULL, NULL);
-	if (nLen <= 0) return std::string("");
-	char* pszDst = new char[nLen];
-	if (NULL == pszDst) return std::string("");
-	WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, pszDst, nLen, NULL, NULL);
-	pszDst[nLen - 1] = 0;
-	std::string strTemp(pszDst);
-	delete[] pszDst;
-	return strTemp;
-}
-
-
-std::wstring _CACodeLab::Ansi2WChar(LPCSTR pszSrc, int nLen)
-{
-	int nSize = MultiByteToWideChar(CP_ACP, 0, (LPCSTR)pszSrc, nLen, 0, 0);
-	if (nSize <= 0) return NULL;
-	WCHAR *pwszDst = new WCHAR[nSize + 1];
-	if (NULL == pwszDst) return NULL;
-	MultiByteToWideChar(CP_ACP, 0, (LPCSTR)pszSrc, nLen, pwszDst, nSize);
-	pwszDst[nSize] = 0;
-	if (pwszDst[0] == 0xFEFF) // skip Oxfeff
-		for (int i = 0; i < nSize; i++)
-			pwszDst[i] = pwszDst[i + 1];
-	std::wstring wcharString(pwszDst);
-	delete[] pwszDst;
-	return wcharString;
-}
-
-std::wstring _CACodeLab::Str2WStr(const std::string & src)
-{
-	if (src.length() >(std::numeric_limits<int>::max)())
-	{
-		std::cout << "String(utf8) too long." << std::endl;
-		return std::wstring();
-	}
-	return Ansi2WChar(src.c_str(), (int)src.length());
-}
-
-
-std::string _CACodeLab::WStringToMBytes(const wchar_t* lpwcszWString)
-{
-	char* pElementText;
-	int iTextLen;
-	// wide char to multi char
-	iTextLen = WideCharToMultiByte(CP_ACP, 0, lpwcszWString, -1, NULL, 0, NULL, NULL);
-	pElementText = new char[iTextLen + 1];
-	memset((void*)pElementText, 0, (iTextLen + 1) * sizeof(char));
-	WideCharToMultiByte(CP_ACP, 0, lpwcszWString, -1, pElementText, iTextLen, NULL, NULL);
-	std::string strReturn(pElementText);
-	delete[] pElementText;
-	return strReturn;
-}
-
+//std::string _CACodeLab::WChar2Ansi(LPCWSTR pwszSrc)
+//{
+//	int nLen = WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, NULL, 0, NULL, NULL);
+//	if (nLen <= 0) return std::string("");
+//	char* pszDst = new char[nLen];
+//	if (NULL == pszDst) return std::string("");
+//	WideCharToMultiByte(CP_ACP, 0, pwszSrc, -1, pszDst, nLen, NULL, NULL);
+//	pszDst[nLen - 1] = 0;
+//	std::string strTemp(pszDst);
+//	delete[] pszDst;
+//	return strTemp;
+//}
+//
+//
+//std::wstring _CACodeLab::Ansi2WChar(LPCSTR pszSrc, int nLen)
+//{
+//	int nSize = MultiByteToWideChar(CP_ACP, 0, (LPCSTR)pszSrc, nLen, 0, 0);
+//	if (nSize <= 0) return NULL;
+//	WCHAR *pwszDst = new WCHAR[nSize + 1];
+//	if (NULL == pwszDst) return NULL;
+//	MultiByteToWideChar(CP_ACP, 0, (LPCSTR)pszSrc, nLen, pwszDst, nSize);
+//	pwszDst[nSize] = 0;
+//	if (pwszDst[0] == 0xFEFF) // skip Oxfeff
+//		for (int i = 0; i < nSize; i++)
+//			pwszDst[i] = pwszDst[i + 1];
+//	std::wstring wcharString(pwszDst);
+//	delete[] pwszDst;
+//	return wcharString;
+//}
+//
+//std::wstring _CACharConversion::ansi2unicode(const std::string & src)
+//{
+//	if (src.length() >(std::numeric_limits<int>::max)())
+//	{
+//		std::cout << "String(utf8) too long." << std::endl;
+//		return std::wstring();
+//	}
+//	return Ansi2WChar(src.c_str(), (int)src.length());
+//}
+//
+//
+//std::string _CACodeLab::WStringToMBytes(const wchar_t* lpwcszWString)
+//{
+//	char* pElementText;
+//	int iTextLen;
+//	// wide char to multi char
+//	iTextLen = WideCharToMultiByte(CP_ACP, 0, lpwcszWString, -1, NULL, 0, NULL, NULL);
+//	pElementText = new char[iTextLen + 1];
+//	memset((void*)pElementText, 0, (iTextLen + 1) * sizeof(char));
+//	WideCharToMultiByte(CP_ACP, 0, lpwcszWString, -1, pElementText, iTextLen, NULL, NULL);
+//	std::string strReturn(pElementText);
+//	delete[] pElementText;
+//	return strReturn;
+//}
+//
 // Output info to file.
 void _CACodeLab::FileOut(std::wstring str, std::wstring filename)
 {
-	std::vector<char> utf8;
+	/*std::vector<char> utf8;
 	int len = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, NULL, 0, NULL, NULL);
 	if (len == 0)
 	{
 		utf8.push_back('\0');
 	}
 	utf8.resize(len);
-	WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, &utf8[0], len, NULL, NULL);
+	WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, &utf8[0], len, NULL, NULL);*/
 	//utf8[len - 1] = '\0';
 	std::ofstream fout(filename, std::ios::app);
 	//char szBOM[3] = { (char)0xEF,(char)0xBB,(char)0xBF };
@@ -517,32 +517,34 @@ void _CACodeLab::FileOut(std::wstring str, std::wstring filename)
 	{
 		fout.put(szBOM[i]);
 	}*/
-	
-	for (std::vector<char>::iterator i = utf8.begin(); i < utf8.end() - 1; i++)
+	fout << _CACharConversion::unicode2utf8(str);
+	/*for (std::vector<char>::iterator i = utf8.begin(); i < utf8.end() - 1; i++)
 	{
 		fout.put(*i);
-	}
+	}*/
 	fout.close();
 }
-
-
-std::wstring _CACodeLab::UTF82WChar(std::string utf8Str)
-{
-	if (utf8Str.empty())
-	{
-		return std::wstring();
-	}
-	if (utf8Str.length() > (std::numeric_limits<int>::max)())
-	{
-		std::cout << "String(utf8) too long." << std::endl;
-		return std::wstring();
-	}
-	int dwUnicodeLen = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, NULL, 0);
-	wchar_t * pwText = new wchar_t[dwUnicodeLen];
-	memset(pwText, 0, dwUnicodeLen);
-	MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, pwText, dwUnicodeLen);
-	return std::wstring(pwText, dwUnicodeLen - 1);
-}
+//
+//
+//std::wstring _CACharConversion::utf82unicode(std::string utf8Str)
+//{
+//	if (utf8Str.empty())
+//	{
+//		return std::wstring();
+//	}
+//	if (utf8Str.length() > (std::numeric_limits<int>::max)())
+//	{
+//		std::cout << "String(utf8) too long." << std::endl;
+//		return std::wstring();
+//	}
+//	int dwUnicodeLen = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, NULL, 0);
+//	wchar_t * pwText = new wchar_t[dwUnicodeLen];
+//	memset(pwText, 0, dwUnicodeLen);
+//	MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, pwText, dwUnicodeLen);
+//	std::wstring wchar(pwText, dwUnicodeLen - 1);
+//	delete[] pwText;
+//	return wchar;
+//}
 
 bool _CACodeLab::EscapeSequence(std::wstring & str)
 {

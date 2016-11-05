@@ -10,7 +10,7 @@ _CADB::_CADB()
 	HRESULT hr = pConnect.CreateInstance(__uuidof(Connection));
 	if (FAILED(hr))
 	{
-		std::cout << "Can not create connect instance." << std::endl;
+		std::cerr << "Can not create connect instance." << std::endl;
 		return;
 	}
 	_bstr_t strConnect = "Provider=SQLOLEDB;Server=DESKTOP-ID3QIEK\\CUBEAREADB;Database=ACGNDatabase";
@@ -20,16 +20,17 @@ _CADB::_CADB()
 	}
 	catch (_com_error &e)
 	{
-		std::cout << "Initiate failed!" << std::endl;
-		std::cout << e.Description() << std::endl;
-		std::cout << e.HelpFile() << std::endl;
+		
+		std::cerr << "Initiate failed!" << std::endl;
+		std::cerr << e.Description() << std::endl;
+		std::cerr << e.HelpFile() << std::endl;
 		return;
 	}
-	std::cout << "Connect succeed!" << std::endl;
+	//std::cout << "Connect succeed!" << std::endl;
 	hr = pRecordset.CreateInstance(__uuidof(Recordset));
 	if (FAILED(hr))
 	{
-		std::cout << "Can not create recordset instance." << std::endl;
+		std::cerr << "Can not create recordset instance." << std::endl;
 		return;
 	}
 }
@@ -39,15 +40,15 @@ _CADB::~_CADB()
 {
 	try
 	{
-		pRecordset->Close();
+		//pRecordset->Close();
 		pRecordset.Release();
 		pConnect->Close();
 		pConnect.Release();
 	}
 	catch (_com_error &e)
 	{
-		std::cout << e.Description() << std::endl;
-		std::cout << e.HelpFile() << std::endl;
+		std::cerr << e.Description() << std::endl;
+		std::cerr << e.HelpFile() << std::endl;
 		return;
 	}
 	CoUninitialize();
@@ -84,12 +85,13 @@ bool _CADB::Execute(const _bstr_t & sql)
 			pRecordset->MoveNext();
 			std::cout << std::endl;
 		}*/
+		
 	}
 	catch (_com_error &e)
 	{
-		std::cout << "can not execute this sql." << std::endl;
-		std::cout << e.Description() << std::endl;
-		std::cout << e.HelpFile() << std::endl;
+		std::cerr << "Can not execute this sql." << std::endl;
+		std::cerr << e.Description() << std::endl;
+		//std::cerr << e.HelpFile() << std::endl;
 		return false;
 	}
 	return true;
@@ -105,9 +107,58 @@ bool _CADB::EmptySet(const _bstr_t & sql)
 		}
 		else
 		{
-			std::cout << "Data is empty!" << std::endl;
+			//std::cerr << "Data is empty!" << std::endl;
 			return true;
 		}
+		pRecordset->Close();
 	}
 	return false;
+}
+
+_bstr_t _CADB::ColumnToSQL(const std::vector<_variant_t>& columnList)
+{
+	_bstr_t sql;
+	for (auto i = columnList.begin(); i != columnList.end();)
+	{
+		sql += _bstr_t(L"[") + _bstr_t(*i) + _bstr_t(L"]");
+		if (++i != columnList.end())
+		{
+			sql += _bstr_t(L",");
+		}
+	}
+	return sql;
+}
+
+_bstr_t _CADB::ValuesToSQL(const std::vector<_variant_t>& valueList)
+{
+	_bstr_t sql;
+	std::wstring str;
+	for (auto i = valueList.begin(); i != valueList.end();)
+	{
+		switch (i->vt)
+		{
+		case VT_BSTR:
+			 str = _bstr_t(*i);
+			_CACodeLab::EscapeSequence(str);
+			sql += _bstr_t(L"N'") + _bstr_t(str.c_str()) + _bstr_t("'");
+			break;
+		case VT_INT:
+			sql += _bstr_t(*i);
+			break;
+		default:
+			std::cerr << i->vt << std::endl;
+		}
+		if (++i != valueList.end())
+		{
+			sql += _bstr_t(L",");
+		}
+	}
+	return sql;
+}
+
+bool _CADB::Insert(const _variant_t & table, const std::vector<_variant_t>& columnList, const std::vector<_variant_t>& valueList)
+{
+	_bstr_t sql = _bstr_t(L"INSERT INTO ") + _bstr_t(table)
+		+ _bstr_t(L" (") + ColumnToSQL(columnList) + _bstr_t(L") VALUES (") + ValuesToSQL(valueList) + _bstr_t(L")");
+	return Execute(sql);
 }
