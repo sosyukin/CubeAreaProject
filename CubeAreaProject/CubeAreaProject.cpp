@@ -16,10 +16,10 @@ int main()
 {
 	//_CATestSpace::EscapeSequence();
 	//std::wstring DownloadFolder(L"Z:\\shared_x9\\921010321(3949256)\\TDDOWNLOAD");
-	std::thread t1(thread1);
+	/*std::thread t1(thread1);
 	std::thread t2(thread2);
 	t1.join();
-	t2.join();
+	t2.join();*/
 	/*std::wstring CubeAreaFolder(L"D:\\CubeArea");
 	_CAFolder folder(CubeAreaFolder);
 	std::wstring CubeAreaFolder1(L"E:\\CubeArea");
@@ -47,7 +47,7 @@ int main()
 	//_CATestSpace::TestRegex();
 	//_CATestSpace::TestLog();
 	//_CATestSpace::TestCharConversion();
-	//_CATestSpace::TestTorrent();
+	_CATestSpace::TestTorrent();
 	/*
 	try
 	{

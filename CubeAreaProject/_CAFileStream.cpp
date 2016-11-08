@@ -12,6 +12,16 @@ _CAFileStream::_CAFileStream(const long long & blockSize)
 {
 }
 
+_CAFileStream::_CAFileStream(const std::wstring & filePath)
+	: _CADataBlock(_CACodeLab::GetFileLength(filePath))
+	, _currentFile(_fileList.end())
+	, _dataLength(0)
+	, _currentPage(0)
+	, _endOffset(0)
+{
+	AddFile(filePath);
+}
+
 
 _CAFileStream::~_CAFileStream()
 {

@@ -3,8 +3,20 @@
 
 
 
+_CATorrent::_CATorrent(const std::wstring & torrentPath)
+	: _totalLength(0)
+	, _encoding(L"UTF-8")
+	, _isMultiFiles(false)
+{
+	_content.Parse(_CAFileStream(torrentPath));
+	GetAnnounce(_content);
+	GetEncoding(_content);
+	GetFileInfo(_content);
+}
+
 _CATorrent::_CATorrent(_CABencodeDictionaries & bencode)
 	: _totalLength(0)
+	, _encoding(L"UTF-8")
 	, _isMultiFiles(false)
 {
 	GetAnnounce(bencode);
@@ -126,6 +138,11 @@ bool _CATorrent::GetMutliFilesInfo(_CABencodeList & bencode)
 			if (!pFileBencode->Find("path"))
 				return false;
 			expectFile.path = GetPath(*(_CABencodeList *)pFileBencode->_dictionaries["path"]);
+			// TODO Get fileHash
+			if (!pFileBencode->Find(""))
+			{
+				//expectFile.fileHash = 
+			}
 		}
 		_expectFileList.push_back(expectFile);
 	}
@@ -191,7 +208,7 @@ bool _CATorrent::Check(const std::wstring & filePath)
 			ss << _pieceList.size();
 			ss >> sst;
 			pieceInfo.append(sst).append(L" ) has Error.\n");
-			_CACodeLab::FileOut(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
+			_CALog::Log(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
 			std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
 		}
 		else

@@ -6,8 +6,10 @@ class _CATorrent
 	{
 		long long length;
 		std::wstring path;
+		std::string fileHash;
 	};
 public:
+	_CATorrent(const std::wstring & torrentPath);
 	_CATorrent(_CABencodeDictionaries & bencode);
 	~_CATorrent();
 	bool GetAnnounce(_CABencodeDictionaries & bencode);
@@ -19,6 +21,7 @@ public:
 	bool Check(const std::wstring & filePath);
 	std::wstring GetPath(_CABencodeList & bencode);
 private:
+	_CABencodeDictionaries _content;
 	std::list<std::wstring> _announceList;
 	std::list<ExpectFile> _expectFileList;
 	std::vector<std::string> _pieceList;

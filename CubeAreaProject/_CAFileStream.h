@@ -6,6 +6,7 @@ class _CAFileStream :
 {
 public:
 	_CAFileStream(const long long & blockSize);
+	_CAFileStream(const std::wstring & filePath);
 	~_CAFileStream();
 	// Current Pointer offset.
 	std::list<_CAFile> _fileList;

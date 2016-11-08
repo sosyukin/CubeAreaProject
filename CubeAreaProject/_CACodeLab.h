@@ -11,6 +11,7 @@ public:
 	void WriteFileOnLength();
 	void ReadFileWithBuffer();
 	static bool GetFileLength(size_t & filelength, const std::wstring & filename);
+	static size_t GetFileLength(const std::wstring & filePath);
 	void WriteFileWithMemMapping();
 	void CountTime();
 	static bool ReadFileWithMemMapping(std::vector<BYTE>& filestream, const std::wstring & filename);
@@ -29,7 +30,7 @@ public:
 	//static std::wstring Str2WStr(const std::string & src);
 	//static std::string WStringToMBytes(const wchar_t * lpwcszWString);
 	// Output info to file.
-	static void FileOut(std::wstring str, std::wstring filename);
+	//static void FileOut(std::wstring str, std::wstring filename);
 	static int THREAD_MAX_NUM;
 	static int thread_mutex;
 	static std::mutex threadNumMutex;

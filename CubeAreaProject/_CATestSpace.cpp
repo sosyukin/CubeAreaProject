@@ -332,31 +332,36 @@ void _CATestSpace::TestTorrent()
 		{
 			if (pfile->Suffix() == std::wstring(L"torrent"))
 			{
-				_CACodeLab::FileOut(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
+				_CALog::Log(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
 				torrentFileList.push_back(pfile);
 			}
 		}
 	}
+	clock_t start, end;
+	start = clock();
 	for (auto i = torrentFileList.begin(); i != torrentFileList.end(); i++)
 	{
 		try
 		{
-			_CAFileStream fileStream((*i)->Size());
-			fileStream.AddFile((*i)->Path());
-			_CABencodeDictionaries bencodeDictionaries;
-			bencodeDictionaries.Parse(fileStream);
-			bencodeDictionaries.Output(0);
-			_CATorrent torrent(bencodeDictionaries);
+			//_CAFileStream fileStream((*i)->Size());
+			//fileStream.AddFile((*i)->Path());
+			//_CABencodeDictionaries bencodeDictionaries;
+			//bencodeDictionaries.Parse(fileStream);
+			//bencodeDictionaries.Output(0);
+			//_CATorrent torrent(bencodeDictionaries);
+			_CATorrent torrent((*i)->Path());
 			torrent.Check(downloadPath);
-			_CACodeLab::FileOut(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
+			_CALog::Log(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
 		}
 		catch (const std::exception& e)
 		{
-			_CACodeLab::FileOut(_CACharConversion::ansi2unicode(e.what()), L"D:\\BTTest\\Log\\TorrentError.txt");
+			_CALog::Log(_CACharConversion::ansi2unicode(e.what()), L"D:\\BTTest\\Log\\TorrentError.txt");
 			std::cerr << e.what() << std::endl;
 		}
-
 	}
+	end = clock();
+	double dur = (double)(end - start);
+	std::cout << dur << std::endl;
 }
 
 void _CATestSpace::TestDataBlock()
@@ -505,8 +510,9 @@ void _CATestSpace::EscapeSequence()
 
 void _CATestSpace::TestLog()
 {
-	_CALog::SetLogFile(L"D:\\TestLog.log");
-
+	//_CALog::SetLogFile(L"D:\\TestLog.log");
+	_CALog::Log(L"Hello Log!\n");
+	_CALog::Log("Hello Log!\n");
 }
 
 void _CATestSpace::TestCharConversion()

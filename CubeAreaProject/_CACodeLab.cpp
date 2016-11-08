@@ -82,6 +82,17 @@ bool _CACodeLab::GetFileLength(size_t & filelength, const std::wstring & filenam
 	return false;
 }
 
+size_t _CACodeLab::GetFileLength(const std::wstring & filePath)
+{
+	size_t fileLength;
+	if (!GetFileLength(fileLength, filePath))
+	{
+		_CALog::Log(L"Can not get file length.", L"D:\\CALog.txt");
+		throw std::exception("Error");
+	}
+	return fileLength;
+}
+
 
 void _CACodeLab::CountTime()
 {
@@ -500,30 +511,14 @@ void _CACodeLab::TestVirtualFunction()
 //}
 //
 // Output info to file.
-void _CACodeLab::FileOut(std::wstring str, std::wstring filename)
-{
-	/*std::vector<char> utf8;
-	int len = WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, NULL, 0, NULL, NULL);
-	if (len == 0)
-	{
-		utf8.push_back('\0');
-	}
-	utf8.resize(len);
-	WideCharToMultiByte(CP_UTF8, 0, str.c_str(), -1, &utf8[0], len, NULL, NULL);*/
-	//utf8[len - 1] = '\0';
-	std::ofstream fout(filename, std::ios::app);
+//void _CACodeLab::FileOut(std::wstring str, std::wstring filename)
+//{
 	//char szBOM[3] = { (char)0xEF,(char)0xBB,(char)0xBF };
 	/*for (size_t i = 0; i < 3; i++)
 	{
 		fout.put(szBOM[i]);
 	}*/
-	fout << _CACharConversion::unicode2utf8(str);
-	/*for (std::vector<char>::iterator i = utf8.begin(); i < utf8.end() - 1; i++)
-	{
-		fout.put(*i);
-	}*/
-	fout.close();
-}
+//}
 //
 //
 //std::wstring _CACharConversion::utf82unicode(std::string utf8Str)

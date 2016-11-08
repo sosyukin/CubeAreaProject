@@ -87,6 +87,7 @@ long long _CADataBlock::CreateBlock(const long long & expectSize)
 	long long realSize = (expectSize < DATABLOCK_MAX) ? expectSize : DATABLOCK_MAX;
 	while (realSize > 0)
 	{
+		// TODO : Don't know how to
 		try
 		{
 			_pBlock = new char[realSize];
