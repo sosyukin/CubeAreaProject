@@ -9,6 +9,6 @@ public:
 	long long _value;
 	virtual BencodeType GetType();
 	virtual BencodeType Parse(_CAFileStream & fileStream);
-	virtual void Output(const int & layer);
+	virtual void Output(const std::wstring & fileName, const int & layer);
 };
 

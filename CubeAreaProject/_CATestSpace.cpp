@@ -288,9 +288,9 @@ void _CATestSpace::TestBencodeList()
 }
 
 
-void _CATestSpace::TestBencodeDictionaries()
+void _CATestSpace::TestBencodeDictionary()
 {
-	_CABencodeDictionaries bencodeDictionaries;
+	_CABencodeDictionary bencodeDictionary;
 	_CAFileStream fileStream(DATABLOCK_MAX);
 	size_t fileLength;
 	std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
@@ -298,28 +298,13 @@ void _CATestSpace::TestBencodeDictionaries()
 	_CACodeLab::GetFileLength(fileLength, fileName);
 	//_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
 	//fileStream.GetData("d1:ai123ee", 11);
-	bencodeDictionaries.Parse(fileStream);
-	bencodeDictionaries.Output(0);
+	bencodeDictionary.Parse(fileStream);
+	//bencodeDictionary.Output(0);
 }
 
 
 void _CATestSpace::TestTorrent()
 {
-	/*
-	_CABencodeDictionaries bencodeDictionaries;
-	size_t fileLength;
-	//std::wstring fileName(L"D:\\BT\\ebc61e99ca92c16f183392d40d5757e6be7aef9f.torrent");
-	//std::wstring fileName(L"D:\\BT\\90DC6881E4013DC90E32BB5278450D2DFD3C4F63.torrent");
-	std::wstring fileName(L"D:\\BT\\17612A846B70A6D37978E3D85A3CF94EFD9682E0.torrent");
-	_CACodeLab::GetFileLength(fileLength, fileName);
-	_CAFileStream fileStream(fileLength);
-	//std::wstring fileName(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
-	//_CACodeLab::ReadFileWithMemMapping(fileStream, fileLength, fileName);
-	fileStream.AddFile(fileName);
-	bencodeDictionaries.Parse(fileStream);
-	_CATorrent torrent(bencodeDictionaries);
-	torrent.Check(L"D:\\BT\\");
-	*/
 	std::wstring torrentPath(L"D:\\BTTest\\Torrent");
 	std::wstring downloadPath(L"D:\\BTTest\\Download");
 	_CAFolder torrentFolder(torrentPath);
@@ -343,20 +328,15 @@ void _CATestSpace::TestTorrent()
 	{
 		try
 		{
-			//_CAFileStream fileStream((*i)->Size());
-			//fileStream.AddFile((*i)->Path());
-			//_CABencodeDictionaries bencodeDictionaries;
-			//bencodeDictionaries.Parse(fileStream);
-			//bencodeDictionaries.Output(0);
-			//_CATorrent torrent(bencodeDictionaries);
 			_CATorrent torrent((*i)->Path());
-			torrent.Check(downloadPath);
-			_CALog::Log(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
+			//torrent.Check(downloadPath);
+			//_CALog::Log(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
 		}
 		catch (const std::exception& e)
 		{
-			_CALog::Log(_CACharConversion::ansi2unicode(e.what()), L"D:\\BTTest\\Log\\TorrentError.txt");
-			std::cerr << e.what() << std::endl;
+			std::wstring buf((*i)->Path());
+			buf.append(L" ").append(_CACharConversion::ansi2unicode(e.what())).append(L"\n");
+			_CALog::Log(buf, L"D:\\BTTest\\Log\\TorrentError.txt");
 		}
 	}
 	end = clock();

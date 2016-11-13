@@ -3,6 +3,11 @@
 
 
 
+_CABencodeString::_CABencodeString(_CAFileStream & fileStream)
+{
+	Parse(fileStream);
+}
+
 _CABencodeString::_CABencodeString()
 {
 }
@@ -21,25 +26,31 @@ _CABencode::BencodeType _CABencodeString::GetType()
 
 _CABencode::BencodeType _CABencodeString::Parse(_CAFileStream & fileStream)
 {
+	// Parse integer
 	std::stringstream stringstream;
 	while (fileStream.CurrentByteIsNumber())
 	{
 		stringstream << *fileStream._current;
 		fileStream++;
 	}
-	int stringLength;
+	//int stringLength;
+	long long stringLength;
 	stringstream >> stringLength;
+
+	// Check & Skip letter ':'
 	if (*fileStream._current != ':')
-		throw std::exception("Can not parse : in StringParse.");
+		throw std::exception("[ERROR] Check letter ':'.");
 	fileStream++;
+
+	// Get content.
 	_string.assign(fileStream._current, stringLength);
 	fileStream += stringLength;
+
 	return BencodeType::BenString;
 }
 
-void _CABencodeString::Output(const int & layer)
+void _CABencodeString::Output(const std::wstring & fileName, const int & layer)
 {
-	_CABencode::Output(layer);
-	//std::wstring a = _CACharConversion::utf82unicode(_string);
-	std::cout << "<string> " << _string << std::endl;
+	_CABencode::Output(fileName, layer);
+	_CALog::Log(std::string(_string).append("\n"), fileName);
 }

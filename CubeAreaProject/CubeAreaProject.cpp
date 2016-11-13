@@ -4,7 +4,7 @@
 
 void thread1()
 {
-	std::wstring CubeAreaFolder(L"D:\\CubeArea");
+	std::wstring CubeAreaFolder(L"D:\\BTTest\\Torrent");
 	_CAFolder folder(CubeAreaFolder);
 }
 void thread2()
@@ -40,13 +40,14 @@ int main()
 	//_CATestSpace::TestBencodeInteger();
 	//_CATestSpace::TestBencodeString();
 	//_CATestSpace::TestBencodeList();
-	//_CATestSpace::TestBencodeDictionaries();
+	//_CATestSpace::TestBencodeDictionary();
 	//_CATestSpace::TestFullPermutation();
 	//_CATestSpace::TestDataBlock();
 	
 	//_CATestSpace::TestRegex();
 	//_CATestSpace::TestLog();
 	//_CATestSpace::TestCharConversion();
+	//thread1();
 	_CATestSpace::TestTorrent();
 	/*
 	try

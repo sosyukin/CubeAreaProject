@@ -9,12 +9,14 @@ _CATorrent::_CATorrent(const std::wstring & torrentPath)
 	, _isMultiFiles(false)
 {
 	_content.Parse(_CAFileStream(torrentPath));
+	_CAFile file(torrentPath);
+	//_content.Output(std::wstring(L"D:\\BTTest\\Log\\torrent\\").append(file.Name()).append(L".txt"), 0);
 	GetAnnounce(_content);
 	GetEncoding(_content);
 	GetFileInfo(_content);
 }
 
-_CATorrent::_CATorrent(_CABencodeDictionaries & bencode)
+_CATorrent::_CATorrent(_CABencodeDictionary & bencode)
 	: _totalLength(0)
 	, _encoding(L"UTF-8")
 	, _isMultiFiles(false)
@@ -29,15 +31,15 @@ _CATorrent::~_CATorrent()
 }
 
 
-bool _CATorrent::GetAnnounce(_CABencodeDictionaries & bencode)
+bool _CATorrent::GetAnnounce(_CABencodeDictionary & bencode)
 {
 	if (bencode.Find("announce"))
 	{
-		_announceList.push_back(_CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionaries["announce"])->_string));
+		_announceList.push_back(_CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionary["announce"])->_string));
 	}
 	if (bencode.Find("announce-list"))
 	{
-		_CABencodeList * pBencodeList = (_CABencodeList *)bencode._dictionaries["announce-list"];
+		_CABencodeList * pBencodeList = (_CABencodeList *)bencode._dictionary["announce-list"];
 		for (std::list<_CABencode *>::iterator i = pBencodeList->_bencodeList.begin(); i != pBencodeList->_bencodeList.end(); i++)
 		{
 			_CABencodeList * pBencodeSubList = (_CABencodeList *)*i;
@@ -50,26 +52,26 @@ bool _CATorrent::GetAnnounce(_CABencodeDictionaries & bencode)
 	return true;
 }
 
-bool _CATorrent::GetEncoding(_CABencodeDictionaries & bencode)
+bool _CATorrent::GetEncoding(_CABencodeDictionary & bencode)
 {
 	if (bencode.Find("encoding"))
 	{
-		_encoding = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionaries["encoding"])->_string);
+		_encoding = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionary["encoding"])->_string);
 		return true;
 	}
 	return false;
 }
 
-bool _CATorrent::GetFileInfo(_CABencodeDictionaries & bencode)
+bool _CATorrent::GetFileInfo(_CABencodeDictionary & bencode)
 {
 	if (bencode.Find("info"))
 	{
-		_CABencodeDictionaries * pFileInfo = (_CABencodeDictionaries *)bencode._dictionaries["info"];
+		_CABencodeDictionary * pFileInfo = (_CABencodeDictionary *)bencode._dictionary["info"];
 		if (pFileInfo->Find("files"))
 		{
 			//multi file.
-			if (((_CABencodeDictionaries *)pFileInfo->_dictionaries["files"])->GetType() == _CABencode::BencodeType::BenList)
-				GetMutliFilesInfo(*(_CABencodeList *)pFileInfo->_dictionaries["files"]);
+			if (((_CABencodeDictionary *)pFileInfo->_dictionary["files"])->GetType() == _CABencode::BencodeType::BenList)
+				GetMutliFilesInfo(*(_CABencodeList *)pFileInfo->_dictionary["files"]);
 		}
 		else
 		{
@@ -78,11 +80,11 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionaries & bencode)
 		}
 		if (!pFileInfo->Find("name"))
 			return false;
-		std::string tstring = ((_CABencodeString *)pFileInfo->_dictionaries["name"])->_string;
+		std::string tstring = ((_CABencodeString *)pFileInfo->_dictionary["name"])->_string;
 		if (pFileInfo->Find("name.utf-8"))
 		{
 			_name = _CACharConversion::ansi2unicode(tstring);
-			_nameUTF8 = ((_CABencodeString *)pFileInfo->_dictionaries["name.utf-8"])->_string;
+			_nameUTF8 = ((_CABencodeString *)pFileInfo->_dictionary["name.utf-8"])->_string;
 		}
 			
 		else if (_encoding.compare(L"UTF-8") == 0)
@@ -94,26 +96,26 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionaries & bencode)
 			_name = _CACharConversion::ansi2unicode(tstring);
 		if (!pFileInfo->Find("piece length"))
 			return false;
-		_pieceLength = ((_CABencodeInteger *)pFileInfo->_dictionaries["piece length"])->_value;
+		_pieceLength = ((_CABencodeInteger *)pFileInfo->_dictionary["piece length"])->_value;
 		if (pFileInfo->Find("pieces"))
-			if (pFileInfo->_dictionaries["pieces"]->GetType() == _CABencode::BencodeType::BenString)
-				return GetPieces(*(_CABencodeString *)pFileInfo->_dictionaries["pieces"]);
+			if (pFileInfo->_dictionary["pieces"]->GetType() == _CABencode::BencodeType::BenString)
+				return GetPieces(*(_CABencodeString *)pFileInfo->_dictionary["pieces"]);
 		
 	}
 	return false;
 }
 
-bool _CATorrent::GetSingleFileInfo(_CABencodeDictionaries & bencode)
+bool _CATorrent::GetSingleFileInfo(_CABencodeDictionary & bencode)
 {
 	//ExpectFile expectFile;
 	if (!bencode.Find("length"))
 		return false;
-	//expectFile.length = ((_CABencodeInteger *)bencode._dictionaries["length"])->_value;
-	_totalLength += ((_CABencodeInteger *)bencode._dictionaries["length"])->_value;
+	//expectFile.length = ((_CABencodeInteger *)bencode._dictionary["length"])->_value;
+	_totalLength += ((_CABencodeInteger *)bencode._dictionary["length"])->_value;
 
 	//if (!bencode.Find("name"))
 	//	return false;
-	//expectFile.path = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionaries["name"])->_string);
+	//expectFile.path = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionary["name"])->_string);
 	//expectFile.path = expectFile.name;
 
 
@@ -128,16 +130,16 @@ bool _CATorrent::GetMutliFilesInfo(_CABencodeList & bencode)
 	ExpectFile expectFile;
 	for (std::list<_CABencode *>::iterator i = bencode._bencodeList.begin(); i != bencode._bencodeList.end(); i++)
 	{
-		if ((*i)->GetType() == _CABencode::BencodeType::BenDictionaries)
+		if ((*i)->GetType() == _CABencode::BencodeType::BenDictionary)
 		{
-			_CABencodeDictionaries * pFileBencode = (_CABencodeDictionaries *)(*i);
+			_CABencodeDictionary * pFileBencode = (_CABencodeDictionary *)(*i);
 			if (!pFileBencode->Find("length"))
 				return false;
-			expectFile.length = ((_CABencodeInteger *)pFileBencode->_dictionaries["length"])->_value;
+			expectFile.length = ((_CABencodeInteger *)pFileBencode->_dictionary["length"])->_value;
 			_totalLength += expectFile.length;
 			if (!pFileBencode->Find("path"))
 				return false;
-			expectFile.path = GetPath(*(_CABencodeList *)pFileBencode->_dictionaries["path"]);
+			expectFile.path = GetPath(*(_CABencodeList *)pFileBencode->_dictionary["path"]);
 			// TODO Get fileHash
 			if (!pFileBencode->Find(""))
 			{

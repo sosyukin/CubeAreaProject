@@ -13,7 +13,7 @@ _CABencodeParser::~_CABencodeParser()
 }
 
 
-_CABencode * _CABencodeParser::Parse(const _CAFileStream & fileStream)
+_CABencode * _CABencodeParser::Detect(const _CAFileStream & fileStream)
 {
 	switch (*fileStream._current)
 	{
@@ -22,7 +22,7 @@ _CABencode * _CABencodeParser::Parse(const _CAFileStream & fileStream)
 	case 'l':
 		return new _CABencodeList();
 	case 'd':
-		return new _CABencodeDictionaries();
+		return new _CABencodeDictionary();
 	default:
 		break;
 	}
@@ -40,7 +40,7 @@ _CABencode::BencodeType _CABencodeParser::ParseType(const _CAFileStream & fileSt
 	case 'l':
 		return _CABencode::BencodeType::BenList;
 	case 'd':
-		return _CABencode::BencodeType::BenDictionaries;
+		return _CABencode::BencodeType::BenDictionary;
 	default:
 		break;
 	}

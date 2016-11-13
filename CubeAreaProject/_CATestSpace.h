@@ -29,7 +29,7 @@ public:
 	static void TestBencodeInteger();
 	static void TestBencodeString();
 	static void TestBencodeList();
-	static void TestBencodeDictionaries();
+	static void TestBencodeDictionary();
 	static void TestTorrent();
 	static void TestDataBlock();
 	static void TestFile();

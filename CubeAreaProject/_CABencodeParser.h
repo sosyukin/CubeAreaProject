@@ -5,7 +5,7 @@ class _CABencodeParser
 public:
 	_CABencodeParser();
 	~_CABencodeParser();
-	static _CABencode * Parse(const _CAFileStream & fileStream);
+	static _CABencode * Detect(const _CAFileStream & fileStream);
 	static _CABencode::BencodeType ParseType(const _CAFileStream & fileStream);
 };
 

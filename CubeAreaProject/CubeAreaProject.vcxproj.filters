@@ -87,9 +87,6 @@
     <ClInclude Include="_CABencodeParser.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="_CABencodeDictionaries.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="_CATorrent.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -112,6 +109,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="_CACharConversion.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="_CABencodeDictionary.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -185,9 +185,6 @@
     <ClCompile Include="_CABencodeParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="_CABencodeDictionaries.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="_CATorrent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -207,6 +204,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="_CACharConversion.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="_CABencodeDictionary.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

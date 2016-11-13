@@ -21,25 +21,34 @@ _CABencode::BencodeType _CABencodeInteger::GetType()
 
 _CABencode::BencodeType _CABencodeInteger::Parse(_CAFileStream & fileStream)
 {
-	std::stringstream stringstream;
+	// Skip letter 'i'
 	fileStream++;
+
+	// Parse integer
+	std::stringstream stringstream;
 	while (fileStream.CurrentByteIsNumber())
 	{
 		stringstream << *fileStream._current;
 		fileStream++;
 	}
+
+	// Check tail letter 'e'
 	if (*fileStream._current == 'e')
-	{
 		stringstream >> _value;
-		fileStream++;
-	}
 	else
-		throw std::exception("Parse a non-number or e in IntegerParse.");
+		throw std::exception("[ERROR] Check letter 'e'.");
+	
+	// Skip letter 'e'
+	fileStream++;
 	return BencodeType::BenInteger;
 }
 
-void _CABencodeInteger::Output(const int & layer)
+void _CABencodeInteger::Output(const std::wstring & fileName, const int & layer)
 {
-	_CABencode::Output(layer);
-	std::cout << "<Integer> " << _value << std::endl;
+	_CABencode::Output(fileName, layer);
+	std::stringstream stringstream;
+	std::string buf;
+	stringstream << _value;
+	stringstream >> buf;
+	_CALog::Log(std::string(buf).append("\n"), fileName);
 }

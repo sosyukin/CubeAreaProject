@@ -42,7 +42,7 @@ bool _CADataBlock::GetData(const char *  stringData, long long DataSize)
 
 bool _CADataBlock::CurrentByteIsNumber() const
 {
-	return (*_current >= '0') && (*_current <= '9');
+	return ((*_current >= '0') && (*_current <= '9')) || (*_current == '-');
 }
 
 

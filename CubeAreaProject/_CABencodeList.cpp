@@ -23,25 +23,34 @@ _CABencode::BencodeType _CABencodeList::GetType()
 
 _CABencode::BencodeType _CABencodeList::Parse(_CAFileStream & fileStream)
 {
+	// Skip letter 'l'
 	fileStream++;
+
+	// Parse list until letter 'e'
 	while (*fileStream._current != 'e')
 	{
-		_CABencode * pBencode = _CABencodeParser::Parse(fileStream);
+		// Detect list content type
+		_CABencode * pBencode = _CABencodeParser::Detect(fileStream);
 		if (!pBencode)
-			throw std::exception("Find unknown Bencode in BencodeList.");
+			throw std::exception("[ERROR] Detect list content type.");
+		// Parse list content
 		pBencode->Parse(fileStream);
+		// Get content
 		_bencodeList.push_back(pBencode);
 	}
+
+	// Skip letter 'e'
 	fileStream++;
+
+	// TODO : remove return
 	return _CABencode::BencodeType::BenList;
 }
 
-void _CABencodeList::Output(const int & layer)
+void _CABencodeList::Output(const std::wstring & fileName, const int & layer)
 {
-	_CABencode::Output(layer);
-	std::cout << "<list>" << std::endl;
+	_CABencode::Output(fileName, layer);
 	for (std::list<_CABencode *>::iterator i = _bencodeList.begin(); i != _bencodeList.end(); i++)
 	{
-		(*i)->Output(layer + 1);
+		(*i)->Output(fileName, layer + 1);
 	}
 }

@@ -9,6 +9,6 @@ public:
 	std::list<_CABencode *> _bencodeList;
 	virtual BencodeType GetType();
 	_CABencode::BencodeType Parse(_CAFileStream & fileStream);
-	virtual void Output(const int & layer);
+	virtual void Output(const std::wstring & fileName, const int & layer);
 };
 

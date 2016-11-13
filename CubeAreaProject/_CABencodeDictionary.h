@@ -1,16 +1,16 @@
 #pragma once
 #include "stdafx.h"
 
-class _CABencodeDictionaries :
+class _CABencodeDictionary :
 	public _CABencode
 {
 public:
-	std::map<std::string, _CABencode *> _dictionaries;
-	_CABencodeDictionaries();
-	~_CABencodeDictionaries();
+	std::map<std::string, _CABencode *> _dictionary;
+	_CABencodeDictionary();
+	~_CABencodeDictionary();
 	virtual _CABencode::BencodeType GetType();
 	virtual _CABencode::BencodeType Parse(_CAFileStream & fileStream);
-	virtual void Output(const int & layer);
+	void Output(const std::wstring & fileName, const int & layer);
 	bool Find(const std::string & dict);
 };
 

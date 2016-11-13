@@ -52,7 +52,10 @@ bool _CAFile::Diff()
 	_variant_t columnList[2] = { L"SHA1", L"Path" };
 	_variant_t valueList[2] = { _sha1Report.c_str(), _path.c_str() };
 	if (!db.Insert(L"FileSHA1", std::vector<_variant_t>(columnList, columnList + 2), std::vector<_variant_t>(valueList, valueList + 2)))
-		_CALog::Log(std::wstring(_path).append(L" ").append(_sha1Report.c_str()).append(L"\n"), L"D:\\sha1.txt");
+	{
+		_wsystem(std::wstring(L"C:\\FastCopy313_x64\\FastCopy.exe /cmd=move /auto_close /log=FALSE /no_ui \"").append(this->_path).append(L"\" /to=\"").append(TargetPath).append(L"\"").c_str());
+	}
+	//_CALog::Log(std::wstring(_path).append(L" ").append(_sha1Report.c_str()).append(L"\n"), L"D:\\sha1.txt");
 	//_bstr_t FileNum(L"Select COUNT(*) from FileIndex");
 	//if (db.EmptySet(Find))
 	//{
@@ -71,7 +74,7 @@ bool _CAFile::Diff()
 	//}
 	//else
 	//{
-	//	//_wsystem(std::wstring(L"C:\\FastCopy313_x64\\FastCopy.exe /cmd=diff /auto_close /log=FALSE /no_ui \"").append(this->_path).append(L"\" /to=\"").append(TargetPath).append(L"\"").c_str());
+	//	//
 	//	_CACodeLab::FileOut(std::wstring(_path).append(L" ").append(_sha1Report.c_str()).append(L"\n"), L"D:\\sha1.txt");
 	//	return false;
 	//	
