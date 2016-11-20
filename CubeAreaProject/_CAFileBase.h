@@ -3,6 +3,7 @@
 class _CAFileBase
 {
 public:
+
 	_CAFileBase();
 	_CAFileBase(const std::wstring & filePath);
 	~_CAFileBase();
@@ -13,12 +14,13 @@ public:
 	virtual std::wstring Path() { return _path; };
 	// Check file is folder.
 	virtual bool IsFolder();
-
+	virtual bool Rename(const std::wstring & newName) = 0;
 protected:
 	// File name.
 	std::wstring _name;
 	// File path.
 	std::wstring _path;
+	std::wstring _parentFolder;
 private:
 	// Check file exist.
 	virtual bool IsExist();

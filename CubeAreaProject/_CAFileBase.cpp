@@ -5,12 +5,14 @@
 _CAFileBase::_CAFileBase()
 	: _name(std::wstring())
 	, _path(std::wstring())
+	, _parentFolder(std::wstring())
 {
 }
 
 _CAFileBase::_CAFileBase(const std::wstring & filePath)
 	: _path(filePath)
 	, _name(filePath.substr(filePath.find_last_of('\\') + 1))
+	, _parentFolder(filePath.substr(0, filePath.find_last_of('\\') + 1))
 {
 	IsExist();
 }
@@ -45,7 +47,6 @@ bool _CAFileBase::IsFolder()
 	return false;
 }
 
-
 bool _CAFileBase::IsExist()
 {
 	WIN32_FIND_DATA FindFileData;
@@ -53,6 +54,7 @@ bool _CAFileBase::IsExist()
 	if (hFind == INVALID_HANDLE_VALUE)
 	{
 		//throw std::exception(_CACodeLab::WChar2Ansi(_path.append(L" not found.").c_str()).c_str());
+		_CALog::Log(std::wstring(_path).append(L"\n"), L"D:\\BTTest\\Log\\FileNotExist.txt");
 		throw std::exception(_CACharConversion::unicode2ansi(_path.append(L" not found.").c_str()).c_str());
 		return false;
 	}

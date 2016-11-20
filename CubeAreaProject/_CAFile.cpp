@@ -14,7 +14,11 @@ _CAFile::_CAFile(const std::wstring & filePath)
 	, _offset(0)
 {
 	if (_CAFileBase::IsFolder())
-		throw std::exception("This is a folder.");
+	{
+		_CALog::Log(std::wstring(filePath).append(L" is folder"), L"d:\\BTTest\\Log\\FolderCheck.txt");
+		throw std::exception(_CACharConversion::unicode2ansi(std::wstring(filePath).append(L" is a folder.")).c_str());
+	}
+		
 	_suffix = _name.substr(_name.find_last_of('.') + 1);
 	//_size = _CACodeLab::CLGetFileSize(_path);
 	_CACodeLab::GetFileLength(_size, _path);
@@ -94,6 +98,37 @@ size_t _CAFile::Read(char * buffer, const size_t & offsetBegin, const size_t & e
 	}
 	_offset += actualReadLength;
 	return actualReadLength;
+}
+
+bool _CAFile::Rename(const std::wstring & newName)
+{
+	if (_name.compare(newName) == 0)
+		return false;
+	std::wstring newPath(_parentFolder);
+	newPath.append(newName);
+	bool state = _CACodeLab::CAMoveFileAPI(_path, newPath);
+	if (state)
+	{
+		_path = newPath;
+		_name = _path.substr(_path.find_last_of('\\') + 1);
+		_suffix = _name.substr(_name.find_last_of('.') + 1);
+		return true;
+	}
+	return false;
+}
+
+bool _CAFile::Constraint(const std::wstring & constraintStr, bool(*ConstraintFunction)(const std::wstring &, const std::wstring &), _CAFile::ATTR attr)
+{
+	switch (attr)
+	{
+	case FILENAME:
+		return (*ConstraintFunction)(Name(), constraintStr);
+	case SUFFIX:
+		return (*ConstraintFunction)(Suffix(), constraintStr);
+	default:
+		break;
+	}
+	return false;
 }
 
 

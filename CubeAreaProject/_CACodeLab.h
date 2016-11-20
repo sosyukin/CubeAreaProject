@@ -38,5 +38,11 @@ public:
 	static std::vector<std::thread> ThreadList;
 	//static std::wstring UTF82WChar(std::string utf8Str);
 	static bool EscapeSequence(std::wstring & str);
+	static void CAMoveFile(const std::wstring & srcPath, const std::wstring & destPath);
+	static bool CAMoveFileAPI(const std::wstring & srcPath, const std::wstring & destPath);
+	static void CACopyFile(const std::wstring & srcPath, const std::wstring & destPath);
+	static void Rename(const std::wstring & srcPath, const std::wstring & destPath);
+	static void DacapoCheck(const std::wstring & srcPath, const std::wstring & destPath);
+	static bool SameStr(const std::wstring & str1, const std::wstring & str2);
 };
 

@@ -40,5 +40,7 @@ public:
 	static void EscapeSequence();
 	static void TestLog();
 	static void TestCharConversion();
+	static void TestFileOperation();
+	static void TestMoveFile();
 };
 

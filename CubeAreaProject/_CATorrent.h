@@ -19,12 +19,16 @@ public:
 	bool GetMutliFilesInfo(_CABencodeList & bencode);
 	bool GetPieces(_CABencodeString & bencode);
 	bool Check(const std::wstring & filePath);
+	bool Rename();
 	std::wstring GetPath(_CABencodeList & bencode);
+	std::wstring GetDownloadPath();
 private:
 	_CABencodeDictionary _content;
+	_CAFile _torrentFile;
 	std::list<std::wstring> _announceList;
 	std::list<ExpectFile> _expectFileList;
 	std::vector<std::string> _pieceList;
+	std::wstring _filePath;
 	std::wstring _encoding;
 	std::wstring _name;
 	std::string _nameUTF8;

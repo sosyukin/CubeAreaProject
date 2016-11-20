@@ -7,9 +7,9 @@ _CATorrent::_CATorrent(const std::wstring & torrentPath)
 	: _totalLength(0)
 	, _encoding(L"UTF-8")
 	, _isMultiFiles(false)
+	, _torrentFile(torrentPath)
 {
 	_content.Parse(_CAFileStream(torrentPath));
-	_CAFile file(torrentPath);
 	//_content.Output(std::wstring(L"D:\\BTTest\\Log\\torrent\\").append(file.Name()).append(L".txt"), 0);
 	GetAnnounce(_content);
 	GetEncoding(_content);
@@ -59,6 +59,7 @@ bool _CATorrent::GetEncoding(_CABencodeDictionary & bencode)
 		_encoding = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionary["encoding"])->_string);
 		return true;
 	}
+	else _CALog::Log(std::wstring(_torrentFile.Name()).append(L" no encoding\n"), L"d:\\BTTest\\Log\\EncodingCheck.txt");
 	return false;
 }
 
@@ -83,8 +84,9 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionary & bencode)
 		std::string tstring = ((_CABencodeString *)pFileInfo->_dictionary["name"])->_string;
 		if (pFileInfo->Find("name.utf-8"))
 		{
-			_name = _CACharConversion::ansi2unicode(tstring);
+			//_name = _CACharConversion::ansi2unicode(tstring);
 			_nameUTF8 = ((_CABencodeString *)pFileInfo->_dictionary["name.utf-8"])->_string;
+			_name = _CACharConversion::utf82unicode(_nameUTF8);
 		}
 			
 		else if (_encoding.compare(L"UTF-8") == 0)
@@ -163,25 +165,26 @@ bool _CATorrent::GetPieces(_CABencodeString & bencode)
 
 bool _CATorrent::Check(const std::wstring & filePath)
 {
+	bool checkState = true;
 	_CAFileStream fileStream(_totalLength);
-	std::wstring fullPath(filePath);
-	if (fullPath[filePath.length() - 1] != L'\\')
+	_filePath = filePath;
+	if (_filePath[filePath.length() - 1] != L'\\')
 	{
-		fullPath.append(L"\\");
+		_filePath.append(L"\\");
 	}
 	if (_isMultiFiles)
 	{
 		//MultiFiles
-		fullPath.append(_name);
+		_filePath.append(_name);
 		for (auto i : _expectFileList)
 		{
-			fileStream.AddFile(std::wstring(fullPath).append(i.path));
+			fileStream.AddFile(std::wstring(_filePath).append(i.path));
 		}
 	}
 	else
 	{
 		//SingleFile
-		fileStream.AddFile(fullPath.append(_name));
+		fileStream.AddFile(_filePath.append(_name));
 	}
 	/// TODO : SHA1check
 	
@@ -211,14 +214,20 @@ bool _CATorrent::Check(const std::wstring & filePath)
 			ss >> sst;
 			pieceInfo.append(sst).append(L" ) has Error.\n");
 			_CALog::Log(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
-			std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
+			//std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
+			checkState = false;
 		}
-		else
-		{
-			std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) is ok." << std::endl;
-		}
+		//else
+		//{
+			//std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) is ok." << std::endl;
+		//}
 	}
-	return false;
+	return checkState;
+}
+
+bool _CATorrent::Rename()
+{
+	return _torrentFile.Rename(std::wstring(_name).append(L".").append(_torrentFile.Suffix()));
 }
 
 std::wstring _CATorrent::GetPath(_CABencodeList & bencode)
@@ -240,4 +249,9 @@ std::wstring _CATorrent::GetPath(_CABencodeList & bencode)
 		}
 			
 	return path;
+}
+
+std::wstring _CATorrent::GetDownloadPath()
+{
+	return _filePath;
 }

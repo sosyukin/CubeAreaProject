@@ -30,7 +30,7 @@ int main()
 	//_CAFolder folder(L"D:\\myfolder");
 	//_CATestSpace::TestSQLServerConnection();
 	//_CATestSpace::TestDB();
-	//_CATestSpace::TestFile();
+	_CATestSpace::TestFile();
 	//_CAFolder folder(L"E:\\CubeArea");
 	//_CATestSpace::TestBTParser();
 	//_CATestSpace::TestBTChecker();
@@ -48,18 +48,18 @@ int main()
 	//_CATestSpace::TestLog();
 	//_CATestSpace::TestCharConversion();
 	//thread1();
-	_CATestSpace::TestTorrent();
-	/*
+	//_CATestSpace::TestTorrent();
+	//_CACodeLab::DacapoCheck(L"D:\\torrentcollection", L"D:\\DaCapo");
+	//_CATestSpace::TestFileOperation();
 	try
 	{
 		//_CACubeArea CubeArea(L"D:\\CubeArea");
-		
+		//_CATestSpace::TestMoveFile();
 	}
 	catch (const std::exception& e)
 	{
 		std::cout << e.what() << std::endl;
 	}
-	*/
 	return 0;
 }
 

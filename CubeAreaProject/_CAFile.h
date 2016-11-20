@@ -4,6 +4,11 @@ class _CAFile :
 	public _CAFileBase
 {
 public:
+	enum ATTR
+	{
+		FILENAME,
+		SUFFIX
+	};
 	_CAFile();
 	_CAFile(const std::wstring & filePath);
 	~_CAFile();
@@ -15,6 +20,8 @@ public:
 	bool Eof();
 	bool Diff();
 	size_t Read(char * buffer, const size_t & offsetBegin, const size_t & expectedReadLength);
+	virtual bool Rename(const std::wstring & newName);
+	bool Constraint(const std::wstring & constraintStr, bool(*ConstraintFunction)(const std::wstring &, const std::wstring &), _CAFile::ATTR attr);
 	// beta
 	bool md5();
 	bool sha1();

@@ -555,3 +555,43 @@ bool _CACodeLab::EscapeSequence(std::wstring & str)
 	}
 	return true;
 }
+
+void _CACodeLab::CAMoveFile(const std::wstring & srcPath, const std::wstring & destPath)
+{
+	_wsystem(std::wstring(L"C:\\FastCopy313_x64\\FastCopy.exe /cmd=move /auto_close /log=FALSE /no_ui \"").append(srcPath).append(L"\" /to=\"").append(destPath).append(L"\"").c_str());
+}
+
+bool _CACodeLab::CAMoveFileAPI(const std::wstring & srcPath, const std::wstring & destPath)
+{
+	if (0 == MoveFileEx(srcPath.c_str(), destPath.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING))
+		return false;
+	return true;
+}
+
+void _CACodeLab::CACopyFile(const std::wstring & srcPath, const std::wstring & destPath)
+{
+}
+
+void _CACodeLab::Rename(const std::wstring & srcPath, const std::wstring & destPath)
+{
+	//rename(srcPath.c_str(), destPath.c_str());
+}
+
+void _CACodeLab::DacapoCheck(const std::wstring & srcPath, const std::wstring & destPath)
+{
+	_CAFolder srcFolder(srcPath);
+	std::vector<_CAFile *> fileList;
+	srcFolder.GetFileList(fileList);
+	for (auto i : fileList)
+	{
+		if (i->Diff())
+		{
+
+		}
+	}
+}
+
+bool _CACodeLab::SameStr(const std::wstring & str1, const std::wstring & str2)
+{
+	return str1.compare(str2) == 0;
+}

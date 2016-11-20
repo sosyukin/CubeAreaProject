@@ -305,7 +305,8 @@ void _CATestSpace::TestBencodeDictionary()
 
 void _CATestSpace::TestTorrent()
 {
-	std::wstring torrentPath(L"D:\\BTTest\\Torrent");
+	std::wstring torrentPath(L"D:\\cpTest\\TorrentChecked");
+	//std::wstring downloadPath(L"E:\\TDDOWNLOAD");
 	std::wstring downloadPath(L"D:\\BTTest\\Download");
 	_CAFolder torrentFolder(torrentPath);
 	_CAFolder downloadFolder(downloadPath);
@@ -329,7 +330,14 @@ void _CATestSpace::TestTorrent()
 		try
 		{
 			_CATorrent torrent((*i)->Path());
-			//torrent.Check(downloadPath);
+			torrent.Rename();
+			/*
+			if (torrent.Check(downloadPath))
+			{
+				_CACodeLab::CAMoveFile((*i)->Path(), L"d:\\BTTest\\TorrentChecked\\");
+				_CACodeLab::CAMoveFile(torrent.GetDownloadPath(), L"d:\\BTTest\\DownloadChecked\\");
+			}
+			*/
 			//_CALog::Log(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
 		}
 		catch (const std::exception& e)
@@ -353,11 +361,22 @@ void _CATestSpace::TestDataBlock()
 
 void _CATestSpace::TestFile()
 {
-	_CAFile file;
-	_CAFile file1(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
+	
+	//_CAFile file(L"D:\\cpTest\\TorrentChecked\\[CASO&SumiSora][Boku_wa_Tomodachi_ga_Sukunai][BDRip].torrent");
+	//_CAFile file1(L"D:\\BT\\[CASO&SumiSora][LoveLive!Sunshine!!][10][GB][720p].mp4.torrent");
 	//_CAFile file1(L"D:\\BT\\test.txt");
 	//std::string buffer;
 	//file1.Read(buffer, 0, file1.Size());
+	_CAFolder folder(L"D:\\cpTest");
+	std::vector<_CAFile *> fileList;
+	/*folder.GetFileList(L"[KissSub&FZSD&Xrip][Kono_Subarashii_Sekai_ni_Shukufuku_o!][BDrip][01][1080P][x264_10bit_flac].mkv",
+		fileList,
+		_CACodeLab::SameStr,
+		_CAFile::FILENAME);*/
+	folder.GetFileList(L"mkv",
+		fileList,
+		_CACodeLab::SameStr,
+		_CAFile::SUFFIX);
 }
 
 void _CATestSpace::TestFullPermutation()
@@ -506,6 +525,19 @@ void _CATestSpace::TestCharConversion()
 	std::string ansi(_CACharConversion::unicode2ansi(unicode1));
 	std::cout << ansi << std::endl;
 
+}
+
+void _CATestSpace::TestFileOperation()
+{
+	//_CACodeLab::CAMoveFile(L"d:\\cpTest\\FastCopy.chm", L"d:\\cpTest\\1\\"); // Move FastCopy.chm to folder 1
+	//_CACodeLab::CAMoveFile(L"d:\\cpTest\\2", L"d:\\cpTest\\1\\"); // Move Folder 2 to folder 1
+	//_CACodeLab::CAMoveFile(L"d:\\cpTest\\2\\", L"d:\\cpTest\\1\\"); // Same as \\2
+	_CACodeLab::CAMoveFile(L"d:\\cpTest\\2\\*", L"d:\\cpTest\\1\\"); // Move content of folder 2 to folder 1
+}
+
+void _CATestSpace::TestMoveFile()
+{
+	_CACodeLab::CAMoveFileAPI(L"d:\\cpTest\\4\\*", L"d:\\cpTest\\1\\");
 }
 
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)

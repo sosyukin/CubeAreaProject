@@ -37,7 +37,7 @@ bool _CAFolder::IsFolder()
 void _CAFolder::Scan()
 {
 	WIN32_FIND_DATA ffd;
-	LARGE_INTEGER filesize;
+	//LARGE_INTEGER filesize;
 	_files.clear();
 	HANDLE hFind = FindFirstFile(std::wstring(_path).append(L"\\*").c_str(), &ffd);
 	do
@@ -46,21 +46,70 @@ void _CAFolder::Scan()
 		{
 			if (wcscmp(ffd.cFileName, L".") != 0 && wcscmp(ffd.cFileName, L"..") != 0)
 			{
-				//_CACodeLab::FileOut(std::wstring(L"(folder)\t").append(ffd.cFileName).append(L"\n"), L"C:\\Users\\SOS_Y\\FolderScan.txt");
-				//_files.push_back(_CAFileBase(_CAFolder(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
 				_files.push_back(new _CAFolder(std::wstring(_path).append(L"\\").append(ffd.cFileName)));
 			}
 		}
 		else
 		{
-			filesize.LowPart = ffd.nFileSizeLow;
-			filesize.HighPart = ffd.nFileSizeHigh;
-			//_CACodeLab::FileOut(std::wstring(L"(file)\t\t").append(ffd.cFileName).append(L"\n"), L"C:\\Users\\SOS_Y\\FolderScan.txt");
-			//_CAFile file(std::wstring(_path).append(L"\\").append(ffd.cFileName));
-			//_files.push_back(_CAFileBase(file));
-			//_files.push_back(_CAFileBase(_CAFile(std::wstring(_path).append(L"\\").append(ffd.cFileName))));
 			_files.push_back(new _CAFile(std::wstring(_path).append(L"\\").append(ffd.cFileName)));
 		}
 	} while (FindNextFile(hFind, &ffd) != 0);
 	FindClose(hFind);
+}
+
+bool _CAFolder::Find(const std::wstring & fileName, std::vector<_CAFile *> & fileList)
+{
+	return false;
+}
+
+bool _CAFolder::GetFileList(std::vector<_CAFile *> & fileList)
+{
+	for (auto i : _files)
+	{
+		_CAFolder * pfolder = dynamic_cast<_CAFolder *>(i);
+		if (pfolder)
+		{
+			pfolder->GetFileList(fileList);
+			continue;
+		}
+		_CAFile * pfile = dynamic_cast<_CAFile *>(i);
+		if (pfile)
+		{
+			fileList.push_back(pfile);
+			continue;
+		}
+		_CALog::Log("Unable to get file\n");
+		return false;
+	}
+	return true;
+}
+
+bool _CAFolder::GetFileList(const std::wstring & constraintStr, std::vector<_CAFile*>& fileList, bool (*ConstraintFunction)(const std::wstring &,const std::wstring &), _CAFile::ATTR attr)
+{
+	for (auto i : _files)
+	{
+		_CAFolder * pfolder = dynamic_cast<_CAFolder *>(i);
+		if (pfolder)
+		{
+			pfolder->GetFileList(constraintStr, fileList, ConstraintFunction, attr);
+			continue;
+		}
+		_CAFile * pfile = dynamic_cast<_CAFile *>(i);
+		if (pfile)
+		{
+			if (pfile->Constraint(constraintStr, ConstraintFunction, attr))
+			{
+				fileList.push_back(pfile);
+			}
+			continue;
+		}
+		_CALog::Log("Unable to get file\n");
+		return false;
+	}
+	return true;
+}
+
+bool _CAFolder::Rename(const std::wstring & newName)
+{
+	return false;
 }
