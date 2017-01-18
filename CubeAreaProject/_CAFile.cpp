@@ -29,6 +29,15 @@ _CAFile::~_CAFile()
 {
 }
 
+bool _CAFile::Open(const std::wstring & filePath)
+{
+	if (_CAFileBase::Open(filePath) && !_CAFileBase::IsFolder())
+	{
+		return true;
+	}
+	return false;
+}
+
 
 // Return true if file is folder.
 bool _CAFile::IsFolder()
@@ -103,18 +112,15 @@ size_t _CAFile::Read(char * buffer, const size_t & offsetBegin, const size_t & e
 bool _CAFile::Rename(const std::wstring & newName)
 {
 	if (_name.compare(newName) == 0)
-		return false;
+		throw std::exception("[ERROR] Same file name.");
 	std::wstring newPath(_parentFolder);
 	newPath.append(newName);
-	bool state = _CACodeLab::CAMoveFileAPI(_path, newPath);
-	if (state)
-	{
-		_path = newPath;
-		_name = _path.substr(_path.find_last_of('\\') + 1);
-		_suffix = _name.substr(_name.find_last_of('.') + 1);
-		return true;
-	}
-	return false;
+	if (!_CACodeLab::CAMoveFileAPI(_path, newPath))
+		throw std::exception("[ERROR] CAMoveFileAPI return false.");
+	_path = newPath;
+	_name = _path.substr(_path.find_last_of('\\') + 1);
+	_suffix = _name.substr(_name.find_last_of('.') + 1);
+	return true;
 }
 
 bool _CAFile::Constraint(const std::wstring & constraintStr, bool(*ConstraintFunction)(const std::wstring &, const std::wstring &), _CAFile::ATTR attr)

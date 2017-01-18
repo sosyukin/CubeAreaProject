@@ -569,7 +569,7 @@ void _CACodeLab::CAMoveFile(const std::wstring & srcPath, const std::wstring & d
 
 bool _CACodeLab::CAMoveFileAPI(const std::wstring & srcPath, const std::wstring & destPath)
 {
-	if (0 == MoveFileEx(srcPath.c_str(), destPath.c_str(), MOVEFILE_COPY_ALLOWED | MOVEFILE_REPLACE_EXISTING))
+	if (0 == MoveFileEx(srcPath.c_str(), destPath.c_str(), MOVEFILE_COPY_ALLOWED/* | MOVEFILE_REPLACE_EXISTING*/))
 		return false;
 	return true;
 }

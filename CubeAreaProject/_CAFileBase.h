@@ -24,5 +24,8 @@ protected:
 private:
 	// Check file exist.
 	virtual bool IsExist();
+public:
+	// Open a file
+	virtual bool Open(const std::wstring & filePath);
 };
 

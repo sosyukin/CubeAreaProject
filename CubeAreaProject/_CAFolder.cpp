@@ -22,8 +22,7 @@ _CAFolder::_CAFolder(const std::wstring & filePath)
 
 _CAFolder::~_CAFolder()
 {
-	for (auto i : this->_files)
-		delete i;
+	ClearFileList();
 }
 
 
@@ -39,7 +38,8 @@ void _CAFolder::Scan()
 {
 	WIN32_FIND_DATA ffd;
 	//LARGE_INTEGER filesize;
-	_files.clear();
+	//_files.clear();
+	ClearFileList();
 	HANDLE hFind = FindFirstFile(std::wstring(_path).append(L"\\*").c_str(), &ffd);
 	do
 	{
@@ -113,4 +113,25 @@ bool _CAFolder::GetFileList(const std::wstring & constraintStr, std::vector<_CAF
 bool _CAFolder::Rename(const std::wstring & newName)
 {
 	return false;
+}
+
+
+// Open a folder
+bool _CAFolder::Open(const std::wstring & filePath)
+{
+	if (_CAFileBase::Open(filePath) && _CAFileBase::IsFolder())
+	{
+		return true;
+	}
+	return false;
+}
+
+
+// release file list
+bool _CAFolder::ClearFileList()
+{
+	for (auto i : this->_files)
+		delete i;
+	_files.clear();
+	return true;
 }

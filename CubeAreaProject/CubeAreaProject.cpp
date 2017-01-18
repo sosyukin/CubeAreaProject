@@ -48,7 +48,8 @@ int main()
 	//_CATestSpace::TestLog();
 	//_CATestSpace::TestCharConversion();
 	//thread1();
-	_CATestSpace::TestTorrent();
+	//_CATestSpace::TestTorrent();
+	
 	//_CACodeLab::DacapoCheck(L"D:\\H", L"D:\\DaCapo");
 	//_CATestSpace::TestFileOperation();
 	try
@@ -59,6 +60,7 @@ int main()
 		//std::cout << "Similarity : " << _CACodeLab::StrSimilarity(L"Test", L"test") << std::endl;
 		//std::cout << "Similarity : " << _CACodeLab::StrSimilarity(L"720p", L"1080p") << std::endl;
 		//std::cout << "Similarity : " << _CACodeLab::StrSimilarity(L"x264_aac", L"x264") << std::endl;
+		_CATestSpace::TestDownloadManager();
 	}
 	catch (const std::exception& e)
 	{

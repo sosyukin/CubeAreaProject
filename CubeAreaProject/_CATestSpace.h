@@ -42,5 +42,6 @@ public:
 	static void TestCharConversion();
 	static void TestFileOperation();
 	static void TestMoveFile();
+	static void TestDownloadManager();
 };
 

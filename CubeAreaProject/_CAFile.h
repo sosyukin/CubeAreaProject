@@ -13,6 +13,7 @@ public:
 	_CAFile(const std::wstring & filePath);
 	~_CAFile();
 
+	bool Open(const std::wstring & filePath);
 	std::wstring Suffix() { return _suffix; }
 	__int64 Size() { return _size; }
 	__int64 Offset() { return _offset; }

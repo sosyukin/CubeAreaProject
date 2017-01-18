@@ -18,5 +18,9 @@ public:
 
 	bool GetFileList(const std::wstring & constraintStr, std::vector<_CAFile*>& fileList, bool(*ConstraintFunction)(const std::wstring &, const std::wstring &), _CAFile::ATTR attr);
 	virtual bool Rename(const std::wstring & newName);
+	// Open a folder
+	virtual bool Open(const std::wstring & filePath);
+	// release file list
+	bool ClearFileList();
 };
 

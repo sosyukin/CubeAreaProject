@@ -176,7 +176,8 @@ bool _CATorrent::Check(const std::wstring & filePath)
 	{
 		//MultiFiles
 		_filePath.append(_name);
-		_CAFolder folderCheck(_filePath);
+		_CAFolder folderCheck;
+		folderCheck.Open(_filePath);
 		for (auto i : _expectFileList)
 		{
 			fileStream.AddFile(std::wstring(_filePath).append(i.path));
@@ -185,10 +186,12 @@ bool _CATorrent::Check(const std::wstring & filePath)
 	else
 	{
 		//SingleFile
-		fileStream.AddFile(_filePath.append(_name));
+		_CAFile fileCheck;
+		fileCheck.Open(_filePath.append(_name));
+		fileStream.AddFile(_filePath);
 	}
-	/// TODO : SHA1check
-	
+	std::cout.width(3);
+	std::cout << 0 << "%";
 	CSHA1 sha1;
 	size_t pieceNumber = 0;
 	unsigned char shastr[21];
@@ -214,15 +217,22 @@ bool _CATorrent::Check(const std::wstring & filePath)
 			ss << _pieceList.size();
 			ss >> sst;
 			pieceInfo.append(sst).append(L" ) has Error.\n");
-			_CALog::Log(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
-			//std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) Has Error." << std::endl;
+			
+			//_CALog::Log(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
+			throw std::exception(_CACharConversion::unicode2ansi(std::wstring(_name).append(pieceInfo)).c_str());
 			checkState = false;
 		}
-		//else
-		//{
-			//std::cerr << "( " << pieceNumber << " / " << _pieceList.size() << " ) is ok." << std::endl;
-		//}
+		else
+		{
+			
+			
+			int percent = pieceNumber * 100 / _pieceList.size();
+			std::cout << "\b\b\b\b";
+			std::cout.width(3);
+			std::cout << percent << "%";
+		}
 	}
+	std::cout << std::endl;
 	return checkState;
 }
 

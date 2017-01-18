@@ -55,6 +55,7 @@
 #include "_CABencodeList.h"
 #include "_CABencodeDictionary.h"
 #include "_CATorrent.h"
+#include "_CADownloadManager.h"
 #include "_CATestSpace.h"
 #include "_CADB.h"
 

@@ -311,18 +311,20 @@ void _CATestSpace::TestTorrent()
 	_CAFolder torrentFolder(torrentPath);
 	_CAFolder downloadFolder(downloadPath);
 	std::vector<_CAFile *> torrentFileList;
-	for (auto i = torrentFolder._files.begin(); i != torrentFolder._files.end(); i++)
-	{
-		_CAFile * pfile = dynamic_cast<_CAFile *>(*i);
-		if (pfile)
-		{
-			if (pfile->Suffix() == std::wstring(L"torrent"))
-			{
-				//_CALog::Log(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
-				torrentFileList.push_back(pfile);
-			}
-		}
-	}
+	//for (auto i = torrentFolder._files.begin(); i != torrentFolder._files.end(); i++)
+	//{
+	//	_CAFile * pfile = dynamic_cast<_CAFile *>(*i);
+	//	if (pfile)
+	//	{
+	//		if (pfile->Suffix() == std::wstring(L"torrent"))
+	//		{
+	//			//_CALog::Log(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
+	//			torrentFileList.push_back(pfile);
+	//		}
+	//	}
+	//}
+	// [Update]
+	torrentFolder.GetFileList(L"torrent", torrentFileList, _CACodeLab::SameStr, _CAFile::ATTR::SUFFIX);
 	clock_t start, end;
 	start = clock();
 	for (auto i = torrentFileList.begin(); i != torrentFileList.end(); i++)
@@ -539,6 +541,13 @@ void _CATestSpace::TestFileOperation()
 void _CATestSpace::TestMoveFile()
 {
 	_CACodeLab::CAMoveFileAPI(L"d:\\cpTest\\4\\*", L"d:\\cpTest\\1\\");
+}
+
+void _CATestSpace::TestDownloadManager()
+{
+	_CADownloadManager downloadManager;
+	//downloadManager.TorrentRename();
+	downloadManager.TorrentDownloadCheck();
 }
 
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)
