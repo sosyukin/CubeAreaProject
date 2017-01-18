@@ -305,9 +305,9 @@ void _CATestSpace::TestBencodeDictionary()
 
 void _CATestSpace::TestTorrent()
 {
-	std::wstring torrentPath(L"D:\\cpTest\\TorrentChecked");
+	std::wstring torrentPath(L"D:\\待校验\\BT");
 	//std::wstring downloadPath(L"E:\\TDDOWNLOAD");
-	std::wstring downloadPath(L"D:\\BTTest\\Download");
+	std::wstring downloadPath(L"D:\\待校验\\下载");
 	_CAFolder torrentFolder(torrentPath);
 	_CAFolder downloadFolder(downloadPath);
 	std::vector<_CAFile *> torrentFileList;
@@ -318,7 +318,7 @@ void _CATestSpace::TestTorrent()
 		{
 			if (pfile->Suffix() == std::wstring(L"torrent"))
 			{
-				_CALog::Log(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
+				//_CALog::Log(std::wstring(pfile->Path()).append(L"\n"), L"D:\\BTTest\\Log\\TorrentList.txt");
 				torrentFileList.push_back(pfile);
 			}
 		}
@@ -330,14 +330,15 @@ void _CATestSpace::TestTorrent()
 		try
 		{
 			_CATorrent torrent((*i)->Path());
-			torrent.Rename();
-			/*
+			
+			//torrent.Rename();
+			///*
 			if (torrent.Check(downloadPath))
 			{
-				_CACodeLab::CAMoveFile((*i)->Path(), L"d:\\BTTest\\TorrentChecked\\");
-				_CACodeLab::CAMoveFile(torrent.GetDownloadPath(), L"d:\\BTTest\\DownloadChecked\\");
+				_CACodeLab::CAMoveFile((*i)->Path(), L"D:\\待校验\\TorrentChecked\\");
+				_CACodeLab::CAMoveFile(torrent.GetDownloadPath(), L"D:\\待校验\\DownloadChecked\\");
 			}
-			*/
+			//*/
 			//_CALog::Log(std::wstring((*i)->Path()).append(L" checked.\n"), L"D:\\BTTest\\Log\\TorrentChecked.txt");
 		}
 		catch (const std::exception& e)

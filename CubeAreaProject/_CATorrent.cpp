@@ -10,7 +10,7 @@ _CATorrent::_CATorrent(const std::wstring & torrentPath)
 	, _torrentFile(torrentPath)
 {
 	_content.Parse(_CAFileStream(torrentPath));
-	//_content.Output(std::wstring(L"D:\\BTTest\\Log\\torrent\\").append(file.Name()).append(L".txt"), 0);
+	//_content.Output(std::wstring(L"D:\\BTTest\\Log\\torrent\\").append(_torrentFile.Name()).append(L".txt"), 0);
 	GetAnnounce(_content);
 	GetEncoding(_content);
 	GetFileInfo(_content);
@@ -176,6 +176,7 @@ bool _CATorrent::Check(const std::wstring & filePath)
 	{
 		//MultiFiles
 		_filePath.append(_name);
+		_CAFolder folderCheck(_filePath);
 		for (auto i : _expectFileList)
 		{
 			fileStream.AddFile(std::wstring(_filePath).append(i.path));

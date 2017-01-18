@@ -30,6 +30,7 @@
 #include <icrsint.h>
 #include <iomanip>
 #include <regex>
+#include <algorithm>
 
 #include "_CALog.h"
 #include "_CACharConversion.h"
@@ -37,6 +38,8 @@
 #include "_CAAreaManager.h"
 #include "_CACubeArea.h"
 #include "_CAAnime.h"
+#include "_CAAnimeArea.h"
+#include "_CAAnimeAreaManager.h"
 #include "_CACodeLab.h"
 #include "_CAMD5.h"
 #include "SHA1.h"

@@ -44,5 +44,11 @@ public:
 	static void Rename(const std::wstring & srcPath, const std::wstring & destPath);
 	static void DacapoCheck(const std::wstring & srcPath, const std::wstring & destPath);
 	static bool SameStr(const std::wstring & str1, const std::wstring & str2);
+	static bool StrMatch(const wchar_t & str1, const wchar_t & str2);
+	static double StrSimilarity(const std::wstring & str1, const std::wstring & str2);
+	static double CharSimilarity(const wchar_t & str1, const wchar_t & str2);
+	static bool IsCharacter(const wchar_t & str1, const wchar_t & str2);
+	static bool IsNumber(const wchar_t & str1, const wchar_t & str2);
+	static bool IsSymbol(const wchar_t & str1, const wchar_t & str2);
 };
 

@@ -189,6 +189,7 @@
     <ClInclude Include="_CADB.h" />
     <ClInclude Include="_CADBRecord.h" />
     <ClInclude Include="_CADBTable.h" />
+    <ClInclude Include="_CADownloadManager.h" />
     <ClInclude Include="_CAFile.h" />
     <ClInclude Include="_CAFileBase.h" />
     <ClInclude Include="_CAFileStream.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="_CADB.cpp" />
     <ClCompile Include="_CADBRecord.cpp" />
     <ClCompile Include="_CADBTable.cpp" />
+    <ClCompile Include="_CADownloadManager.cpp" />
     <ClCompile Include="_CAFile.cpp" />
     <ClCompile Include="_CAFileBase.cpp" />
     <ClCompile Include="_CAFileStream.cpp" />

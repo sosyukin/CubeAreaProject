@@ -10,10 +10,11 @@ _CAFolder::_CAFolder(const std::wstring & filePath)
 {
 	if (!_CAFileBase::IsFolder())
 	{
-		if (!CreateDirectory(filePath.c_str(), NULL))
+		throw std::exception("Folder not exist.");
+		/*if (!CreateDirectory(filePath.c_str(), NULL))
 		{
 			throw std::exception("Can not create this folder.");
-		}
+		}*/
 	}
 	Scan();
 }

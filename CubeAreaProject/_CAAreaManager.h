@@ -8,6 +8,6 @@ public:
 	// Register works
 	virtual bool Register(wchar_t * filePath) = 0;
 	// analyze object
-	virtual bool Analyze(_CAObject & object) = 0;
+	virtual bool Analyze(_CAObject * object) = 0;
 };
 

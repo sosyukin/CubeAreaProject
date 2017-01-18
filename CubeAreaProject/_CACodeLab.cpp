@@ -79,6 +79,11 @@ bool _CACodeLab::GetFileLength(size_t & filelength, const std::wstring & filenam
 		CloseHandle(handle);
 		return true;
 	}
+	else
+	{
+		DWORD lastError = GetLastError();
+		DWORD t1 = lastError;
+	}
 	return false;
 }
 
@@ -558,7 +563,8 @@ bool _CACodeLab::EscapeSequence(std::wstring & str)
 
 void _CACodeLab::CAMoveFile(const std::wstring & srcPath, const std::wstring & destPath)
 {
-	_wsystem(std::wstring(L"C:\\FastCopy313_x64\\FastCopy.exe /cmd=move /auto_close /log=FALSE /no_ui \"").append(srcPath).append(L"\" /to=\"").append(destPath).append(L"\"").c_str());
+	//_wsystem(std::wstring(L"C:\\FastCopy313_x64\\FastCopy.exe /cmd=move /auto_close /log=FALSE /no_ui \"").append(srcPath).append(L"\" /to=\"").append(destPath).append(L"\"").c_str());
+	_wsystem(std::wstring(L"move ").append(L"\"").append(srcPath).append(L"\" \"").append(destPath).append(L"\"").c_str());
 }
 
 bool _CACodeLab::CAMoveFileAPI(const std::wstring & srcPath, const std::wstring & destPath)
@@ -594,4 +600,89 @@ void _CACodeLab::DacapoCheck(const std::wstring & srcPath, const std::wstring & 
 bool _CACodeLab::SameStr(const std::wstring & str1, const std::wstring & str2)
 {
 	return str1.compare(str2) == 0;
+}
+
+bool _CACodeLab::StrMatch(const wchar_t & str1, const wchar_t & str2)
+{
+	if (str1 == L'[' && str2 == L']') return true;
+	return false;
+}
+
+double _CACodeLab::StrSimilarity(const std::wstring & str1, const std::wstring & str2)
+{
+	std::wstring strTmp1;
+	strTmp1.resize(str1.length());
+	std::transform(str1.begin(), str1.end(), strTmp1.begin(), tolower);
+	std::wstring strTmp2;
+	strTmp2.resize(str2.length());
+	std::transform(str2.begin(), str2.end(), strTmp2.begin(), tolower);
+	std::vector<double> SimilarityVector;
+	SimilarityVector.resize(max(strTmp1.length(), strTmp2.length()));
+	//std::cout << "str1 : " << _CACharConversion::unicode2ansi(strTmp1) << std::endl;
+	//std::cout << "str2 : " << _CACharConversion::unicode2ansi(strTmp2) << std::endl;
+	for (size_t i = 0; i < SimilarityVector.size(); i++)
+	{
+		// Length not enough
+		if ((strTmp1.length() <= i) || (strTmp2.length() <= i))
+		{
+			SimilarityVector[i] = 0;
+			continue;
+		}
+		SimilarityVector[i] = CharSimilarity(strTmp1[i], strTmp2[i]);
+	}
+	//for (auto i : SimilarityVector)
+	//{
+	//	std::cout << i << " ";
+	//}
+	//std::cout << std::endl;
+	double Similarity = 1;
+	for (auto i : SimilarityVector)
+	{
+		if (i == 0)
+		{
+			Similarity *= (double)(SimilarityVector.size() - 1) / SimilarityVector.size();
+		}
+		else
+			Similarity *= i;
+	}
+	return Similarity;
+}
+
+double _CACodeLab::CharSimilarity(const wchar_t & str1, const wchar_t & str2)
+{
+	if (!IsCharacter(str1, str2) && (!IsNumber(str1, str2)) && (!IsSymbol(str1, str2)))
+	{
+		return 0.01;
+	}
+	if (IsCharacter(str1, str2))
+	{
+		//return 1 - (double)abs(str1 - str2) / 26;
+		if (str1 == str2)
+		{
+			return 1;
+		}
+		else return 0.5;
+	}
+	if (IsNumber(str1, str2))
+	{
+		return 0.01;
+	}
+	if (str1 == str2)
+		return 1;
+	else return 0.01;
+}
+
+bool _CACodeLab::IsCharacter(const wchar_t & str1, const wchar_t & str2)
+{
+	return ((str1 >= L'a' && str1 <= L'z') || (str1 >= L'A' && str1 <= L'Z')) && ((str2 >= L'a' && str2 <= L'z') || (str2 >= L'A' && str2 <= L'Z'));
+}
+
+bool _CACodeLab::IsNumber(const wchar_t & str1, const wchar_t & str2)
+{
+	return (str1 >= L'0' && str1 <= L'9') && (str2 >= L'0' && str2 <= L'9');
+}
+
+bool _CACodeLab::IsSymbol(const wchar_t & str1, const wchar_t & str2)
+{
+	return (!IsCharacter(str1,str2)) && (!IsNumber(str1,str2));
 }
