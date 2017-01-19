@@ -190,12 +190,14 @@ bool _CATorrent::Check(const std::wstring & filePath)
 		fileCheck.Open(_filePath.append(_name));
 		fileStream.AddFile(_filePath);
 	}
+	std::cout << "Checking... " << _CACharConversion::unicode2ansi(_name) << std::endl;
 	std::cout.width(3);
 	std::cout << 0 << "%";
 	CSHA1 sha1;
 	size_t pieceNumber = 0;
 	unsigned char shastr[21];
 	shastr[20] = '\0';
+	int percent;
 	for (auto expectedPieceSHA1 : _pieceList)
 	{
 		pieceNumber++;
@@ -206,27 +208,11 @@ bool _CATorrent::Check(const std::wstring & filePath)
 		sha1.GetHash(shastr);
 		if (strncmp(expectedPieceSHA1.c_str(), (char *)shastr, 20) != 0)
 		{
-			std::wstringstream ss;
-			std::wstring pieceInfo;
-			ss << pieceNumber;
-			std::wstring sst;
-			ss >> sst;
-			pieceInfo.append(L"( ").append(sst).append(L" / ");
-			ss.clear();
-			sst.clear();
-			ss << _pieceList.size();
-			ss >> sst;
-			pieceInfo.append(sst).append(L" ) has Error.\n");
-			
-			//_CALog::Log(std::wstring(_name).append(pieceInfo), L"D:\\BTTest\\Log\\PiecesError.txt");
-			throw std::exception(_CACharConversion::unicode2ansi(std::wstring(_name).append(pieceInfo)).c_str());
-			checkState = false;
+			throw std::exception(_CACharConversion::unicode2ansi(std::wstring(_name).append(L" piece error.")).c_str());
 		}
 		else
 		{
-			
-			
-			int percent = pieceNumber * 100 / _pieceList.size();
+			percent = pieceNumber * 100 / _pieceList.size();
 			std::cout << "\b\b\b\b";
 			std::cout.width(3);
 			std::cout << percent << "%";

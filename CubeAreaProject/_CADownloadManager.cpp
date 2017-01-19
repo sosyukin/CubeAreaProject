@@ -4,19 +4,19 @@
 
 _CADownloadManager::_CADownloadManager()
 {
-	if (!_downloadFolder.Open(L"D:\\待校验\\测试\\下载目录"))
+	if (!_downloadFolder.Open(L"D:\\下载"))
 	{
 		throw std::exception("[ERROR] Download folder open failed.");
 	}
-	if (!_btFolder.Open(L"D:\\待校验\\测试\\BT目录"))
+	if (!_btFolder.Open(L"D:\\BT"))
 	{
 		throw std::exception("[ERROR] BT folder open failed.");
 	}
-	if (!_checkedDownloadFolder.Open(L"D:\\待校验\\测试\\检查\\下载"))
+	if (!_checkedDownloadFolder.Open(L"D:\\通过\\下载"))
 	{
 		throw std::exception("[ERROR] BT folder open failed.");
 	}
-	if (!_checkedBtFolder.Open(L"D:\\待校验\\测试\\检查\\BT"))
+	if (!_checkedBtFolder.Open(L"D:\\通过\\BT"))
 	{
 		throw std::exception("[ERROR] Checked BT folder open failed.");
 	}
