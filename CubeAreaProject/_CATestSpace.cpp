@@ -546,7 +546,7 @@ void _CATestSpace::TestMoveFile()
 void _CATestSpace::TestDownloadManager()
 {
 	_CADownloadManager downloadManager;
-	//downloadManager.TorrentRename();
+	downloadManager.TorrentRename();
 	downloadManager.TorrentDownloadCheck();
 }
 
@@ -565,22 +565,26 @@ std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)
 
 void _CATestSpace::SubPermutation(std::vector<int> sub, std::stack<int> stack)
 {
-	std::stack<int> stack1;
 	if (sub.size() == 1)
 	{
-		stack1 = stack;
 		stack.push(sub.at(0));
 		StackOutput(stack);
 		return;
 	}
 	for (int i = 0;i < sub.size(); i++)
 	{
-		stack1 = stack;
-		stack1.push(sub[i]);
+		stack.push(sub[i]);
 		std::vector<int> t = DeleteElem(sub, i);
-		SubPermutation(t, stack1);
+		SubPermutation(t, stack);
+		stack.pop();
 	}
+}
+void _CATestSpace::SubPermutationABC(int n, std::vector<char> set, std::stack<char> stack)
+{
+	for (size_t i = 0; i < set.size(); i++)
+	{
 
+	}
 }
 
 

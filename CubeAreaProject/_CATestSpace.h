@@ -20,6 +20,7 @@ public:
 	static void f2(int & n);
 	static std::vector<int> DeleteElem(std::vector<int> sub, int subi);
 	static void SubPermutation(std::vector<int> sub, std::stack<int> stack);
+	static void SubPermutationABC(int n, std::vector<char> set, std::stack<char> stack);
 	static void StackOutput(std::stack<int> stack);
 	static int publicvar;
 	static int tickets;

@@ -8,22 +8,32 @@ _CATorrent::_CATorrent(const std::wstring & torrentPath)
 	, _encoding(L"UTF-8")
 	, _isMultiFiles(false)
 	, _torrentFile(torrentPath)
+	, _havePaddingFiles(false)
+	, _haveError(false)
 {
 	_content.Parse(_CAFileStream(torrentPath));
-	//_content.Output(std::wstring(L"D:\\BTTest\\Log\\torrent\\").append(_torrentFile.Name()).append(L".txt"), 0);
+	//_content.Output(std::wstring(L"D:\\").append(_torrentFile.Name()).append(L".txt"), 0);
 	GetAnnounce(_content);
 	GetEncoding(_content);
-	GetFileInfo(_content);
+	if (!GetFileInfo(_content))
+	{
+		_haveError = true;
+	};
 }
 
 _CATorrent::_CATorrent(_CABencodeDictionary & bencode)
 	: _totalLength(0)
 	, _encoding(L"UTF-8")
 	, _isMultiFiles(false)
+	, _havePaddingFiles(false)
+	, _haveError(false)
 {
 	GetAnnounce(bencode);
 	GetEncoding(bencode);
-	GetFileInfo(bencode);
+	if (!GetFileInfo(_content))
+	{
+		_haveError = true;
+	};
 }
 
 _CATorrent::~_CATorrent()
@@ -59,8 +69,8 @@ bool _CATorrent::GetEncoding(_CABencodeDictionary & bencode)
 		_encoding = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionary["encoding"])->_string);
 		return true;
 	}
-	else _CALog::Log(std::wstring(_torrentFile.Name()).append(L" no encoding\n"), L"d:\\BTTest\\Log\\EncodingCheck.txt");
-	return false;
+	else //_CALog::Log(std::wstring(_torrentFile.Name()).append(L" no encoding\n"), L"d:\\BTTest\\Log\\EncodingCheck.txt");
+		return false;
 }
 
 bool _CATorrent::GetFileInfo(_CABencodeDictionary & bencode)
@@ -88,7 +98,6 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionary & bencode)
 			_nameUTF8 = ((_CABencodeString *)pFileInfo->_dictionary["name.utf-8"])->_string;
 			_name = _CACharConversion::utf82unicode(_nameUTF8);
 		}
-			
 		else if (_encoding.compare(L"UTF-8") == 0)
 		{
 			_nameUTF8 = tstring;
@@ -102,9 +111,16 @@ bool _CATorrent::GetFileInfo(_CABencodeDictionary & bencode)
 		if (pFileInfo->Find("pieces"))
 			if (pFileInfo->_dictionary["pieces"]->GetType() == _CABencode::BencodeType::BenString)
 				return GetPieces(*(_CABencodeString *)pFileInfo->_dictionary["pieces"]);
-		
 	}
-	return false;
+	if (_havePaddingFiles)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+	
 }
 
 bool _CATorrent::GetSingleFileInfo(_CABencodeDictionary & bencode)
@@ -119,9 +135,6 @@ bool _CATorrent::GetSingleFileInfo(_CABencodeDictionary & bencode)
 	//	return false;
 	//expectFile.path = _CACharConversion::ansi2unicode(((_CABencodeString *)bencode._dictionary["name"])->_string);
 	//expectFile.path = expectFile.name;
-
-
-	
 	//_expectFileList.push_back(expectFile);
 	return true;
 }
@@ -142,15 +155,22 @@ bool _CATorrent::GetMutliFilesInfo(_CABencodeList & bencode)
 			if (!pFileBencode->Find("path"))
 				return false;
 			expectFile.path = GetPath(*(_CABencodeList *)pFileBencode->_dictionary["path"]);
-			// TODO Get fileHash
-			if (!pFileBencode->Find(""))
+			if (pFileBencode->Find("filehash"))
 			{
-				//expectFile.fileHash = 
+				expectFile.fileHash = ((_CABencodeString *)pFileBencode->_dictionary["filehash"])->_string;
 			}
 		}
-		_expectFileList.push_back(expectFile);
+		if (1 == expectFile.path.find_first_of(L"_____padding_file_", 0))
+		{
+			_havePaddingFiles = true;
+			return false;
+		}
+		else
+		{
+			_expectFileList.push_back(expectFile);
+		}
 	}
-	return false;
+	return true;
 }
 
 bool _CATorrent::GetPieces(_CABencodeString & bencode)
@@ -175,12 +195,41 @@ bool _CATorrent::Check(const std::wstring & filePath)
 	if (_isMultiFiles)
 	{
 		//MultiFiles
+		// Check download folder is exist.
 		_filePath.append(_name);
 		_CAFolder folderCheck;
-		folderCheck.Open(_filePath);
-		for (auto i : _expectFileList)
+		try
 		{
-			fileStream.AddFile(std::wstring(_filePath).append(i.path));
+			folderCheck.Open(_filePath);
+		}
+		catch (const std::exception&)
+		{
+			throw std::exception("File not exist.");
+		}
+		//Prepare checking
+		if (_havePaddingFiles)
+		{
+			// TODO : checking for padding files
+			for (auto itExpectFile = _expectFileList.begin(); itExpectFile != _expectFileList.end(); itExpectFile++)
+			{
+				itExpectFile->path = std::wstring(_filePath).append(itExpectFile->path);
+			}
+		}
+		else
+		{
+			// Add files to filestream and check files exist.
+			try
+			{
+				for (auto i : _expectFileList)
+				{
+					fileStream.AddFile(std::wstring(_filePath).append(i.path));
+				}
+			}
+			catch (const std::exception& e)
+			{
+				std::cerr << e.what() << std::endl;
+				throw std::exception("File missing.");
+			}
 		}
 	}
 	else
@@ -190,41 +239,82 @@ bool _CATorrent::Check(const std::wstring & filePath)
 		fileCheck.Open(_filePath.append(_name));
 		fileStream.AddFile(_filePath);
 	}
-	std::cout << "Checking... " << _CACharConversion::unicode2ansi(_name) << std::endl;
-	std::cout.width(3);
-	std::cout << 0 << "%";
-	CSHA1 sha1;
-	size_t pieceNumber = 0;
-	unsigned char shastr[21];
-	shastr[20] = '\0';
-	int percent;
-	for (auto expectedPieceSHA1 : _pieceList)
+
+	if (_havePaddingFiles)
 	{
-		pieceNumber++;
-		std::string piece = fileStream.Fetch(_pieceLength);
-		sha1.Reset();
-		sha1.Update((unsigned char *)piece.c_str(), (unsigned int)piece.size());
-		sha1.Final();
-		sha1.GetHash(shastr);
-		if (strncmp(expectedPieceSHA1.c_str(), (char *)shastr, 20) != 0)
+		CSHA1 sha1;
+		unsigned char shastr[21];
+		shastr[20] = '\0';
+		for (auto expectFile : _expectFileList)
 		{
-			throw std::exception(_CACharConversion::unicode2ansi(std::wstring(_name).append(L" piece error.")).c_str());
+			_CAFileStream fileStream(expectFile.path);
+			std::string binary = fileStream.Fetch(expectFile.length);
+			sha1.Reset();
+			sha1.Update((unsigned char *)binary.c_str(), (unsigned int)expectFile.length);
+			sha1.Final();
+			sha1.GetHash(shastr);
+			TCHAR report[40];
+			sha1.ReportHash(report);
+			if (strncmp(expectFile.fileHash.c_str(), (char *)shastr, 20) != 0)
+			{
+				throw std::exception(_CACharConversion::unicode2ansi(std::wstring(_name).append(L" piece error.")).c_str());
+			}
+			else
+			{
+				std::cout << _CACharConversion::unicode2ansi(expectFile.path).append(" checked OK.") << std::endl;
+			}
 		}
-		else
-		{
-			percent = pieceNumber * 100 / _pieceList.size();
-			std::cout << "\b\b\b\b";
-			std::cout.width(3);
-			std::cout << percent << "%";
-		}
+		return checkState;
 	}
-	std::cout << std::endl;
-	return checkState;
+	else
+	{
+		// Output checking status
+		std::cout << "Checking... " << _CACharConversion::unicode2ansi(_name) << std::endl;
+		std::cout.width(3);
+		std::cout << 0 << "%";
+		CSHA1 sha1;
+		size_t pieceNumber = 0;
+		unsigned char shastr[21];
+		shastr[20] = '\0';
+		int percent;
+		for (auto expectedPieceSHA1 : _pieceList)
+		{
+			pieceNumber++;
+			std::string piece = fileStream.Fetch(_pieceLength);
+			sha1.Reset();
+			sha1.Update((unsigned char *)piece.c_str(), (unsigned int)piece.size());
+			sha1.Final();
+			sha1.GetHash(shastr);
+			if (strncmp(expectedPieceSHA1.c_str(), (char *)shastr, 20) != 0)
+			{
+				throw std::exception(_CACharConversion::unicode2ansi(std::wstring(_name).append(L" piece error.")).c_str());
+			}
+			else
+			{
+				percent = pieceNumber * 100 / _pieceList.size();
+				std::cout << "\b\b\b\b";
+				std::cout.width(3);
+				std::cout << percent << "%";
+			}
+		}
+		std::cout << std::endl;
+		return checkState;
+	}
 }
 
 bool _CATorrent::Rename()
 {
 	return _torrentFile.Rename(std::wstring(_name).append(L".").append(_torrentFile.Suffix()));
+}
+
+bool _CATorrent::NoError()
+{
+	return !_haveError;
+}
+
+bool _CATorrent::HavePaddingFiles()
+{
+	return _havePaddingFiles;
 }
 
 std::wstring _CATorrent::GetPath(_CABencodeList & bencode)

@@ -19,9 +19,16 @@ public:
 	bool GetMutliFilesInfo(_CABencodeList & bencode);
 	bool GetPieces(_CABencodeString & bencode);
 	bool Check(const std::wstring & filePath);
+
 	bool Rename();
+
+	bool NoError();
+	bool HavePaddingFiles();
+
 	std::wstring GetPath(_CABencodeList & bencode);
 	std::wstring GetDownloadPath();
+
+
 private:
 	_CABencodeDictionary _content;
 	_CAFile _torrentFile;
@@ -35,5 +42,7 @@ private:
 	long long _totalLength;
 	long long _pieceLength;
 	bool _isMultiFiles;
+	bool _havePaddingFiles;
+	bool _haveError;
 };
 

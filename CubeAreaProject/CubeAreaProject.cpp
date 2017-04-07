@@ -24,8 +24,7 @@ int main()
 	_CAFolder folder(CubeAreaFolder);
 	std::wstring CubeAreaFolder1(L"E:\\CubeArea");
 	_CAFolder folder1(CubeAreaFolder1);*/
-
-	
+	//_CATestSpace::SubPermutation({ 1,2,3,4,5,6,7,8 }, std::stack<int>());
 	//bool state = CreateDirectory(L"D:\\myfolder", NULL);
 	//_CAFolder folder(L"D:\\myfolder");
 	//_CATestSpace::TestSQLServerConnection();
