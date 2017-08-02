@@ -44,5 +44,6 @@ public:
 	static void TestFileOperation();
 	static void TestMoveFile();
 	static void TestDownloadManager();
+	static void TestPath();
 };
 

@@ -1,5 +1,7 @@
 #pragma once
 #include "_CAObject.h"
+
+#ifdef USE_SQL_SERVER
 #include "_CADBRecord.h"
 class _CADBTable :
 	public _CAObject
@@ -23,3 +25,4 @@ public:
 	~_CADBTable();
 };
 
+#endif

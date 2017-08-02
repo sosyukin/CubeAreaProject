@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "_CADB.h"
 
-
+#ifdef USE_SQL_SERVER
 _CADB::_CADB()
 	: pConnect(NULL)
 	, pRecordset(NULL)
@@ -162,3 +162,5 @@ bool _CADB::Insert(const _variant_t & table, const std::vector<_variant_t>& colu
 		+ _bstr_t(L" (") + ColumnToSQL(columnList) + _bstr_t(L") VALUES (") + ValuesToSQL(valueList) + _bstr_t(L")");
 	return Execute(sql);
 }
+
+#endif

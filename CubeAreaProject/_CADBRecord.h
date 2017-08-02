@@ -1,4 +1,6 @@
 #pragma once
+
+#ifdef USE_SQL_SERVER
 class _CADBRecord
 {
 private:
@@ -10,3 +12,4 @@ public:
 	~_CADBRecord();
 };
 
+#endif

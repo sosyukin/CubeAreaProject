@@ -31,6 +31,10 @@
 #include <iomanip>
 #include <regex>
 #include <algorithm>
+#include <filesystem>
+
+
+#include "_CAEnglishGrammarExplanation.h"
 
 #include "_CALog.h"
 #include "_CACharConversion.h"
@@ -57,7 +61,9 @@
 #include "_CATorrent.h"
 #include "_CADownloadManager.h"
 #include "_CATestSpace.h"
-#include "_CADB.h"
+//#include "_CADB.h"
+
+
 
 //#define DATABLOCK_MAX 12884901888 //12GB
 #define DATABLOCK_MAX 1073741824 //1GB

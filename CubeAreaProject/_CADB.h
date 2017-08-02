@@ -1,4 +1,5 @@
 #pragma once
+#ifdef USE_SQL_SERVER
 #import "c:\program files\common files\system\ado\msado15.dll"  no_namespace rename("EOF", "adoEOF")
 #include "_CADBTable.h"
 
@@ -30,3 +31,4 @@ public:
 	bool Select(const std::vector<_variant_t> & tableList, const std::vector<_variant_t> & columnList, const _variant_t & constraint);
 };
 
+#endif

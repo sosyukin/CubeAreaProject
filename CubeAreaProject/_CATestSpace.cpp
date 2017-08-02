@@ -397,7 +397,7 @@ void _CATestSpace::TestFullPermutation()
 void _CATestSpace::TestSQLServerConnection()
 {
 	// Init Point
-
+#ifdef USE_SQL_SERVER
 	CoInitialize(NULL);
 	_ConnectionPtr pMyConnect = NULL;
 	HRESULT hr = pMyConnect.CreateInstance(__uuidof(Connection));
@@ -444,10 +444,12 @@ void _CATestSpace::TestSQLServerConnection()
 	{
 		std::cout << e.Description() << std::endl;
 	}
+#endif
 }
 
 void _CATestSpace::TestDB()
 {
+#ifdef USE_SQL_SERVER
 	_CADB db;
 	//db.Execute("select * from AreaMap where id = 1");
 	//std::wstring strlist[] = { L"A", L"B", L"C" };
@@ -456,6 +458,7 @@ void _CATestSpace::TestDB()
 	_variant_t columnList[2] = { L"column1", L"column2" };
 	_variant_t valueList[2] = { L"A", 1 };
 	db.Insert(L"TestTable", std::vector<_variant_t>(columnList, columnList + 2), std::vector<_variant_t>(valueList, valueList + 2));
+#endif
 }
 
 void _CATestSpace::TestRegex()
@@ -548,6 +551,24 @@ void _CATestSpace::TestDownloadManager()
 	_CADownloadManager downloadManager;
 	downloadManager.TorrentRename();
 	downloadManager.TorrentDownloadCheck();
+}
+
+void _CATestSpace::TestPath()
+{
+	std::tr2::sys::path p;
+	p.assign("D:\\CubeArea\\test.txt");
+	std::cout << p << std::endl;
+	std::cout << p.filename() << std::endl;
+	std::cout << std::tr2::sys::system_complete(p) << std::endl;
+	std::cout << p.string() << std::endl;
+	std::cout << p.parent_path() << std::endl;
+	std::cout << p.stem() << std::endl;
+	std::cout << p.filename() << std::endl;
+	std::cout << p.extension() << std::endl;
+	std::cout << p.root_name() << std::endl;
+	std::cout << p.root_path() << std::endl;
+	std::cout << p.replace_extension("tmp") << std::endl;
+	std::cout << p.remove_filename() << std::endl;
 }
 
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)

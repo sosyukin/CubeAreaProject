@@ -4,47 +4,47 @@
 
 _CADownloadManager::_CADownloadManager()
 {
-	if (!_downloadFolder.Open(L"E:\\下载"))
+	if (!_downloadFolder.Open(L"D:\\下载"))
 	{
 		throw std::exception("[ERROR] Download folder open failed.");
 	}
-	if (!_btFolder.Open(L"E:\\BT"))
+	if (!_btFolder.Open(L"D:\\下载集散管理\\2017.6.16\\BT种子"))
 	{
 		throw std::exception("[ERROR] BT folder open failed.");
 	}
-	if (!_checkedDownloadFolder.Open(L"E:\\通过\\下载"))
+	if (!_checkedDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\过检"))
 	{
 		throw std::exception("[ERROR] Checked download folder open failed.");
 	}
-	if (!_checkedBtFolder.Open(L"E:\\通过\\BT"))
+	if (!_checkedBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\过检BT"))
 	{
 		throw std::exception("[ERROR] Checked BT folder open failed.");
 	}
-	if (!_errCheckedDownloadFolder.Open(L"E:\\未通过\\下载"))
+	if (!_errCheckedDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\扣留"))
 	{
 		throw std::exception("[ERROR] Error checked download folder open failed.");
 	}
-	if (!_errCheckedBtFolder.Open(L"E:\\未通过\\BT"))
+	if (!_errCheckedBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\扣留BT"))
 	{
 		throw std::exception("[ERROR] Error checked BT folder open failed.");
 	}
-	if (!_downloadFileNotExistBtFolder.Open(L"E:\\未通过\\BTNotExist"))
+	if (!_downloadFileNotExistBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\未下BT"))
 	{
 		throw std::exception("[ERROR] Download file not exist BT folder open failed.");
 	}
-	if (!_missingFileBtFolder.Open(L"E:\\未通过\\BTMissingFile"))
+	if (!_missingFileBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\丢失BT"))
 	{
 		throw std::exception("[ERROR] Miss file BT folder open failed.");
 	}
-	if (!_missingFileDownloadFolder.Open(L"E:\\未通过\\下载MissingFile"))
+	if (!_missingFileDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\丢失"))
 	{
 		throw std::exception("[ERROR] Miss file Download folder open failed.");
 	}
-	if (!_unableToVerifyBtFolder.Open(L"E:\\未通过\\UnableToVerifyBt"))
+	if (!_unableToVerifyBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\超权BT"))
 	{
 		throw std::exception("[ERROR] Miss file Download folder open failed.");
 	}
-	if (!_unableToVerifyDownloadFolder.Open(L"E:\\未通过\\UnableToVerifyDownload"))
+	if (!_unableToVerifyDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\超权"))
 	{
 		throw std::exception("[ERROR] Miss file Download folder open failed.");
 	}
@@ -119,8 +119,8 @@ bool _CADownloadManager::TorrentDownloadCheck()
 		else if (torrent.HavePaddingFiles())
 		{
 			
-			//_CACodeLab::CAMoveFile(torrentFile->Path(), _unableToVerifyBtFolder.Path());
-			//_CACodeLab::CAMoveFile(torrent.GetDownloadPath(), _unableToVerifyDownloadFolder.Path());
+			_CACodeLab::CAMoveFile(torrentFile->Path(), _unableToVerifyBtFolder.Path());
+			_CACodeLab::CAMoveFile(torrent.GetDownloadPath(), _unableToVerifyDownloadFolder.Path());
 			
 		}
 		

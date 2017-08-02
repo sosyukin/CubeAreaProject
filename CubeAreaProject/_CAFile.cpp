@@ -58,6 +58,7 @@ bool _CAFile::Diff()
 	folderPath = folderPath.substr(folderPath.find_first_of('\\') + 1);
 	std::wstring TargetPath = std::wstring(L"d:\\DaCapo\\").append(folderPath);
 	sha1();
+#ifdef USE_SQL_SERVER
 	_CADB db;
 	//_bstr_t	Find(L"Select * from FileSHA1 where SHA1='");
 	//Find += _bstr_t(_sha1Report.c_str());
@@ -92,6 +93,7 @@ bool _CAFile::Diff()
 	//	return false;
 	//	
 	//}
+#endif
 	return true;
 }
 

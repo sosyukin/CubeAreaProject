@@ -236,7 +236,14 @@ bool _CATorrent::Check(const std::wstring & filePath)
 	{
 		//SingleFile
 		_CAFile fileCheck;
-		fileCheck.Open(_filePath.append(_name));
+		try
+		{
+			fileCheck.Open(_filePath.append(_name));
+		}
+		catch (const std::exception&)
+		{
+			throw std::exception("File not exist.");
+		}
 		fileStream.AddFile(_filePath);
 	}
 
