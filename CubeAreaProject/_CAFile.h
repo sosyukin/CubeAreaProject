@@ -26,9 +26,10 @@ public:
 	// beta
 	bool md5();
 	bool sha1();
+	std::wstring _sha1Report;
 private:
 	std::wstring _suffix;
-	std::wstring _sha1Report;
+
 	size_t _size;
 	size_t _offset;
 };

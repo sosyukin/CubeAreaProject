@@ -53,8 +53,8 @@ bool _CAFileBase::IsExist()
 	HANDLE hFind = FindFirstFile(_path.c_str(), &FindFileData);
 	if (hFind == INVALID_HANDLE_VALUE)
 	{
-		//_CALog::Log(std::wstring(_path).append(L"\n"), L"D:\\BTTest\\Log\\FileNotExist.txt");
-		throw std::exception(_CACharConversion::unicode2ansi(_path.append(L" not found.")).c_str());
+		_CALog::Log(std::wstring(_path).append(L"\n"), L"E:\\NotExist.txt");
+		//throw std::exception(_CACharConversion::unicode2ansi(_path.append(L" not found.")).c_str());
 		//throw std::exception("File not exist.");
 	}
 	FindClose(hFind);

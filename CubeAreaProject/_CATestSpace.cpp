@@ -201,6 +201,31 @@ void _CATestSpace::f2(int& n)
 	}
 }
 
+void _CATestSpace::p1(_CAFile * f)
+{
+	f->sha1();
+}
+
+void _CATestSpace::p2(_CAFile * file)
+{
+	std::wstring pathG;
+	pathG = file->Path();
+	pathG[0] = L'E';
+	_CAFile bFile(pathG);
+	std::thread t1(p1, file);
+	std::thread t2(p1, &bFile);
+	t2.join();
+	t1.join();
+	if (file->_sha1Report != bFile._sha1Report)
+	{
+		_CALog::Log(pathG.append(L"\n"), L"D:\\sha1err.txt");
+	}
+	else
+	{
+		_CALog::Log(pathG.append(L"\n"), L"D:\\sha1OK.txt");
+	}
+}
+
 
 // Test GetFileLength
 void _CATestSpace::TestGetFileLength()
@@ -548,18 +573,19 @@ void _CATestSpace::TestMoveFile()
 
 void _CATestSpace::TestDownloadManager()
 {
-	_CADownloadManager downloadManager;
-	downloadManager.TorrentRename();
-	downloadManager.TorrentDownloadCheck();
+	/*_CADownloadManager downloadManager;
+	downloadManager.TorrentRename();*/
+	//downloadManager.TorrentDownloadCheck();
 }
 
 void _CATestSpace::TestPath()
 {
-	std::tr2::sys::path p;
+	/*std::tr2::sys::path p;
 	p.assign("D:\\CubeArea\\test.txt");
 	std::cout << p << std::endl;
 	std::cout << p.filename() << std::endl;
 	std::cout << std::tr2::sys::system_complete(p) << std::endl;
+}
 	std::cout << p.string() << std::endl;
 	std::cout << p.parent_path() << std::endl;
 	std::cout << p.stem() << std::endl;
@@ -568,7 +594,52 @@ void _CATestSpace::TestPath()
 	std::cout << p.root_name() << std::endl;
 	std::cout << p.root_path() << std::endl;
 	std::cout << p.replace_extension("tmp") << std::endl;
-	std::cout << p.remove_filename() << std::endl;
+	std::cout << p.remove_filename() << std::endl;*/
+}
+void _CATestSpace::TestConsistencyCheck()
+{
+	_CAFolder folder(L"D:\\A");
+	std::vector<_CAFile*> fileList;
+	folder.GetFileList(fileList);
+	for (std::vector<_CAFile*>::iterator it = fileList.begin(); it != fileList.end(); it += 2)
+	{
+		std::thread s1(p2, *it);
+		if ((it + 1) != fileList.end())
+		{
+			std::thread s2(p2, *(it + 1));
+			s2.join();
+		}
+		else
+		{
+			s1.join();
+			break;
+		}
+		s1.join();
+	}
+	std::cout << "Done" << std::endl;
+}
+
+void _CATestSpace::TestFindBtfolder()
+{
+	_CAFolder folder(L"E:\\确认动画查找\\BT");
+	std::vector<_CAFile *> torrentList;
+	folder.GetFileList(L"torrent", torrentList, _CACodeLab::SameStr, _CAFile::ATTR::SUFFIX);
+	_CAFolder checkFolder(L"E:\\已确认动画");
+	std::vector<_CAFolder *> folderList;
+	checkFolder.GetFolderList(folderList);
+	std::wstring torrentFileName;
+	for (auto torrentFile : torrentList)
+	{
+		torrentFileName = torrentFile->Name().substr(0, torrentFile->Name().find_last_of(L'.'));
+		for (auto pFolder : folderList)
+		{
+			if (pFolder->Name() == torrentFileName)
+			{
+				_CALog::Log(torrentFileName.append(L"\n"), L"E:\\find.txt");
+				break;
+			}
+		}
+	}
 }
 
 std::vector<int> _CATestSpace::DeleteElem(std::vector<int> sub, int subi)

@@ -14,7 +14,7 @@ private:
 	_CAFolder _unableToVerifyBtFolder;
 	_CAFolder _unableToVerifyDownloadFolder;
 public:
-	_CADownloadManager();
+	_CADownloadManager(const std::wstring & dirPath);
 	~_CADownloadManager();
 	// Check torrent name and rename
 	bool TorrentRename();

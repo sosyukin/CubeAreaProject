@@ -2,49 +2,50 @@
 #include "_CADownloadManager.h"
 
 
-_CADownloadManager::_CADownloadManager()
+_CADownloadManager::_CADownloadManager(const std::wstring & dirPath)
 {
-	if (!_downloadFolder.Open(L"D:\\下载"))
+	std::wstring dirPathRoot(dirPath);
+	if (!_downloadFolder.Open(dirPathRoot.append(L"\\下载")))
 	{
 		throw std::exception("[ERROR] Download folder open failed.");
 	}
-	if (!_btFolder.Open(L"D:\\下载集散管理\\2017.6.16\\BT种子"))
+	if (!_btFolder.Open(dirPathRoot.append(L"\\BT种子")))
 	{
 		throw std::exception("[ERROR] BT folder open failed.");
 	}
-	if (!_checkedDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\过检"))
+	if (!_checkedDownloadFolder.Open(dirPathRoot.append(L"\\过检")))
 	{
 		throw std::exception("[ERROR] Checked download folder open failed.");
 	}
-	if (!_checkedBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\过检BT"))
+	if (!_checkedBtFolder.Open(dirPathRoot.append(L"\\过检BT")))
 	{
 		throw std::exception("[ERROR] Checked BT folder open failed.");
 	}
-	if (!_errCheckedDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\扣留"))
+	if (!_errCheckedDownloadFolder.Open(dirPathRoot.append(L"\\扣留")))
 	{
 		throw std::exception("[ERROR] Error checked download folder open failed.");
 	}
-	if (!_errCheckedBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\扣留BT"))
+	if (!_errCheckedBtFolder.Open(dirPathRoot.append(L"\\扣留BT")))
 	{
 		throw std::exception("[ERROR] Error checked BT folder open failed.");
 	}
-	if (!_downloadFileNotExistBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\未下BT"))
+	if (!_downloadFileNotExistBtFolder.Open(dirPathRoot.append(L"\\未下BT")))
 	{
 		throw std::exception("[ERROR] Download file not exist BT folder open failed.");
 	}
-	if (!_missingFileBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\丢失BT"))
+	if (!_missingFileBtFolder.Open(dirPathRoot.append(L"\\丢失BT")))
 	{
 		throw std::exception("[ERROR] Miss file BT folder open failed.");
 	}
-	if (!_missingFileDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\丢失"))
+	if (!_missingFileDownloadFolder.Open(dirPathRoot.append(L"\\丢失")))
 	{
 		throw std::exception("[ERROR] Miss file Download folder open failed.");
 	}
-	if (!_unableToVerifyBtFolder.Open(L"D:\\下载集散管理\\2017.6.16\\超权BT"))
+	if (!_unableToVerifyBtFolder.Open(dirPathRoot.append(L"\\超权BT")))
 	{
 		throw std::exception("[ERROR] Miss file Download folder open failed.");
 	}
-	if (!_unableToVerifyDownloadFolder.Open(L"D:\\下载集散管理\\2017.6.16\\超权"))
+	if (!_unableToVerifyDownloadFolder.Open(dirPathRoot.append(L"\\超权")))
 	{
 		throw std::exception("[ERROR] Miss file Download folder open failed.");
 	}

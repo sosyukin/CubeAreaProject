@@ -6,7 +6,9 @@ int main()
 {
 	try
 	{
-		_CATestSpace::TestDownloadManager();
+		_CATestSpace::TestFindBtfolder();
+		//_CATestSpace::TestConsistencyCheck();
+		//_CATestSpace::TestDownloadManager();
 		//_CAEnglishGrammarExplanation ege;
 	}
 	catch (const std::exception& e)

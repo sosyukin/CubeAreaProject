@@ -18,6 +18,9 @@ public:
 	static void myThreadB();
 	static void f1(int n);
 	static void f2(int & n);
+	static void p1(_CAFile * f);
+	static void p2(_CAFile * file);
+	//static void p2(_CAFile * f);
 	static std::vector<int> DeleteElem(std::vector<int> sub, int subi);
 	static void SubPermutation(std::vector<int> sub, std::stack<int> stack);
 	static void SubPermutationABC(int n, std::vector<char> set, std::stack<char> stack);
@@ -45,5 +48,7 @@ public:
 	static void TestMoveFile();
 	static void TestDownloadManager();
 	static void TestPath();
+	static void TestConsistencyCheck();
+	static void TestFindBtfolder();
 };
 

@@ -298,7 +298,7 @@ bool _CATorrent::Check(const std::wstring & filePath)
 			}
 			else
 			{
-				percent = pieceNumber * 100 / _pieceList.size();
+				percent = static_cast<int>(pieceNumber * 100 / _pieceList.size());
 				std::cout << "\b\b\b\b";
 				std::cout.width(3);
 				std::cout << percent << "%";

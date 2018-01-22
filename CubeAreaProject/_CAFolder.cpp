@@ -85,6 +85,19 @@ bool _CAFolder::GetFileList(std::vector<_CAFile *> & fileList)
 	return true;
 }
 
+bool _CAFolder::GetFolderList(std::vector<_CAFolder*>& folderList)
+{
+	for (auto i : _files)
+	{
+		_CAFolder * pfolder = dynamic_cast<_CAFolder *>(i);
+		if (pfolder)
+		{
+			folderList.push_back(pfolder);
+		}
+	}
+	return true;
+}
+
 bool _CAFolder::GetFileList(const std::wstring & constraintStr, std::vector<_CAFile*>& fileList, bool (*ConstraintFunction)(const std::wstring &,const std::wstring &), _CAFile::ATTR attr)
 {
 	for (auto i : _files)

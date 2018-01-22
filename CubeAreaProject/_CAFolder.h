@@ -15,6 +15,7 @@ public:
 	void Scan();
 	bool Find(const std::wstring & fileName, std::vector<_CAFile *> & fileList);
 	bool GetFileList(std::vector<_CAFile *> & fileList);
+	bool GetFolderList(std::vector<_CAFolder *> & folderList);
 
 	bool GetFileList(const std::wstring & constraintStr, std::vector<_CAFile*>& fileList, bool(*ConstraintFunction)(const std::wstring &, const std::wstring &), _CAFile::ATTR attr);
 	virtual bool Rename(const std::wstring & newName);
